@@ -133,10 +133,10 @@ export const ProductDetailsModal = ({ product, open, onOpenChange }: ProductDeta
           </div>
 
           {/* Action Button */}
-          {product.available && (
+          {(product.available || product.waitlistStatus === "ACTIVE") && (
             <div className="flex justify-end pt-4 border-t">
               <button className="bg-gradient-primary text-primary-foreground px-6 py-3 rounded-lg font-semibold hover:shadow-glow transition-all duration-300 transform hover:scale-105">
-                Book This Event
+                {product.available ? "Book This Event" : "Join Waitlist"}
               </button>
             </div>
           )}
