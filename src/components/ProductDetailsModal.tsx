@@ -13,6 +13,13 @@ interface ProductDetailsModalProps {
 export const ProductDetailsModal = ({ product, open, onOpenChange }: ProductDetailsModalProps) => {
   if (!product) return null;
 
+  const handleBookEvent = () => {
+    if (product) {
+      const bookingUrl = `https://globe-dance.dev.culmas.io/class/${product.id}?from=component-api`;
+      window.open(bookingUrl, '_blank');
+    }
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl">
@@ -161,7 +168,10 @@ export const ProductDetailsModal = ({ product, open, onOpenChange }: ProductDeta
           {/* Action Button */}
           {(product.available || product.waitlistStatus === "ACTIVE") && (
             <div className="flex justify-end pt-4 border-t">
-              <button className="bg-gradient-primary text-primary-foreground px-6 py-3 rounded-lg font-semibold hover:shadow-glow transition-all duration-300 transform hover:scale-105">
+              <button 
+                onClick={handleBookEvent}
+                className="bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:shadow-glow transition-all duration-300 transform hover:scale-105"
+              >
                 {product.available ? "Book This Event" : "Join Waitlist"}
               </button>
             </div>
