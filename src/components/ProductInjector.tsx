@@ -139,6 +139,7 @@ export const ProductInjector = ({
         const CULMAS_QUERY = `query allProducts($onlyAvailableForSale: Boolean) {
   allProducts(onlyAvailableForSale: $onlyAvailableForSale) {
     id
+    title
     descriptionImg
     end
     endTime
