@@ -68,8 +68,20 @@ export const ListView = ({ products }: ListViewProps) => {
                   
                   <div className="flex items-center space-x-1.5">
                     <Clock className="w-4 h-4 text-primary flex-shrink-0" />
-                    <span>{product.time} • {product.duration}</span>
+                    <span>
+                      {product.startTime && product.endTime 
+                        ? `${product.startTime} - ${product.endTime}`
+                        : `${product.time} • ${product.duration}`
+                      }
+                    </span>
                   </div>
+                  
+                  {product.responsible && (
+                    <div className="flex items-center space-x-1.5">
+                      <User className="w-4 h-4 text-primary flex-shrink-0" />
+                      <span className="truncate">{product.responsible}</span>
+                    </div>
+                  )}
                   
                   {product.instructor && (
                     <div className="flex items-center space-x-1.5">
@@ -93,11 +105,15 @@ export const ListView = ({ products }: ListViewProps) => {
               </div>
 
               {/* Action */}
-              {product.available && (
+              {product.available ? (
                 <button className="w-full sm:w-auto bg-gradient-primary text-primary-foreground px-4 sm:px-6 py-3 rounded-lg font-semibold hover:shadow-glow transition-all duration-300 transform hover:scale-105 min-h-[44px]">
                   Book Now
                 </button>
-              )}
+              ) : product.waitlistStatus === "ACTIVE" ? (
+                <button className="w-full sm:w-auto bg-secondary text-secondary-foreground px-4 sm:px-6 py-3 rounded-lg font-semibold hover:bg-accent transition-all duration-300 min-h-[44px]">
+                  Join Waitlist
+                </button>
+              ) : null}
             </div>
           </div>
         </div>
