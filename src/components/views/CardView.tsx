@@ -114,7 +114,7 @@ export const CardView = ({ products }: CardViewProps) => {
               {product.available ? (
                 <button 
                   onClick={(e) => handleBookClick(e, product)}
-                  className="w-full bg-gradient-primary text-primary-foreground px-4 py-2.5 sm:py-2 rounded-lg text-sm font-semibold hover:shadow-glow transition-all duration-300 transform hover:scale-105 min-h-[44px]"
+                  className="w-full bg-primary text-primary-foreground px-4 py-2.5 sm:py-2 rounded-lg text-sm font-semibold hover:shadow-glow transition-all duration-300 transform hover:scale-105 min-h-[44px]"
                 >
                   Book Now
                 </button>
