@@ -23,7 +23,6 @@ export interface Product {
   image?: string;
   available: boolean;
   venue?: string;
-  responsible?: string;
 }
 
 // Mock data simulating API response
@@ -177,10 +176,6 @@ export const ProductInjector = ({
       formatted_address
       geoPoint
     }
-    responsibleShown {
-      firstName
-      lastName
-    }
   }
 }`;
 
@@ -213,19 +208,15 @@ export const ProductInjector = ({
             const endDate = endStr ? new Date(endStr) : null;
             const validStart = !!(startDate && !isNaN(startDate.getTime()));
 
-            const startTimeStr = p?.startTime || (validStart ? startDate!.toTimeString().slice(0, 5) : "00:00");
-            const endTimeStr = p?.endTime || (endDate ? endDate.toTimeString().slice(0, 5) : "");
-            const timeStr = endTimeStr ? `${startTimeStr} - ${endTimeStr}` : startTimeStr;
+            const timeStr = validStart
+              ? startDate!.toTimeString().slice(0, 5)
+              : (p?.endTime ?? "00:00");
 
             let duration = "60min";
             if (validStart && endDate && !isNaN(endDate.getTime())) {
               const mins = Math.max(0, Math.round((endDate.getTime() - startDate!.getTime()) / 60000));
               if (mins > 0) duration = `${mins}min`;
             }
-
-            const responsible = p?.responsibleShown ? 
-              `${p.responsibleShown.firstName || ''} ${p.responsibleShown.lastName || ''}`.trim() : 
-              undefined;
 
             const ticketLines = Array.isArray(p?.tickets?.tickets) ? p.tickets.tickets : [];
             const prices = ticketLines
@@ -258,7 +249,6 @@ export const ProductInjector = ({
               image: p?.descriptionImg,
               available,
               venue: venueTitle || undefined,
-              responsible,
             } as Product;
           });
 
