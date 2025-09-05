@@ -2,6 +2,7 @@ import { Product } from "./ProductInjector";
 import { Calendar, Clock, User, DollarSign, Tag, MapPin } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 interface ProductDetailsModalProps {
   product: Product | null;
@@ -58,13 +59,15 @@ export const ProductDetailsModal = ({ product, open, onOpenChange }: ProductDeta
                 <div className="flex items-center space-x-3">
                   <User className="w-5 h-5 text-primary" />
                   <div className="flex items-center space-x-2">
-                    {product.responsiblesShown.profileImg && (
-                      <img 
+                    <Avatar className="w-8 h-8">
+                      <AvatarImage 
                         src={product.responsiblesShown.profileImg} 
                         alt="Responsible person"
-                        className="w-8 h-8 rounded-full object-cover border border-border"
                       />
-                    )}
+                      <AvatarFallback>
+                        {product.responsiblesShown.firstName?.[0]}{product.responsiblesShown.lastName?.[0]}
+                      </AvatarFallback>
+                    </Avatar>
                     <div>
                       <div className="font-semibold">Responsible</div>
                       <div className="text-muted-foreground">

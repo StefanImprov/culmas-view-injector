@@ -49,11 +49,6 @@ const mockProducts: Product[] = [
     instructor: "Sarah Johnson",
     available: true,
     venue: "Studio A",
-    responsiblesShown: {
-      profileImg: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
-      firstName: "Emma",
-      lastName: "Wilson"
-    }
   },
   {
     id: "2", 
@@ -67,11 +62,6 @@ const mockProducts: Product[] = [
     instructor: "Marie Claire",
     available: true,
     venue: "Main Hall",
-    responsiblesShown: {
-      profileImg: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
-      firstName: "John",
-      lastName: "Smith"
-    }
   },
   {
     id: "3",
@@ -85,11 +75,6 @@ const mockProducts: Product[] = [
     instructor: "Marcus Davis",
     available: false,
     venue: "Studio B",
-    responsiblesShown: {
-      profileImg: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
-      firstName: "David",
-      lastName: "Johnson"
-    }
   },
   {
     id: "4",
