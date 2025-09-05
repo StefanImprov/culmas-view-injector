@@ -6,30 +6,30 @@ import { Product } from "./ProductInjector";
 interface FilterDropdownsProps {
   products: Product[];
   selectedVenue: string | null;
-  selectedTemplate: string | null;
+  selectedCategory: string | null;
   onVenueChange: (venue: string | null) => void;
-  onTemplateChange: (template: string | null) => void;
+  onCategoryChange: (category: string | null) => void;
 }
 
 export const FilterDropdowns = ({ 
   products, 
   selectedVenue, 
-  selectedTemplate,
+  selectedCategory,
   onVenueChange,
-  onTemplateChange 
+  onCategoryChange 
 }: FilterDropdownsProps) => {
   const [venueDropdownOpen, setVenueDropdownOpen] = useState(false);
-  const [templateDropdownOpen, setTemplateDropdownOpen] = useState(false);
+  const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
 
-  // Extract unique venues and templates from products
+  // Extract unique venues and categories from products
   const venues = Array.from(new Set(products.map(p => p.venue).filter(Boolean)));
-  const templates = Array.from(new Set(products.map(p => p.category).filter(Boolean)));
+  const categories = Array.from(new Set(products.map(p => p.category).filter(Boolean)));
 
-  const hasActiveFilters = selectedVenue || selectedTemplate;
+  const hasActiveFilters = selectedVenue || selectedCategory;
 
   const clearAllFilters = () => {
     onVenueChange(null);
-    onTemplateChange(null);
+    onCategoryChange(null);
   };
 
   return (
@@ -45,7 +45,7 @@ export const FilterDropdowns = ({
           <button
             onClick={() => {
               setVenueDropdownOpen(!venueDropdownOpen);
-              setTemplateDropdownOpen(false);
+              setCategoryDropdownOpen(false);
             }}
             className={cn(
               "flex items-center justify-center rounded-lg font-medium transition-all duration-300 ease-out",
@@ -99,11 +99,11 @@ export const FilterDropdowns = ({
           )}
         </div>
 
-        {/* Template Filter */}
+        {/* Category Filter */}
         <div className="relative">
           <button
             onClick={() => {
-              setTemplateDropdownOpen(!templateDropdownOpen);
+              setCategoryDropdownOpen(!categoryDropdownOpen);
               setVenueDropdownOpen(false);
             }}
             className={cn(
@@ -111,47 +111,47 @@ export const FilterDropdowns = ({
               "hover:bg-accent/80 hover:text-accent-foreground",
               "px-3 py-2.5 min-h-[44px] bg-secondary/50 backdrop-blur-sm border border-border",
               "lg:px-4 lg:space-x-2",
-              selectedTemplate 
+              selectedCategory 
                 ? "bg-gradient-primary text-primary-foreground shadow-glow" 
                 : "text-muted-foreground hover:text-foreground"
             )}
           >
             <span className="text-sm font-semibold whitespace-nowrap">
-              {selectedTemplate || "Category"}
+              {selectedCategory || "Category"}
             </span>
             <ChevronDown className={cn(
               "w-4 h-4 flex-shrink-0 transition-transform duration-200",
-              templateDropdownOpen && "rotate-180"
+              categoryDropdownOpen && "rotate-180"
             )} />
           </button>
 
-          {/* Template Dropdown Menu */}
-          {templateDropdownOpen && (
+          {/* Category Dropdown Menu */}
+          {categoryDropdownOpen && (
             <div className="absolute top-full left-0 mt-2 w-48 bg-card border border-border rounded-lg shadow-xl z-50 py-2">
               <button
                 onClick={() => {
-                  onTemplateChange(null);
-                  setTemplateDropdownOpen(false);
+                  onCategoryChange(null);
+                  setCategoryDropdownOpen(false);
                 }}
                 className="w-full text-left px-4 py-2 text-sm text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
               >
                 All Categories
               </button>
-              {templates.map((template) => (
+              {categories.map((category) => (
                 <button
-                  key={template}
+                  key={category}
                   onClick={() => {
-                    onTemplateChange(template);
-                    setTemplateDropdownOpen(false);
+                    onCategoryChange(category);
+                    setCategoryDropdownOpen(false);
                   }}
                   className={cn(
                     "w-full text-left px-4 py-2 text-sm transition-colors",
-                    selectedTemplate === template
+                    selectedCategory === category
                       ? "bg-primary text-primary-foreground"
                       : "text-card-foreground hover:bg-accent hover:text-accent-foreground"
                   )}
                 >
-                  {template}
+                  {category}
                 </button>
               ))}
             </div>
@@ -171,12 +171,12 @@ export const FilterDropdowns = ({
       </div>
 
       {/* Close dropdowns when clicking outside */}
-      {(venueDropdownOpen || templateDropdownOpen) && (
+      {(venueDropdownOpen || categoryDropdownOpen) && (
         <div 
           className="fixed inset-0 z-40" 
           onClick={() => {
             setVenueDropdownOpen(false);
-            setTemplateDropdownOpen(false);
+            setCategoryDropdownOpen(false);
           }}
         />
       )}

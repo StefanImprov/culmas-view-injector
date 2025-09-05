@@ -136,7 +136,7 @@ export const ProductInjector = ({
   
   // Filter states
   const [selectedVenue, setSelectedVenue] = useState<string | null>(null);
-  const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -329,8 +329,8 @@ export const ProductInjector = ({
   // Apply filters
   const filteredProducts = products.filter(product => {
     const venueMatch = !selectedVenue || product.venue === selectedVenue;
-    const templateMatch = !selectedTemplate || product.category === selectedTemplate;
-    return venueMatch && templateMatch;
+    const categoryMatch = !selectedCategory || product.category === selectedCategory;
+    return venueMatch && categoryMatch;
   });
 
   const visibleProducts = showAll ? filteredProducts : filteredProducts.slice(0, 4);
@@ -342,9 +342,9 @@ export const ProductInjector = ({
         <FilterDropdowns 
           products={products}
           selectedVenue={selectedVenue}
-          selectedTemplate={selectedTemplate}
+          selectedCategory={selectedCategory}
           onVenueChange={setSelectedVenue}
-          onTemplateChange={setSelectedTemplate}
+          onCategoryChange={setSelectedCategory}
         />
       </div>
 
