@@ -27,6 +27,7 @@ export interface Product {
   venue?: string;
   responsible?: string;
   waitlistStatus?: string;
+  templateTitle?: string;
 }
 
 // Mock data simulating API response
@@ -138,6 +139,7 @@ export const ProductInjector = ({
   // Filter states
   const [selectedVenue, setSelectedVenue] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -274,6 +276,7 @@ export const ProductInjector = ({
               venue: venueTitle || undefined,
               responsible,
               waitlistStatus: p?.waitlistStatus,
+              templateTitle: p?.template?.title,
             } as Product;
           });
 
@@ -333,7 +336,8 @@ export const ProductInjector = ({
   const filteredProducts = products.filter(product => {
     const venueMatch = !selectedVenue || product.venue === selectedVenue;
     const categoryMatch = !selectedCategory || product.category === selectedCategory;
-    return venueMatch && categoryMatch;
+    const templateMatch = !selectedTemplate || product.templateTitle === selectedTemplate;
+    return venueMatch && categoryMatch && templateMatch;
   });
 
   const visibleProducts = showAll ? filteredProducts : filteredProducts.slice(0, 4);
@@ -347,8 +351,10 @@ export const ProductInjector = ({
             products={products}
             selectedVenue={selectedVenue}
             selectedCategory={selectedCategory}
+            selectedTemplate={selectedTemplate}
             onVenueChange={setSelectedVenue}
             onCategoryChange={setSelectedCategory}
+            onTemplateChange={setSelectedTemplate}
           />
         </div>
         <div className="flex-shrink-0">
