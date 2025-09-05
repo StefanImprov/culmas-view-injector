@@ -2,14 +2,36 @@ import { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Palette, Download, Eye } from 'lucide-react';
+import { Palette, Download, Eye, RefreshCw } from 'lucide-react';
 import { useTheme } from '@/components/ThemeProvider';
 import { Theme, DesignStyle } from '@/types/theme';
+import { ColorPicker } from '@/components/ColorPicker';
 import { cn } from '@/lib/utils';
 
 export const ThemeCustomizer = () => {
   const { theme, setTheme, availableThemes } = useTheme();
   const [showPreview, setShowPreview] = useState(false);
+  const [isCustomizing, setIsCustomizing] = useState(false);
+
+  const handleColorChange = (colorKey: keyof typeof theme.colors, newValue: string) => {
+    const updatedTheme = {
+      ...theme,
+      colors: {
+        ...theme.colors,
+        [colorKey]: newValue
+      }
+    };
+    setTheme(updatedTheme);
+    setIsCustomizing(true);
+  };
+
+  const resetToOriginal = () => {
+    const originalTheme = availableThemes.find(t => t.style === theme.style);
+    if (originalTheme) {
+      setTheme(originalTheme);
+      setIsCustomizing(false);
+    }
+  };
 
   const getStyleDescription = (style: DesignStyle) => {
     switch (style) {
@@ -91,7 +113,10 @@ ${cssVars}
                   ? "border-primary bg-primary/5 shadow-md"
                   : "border-border"
               )}
-              onClick={() => setTheme(themeOption)}
+              onClick={() => {
+                setTheme(themeOption);
+                setIsCustomizing(false);
+              }}
             >
               <div className="flex items-center justify-between mb-3">
                 <h4 className="font-semibold">{themeOption.name}</h4>
@@ -130,8 +155,22 @@ ${cssVars}
       {/* Current Theme Info */}
       <Card className="p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-xl font-semibold">Current Theme: {theme.name}</h3>
+          <h3 className="text-xl font-semibold">
+            Current Theme: {theme.name}
+            {isCustomizing && <Badge variant="secondary" className="ml-2">Customized</Badge>}
+          </h3>
           <div className="flex gap-2">
+            {isCustomizing && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={resetToOriginal}
+                className="flex items-center gap-2"
+              >
+                <RefreshCw className="w-4 h-4" />
+                Reset
+              </Button>
+            )}
             <Button
               variant="outline"
               size="sm"
@@ -149,6 +188,33 @@ ${cssVars}
               <Download className="w-4 h-4" />
               Download Code
             </Button>
+          </div>
+        </div>
+
+        {/* Color Customization */}
+        <div className="mb-6">
+          <h4 className="font-medium mb-4">Customize Colors</h4>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <ColorPicker
+              label="Primary Color"
+              value={theme.colors.primary}
+              onChange={(value) => handleColorChange('primary', value)}
+            />
+            <ColorPicker
+              label="Secondary Color"
+              value={theme.colors.secondary}
+              onChange={(value) => handleColorChange('secondary', value)}
+            />
+            <ColorPicker
+              label="Accent Color"
+              value={theme.colors.accent}
+              onChange={(value) => handleColorChange('accent', value)}
+            />
+            <ColorPicker
+              label="Card Color"
+              value={theme.colors.card}
+              onChange={(value) => handleColorChange('card', value)}
+            />
           </div>
         </div>
 
