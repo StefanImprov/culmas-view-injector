@@ -149,15 +149,23 @@ export const ProductInjector = ({
           domain: "globe-dance.dev.culmas.io",
         };
 
-        const CULMAS_QUERY = `query allProducts($onlyAvailableForSale: Boolean) {
-  allProducts(onlyAvailableForSale: $onlyAvailableForSale) {
+        const CULMAS_QUERY = `query AllProducts($category: String, $onlyAvailableForSale: Boolean) {
+  allProducts(category: $category, onlyAvailableForSale: $onlyAvailableForSale) {
     id
     title
+    template {
+      title
+    }
+    responsiblesShown {
+      firstName
+      lastName
+      profileImg
+    }
+    category
     descriptionImg
     end
-    endTime
     startTime
-    startDate
+    endTime
     nextEventStart
     status
     tickets {
