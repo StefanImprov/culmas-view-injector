@@ -538,7 +538,7 @@ export const EmbedScriptGenerator = ({ theme }: EmbedScriptGeneratorProps) => {
               <Label htmlFor="templateIds">Template IDs (comma-separated)</Label>
               <Input
                 id="templateIds"
-                placeholder="DdBMJDXGaxogjGXphbtr,another-id"
+                placeholder="DdBMJDXGaxogjGXphbtr,BxKmPQRstuvWxYz123AB"
                 value={templateIds}
                 onChange={(e) => setTemplateIds(e.target.value)}
               />
@@ -547,7 +547,7 @@ export const EmbedScriptGenerator = ({ theme }: EmbedScriptGeneratorProps) => {
               <Label htmlFor="venueIds">Venue IDs (comma-separated)</Label>
               <Input
                 id="venueIds"
-                placeholder="venue1,venue2"
+                placeholder="StudioA_MainHall_001,StudioB_Practice_002"
                 value={venueIds}
                 onChange={(e) => setVenueIds(e.target.value)}
               />
