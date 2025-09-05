@@ -19,12 +19,22 @@ export const CardView = ({ products }: CardViewProps) => {
             !product.available && "opacity-60 grayscale"
           )}
         >
-          {/* Image placeholder */}
-          <div className="h-48 bg-gradient-secondary flex items-center justify-center relative overflow-hidden">
+          {/* Product Image */}
+          <div className="h-48 bg-gradient-secondary relative overflow-hidden">
+            {product.image ? (
+              <img 
+                src={product.image} 
+                alt={product.title}
+                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center">
+                <div className="text-6xl text-muted-foreground/30 group-hover:scale-110 transition-transform duration-300">
+                  🎭
+                </div>
+              </div>
+            )}
             <div className="absolute inset-0 bg-gradient-primary opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
-            <div className="text-6xl text-muted-foreground/30 group-hover:scale-110 transition-transform duration-300">
-              🎭
-            </div>
             {!product.available && (
               <div className="absolute top-3 right-3 bg-destructive text-destructive-foreground px-2 py-1 rounded-lg text-xs font-semibold">
                 Sold Out
