@@ -123,7 +123,7 @@ export const ListView = ({ products }: ListViewProps) => {
               {product.available ? (
                 <button 
                   onClick={(e) => handleBookClick(e, product)}
-                  className="w-full sm:w-auto bg-gradient-primary text-primary-foreground px-4 sm:px-6 py-3 rounded-lg font-semibold hover:shadow-glow transition-all duration-300 transform hover:scale-105 min-h-[44px]"
+                  className="w-full sm:w-auto bg-primary text-primary-foreground px-4 sm:px-6 py-3 rounded-lg font-semibold hover:shadow-glow transition-all duration-300 transform hover:scale-105 min-h-[44px]"
                 >
                   Book Now
                 </button>
