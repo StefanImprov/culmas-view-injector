@@ -17,6 +17,8 @@ export interface Product {
   price: number;
   date: Date;
   time: string;
+  startTime?: string;
+  endTime?: string;
   duration: string;
   category: string;
   instructor?: string;
@@ -260,6 +262,8 @@ export const ProductInjector = ({
               price,
               date: validStart ? (startDate as Date) : new Date(),
               time: timeStr,
+              startTime: p?.startTime || timeStr,
+              endTime: p?.endTime,
               duration,
               category: p?.status ?? "Event",
               instructor: undefined,

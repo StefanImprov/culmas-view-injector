@@ -62,7 +62,12 @@ export const CardView = ({ products }: CardViewProps) => {
               
               <div className="flex items-center space-x-2">
                 <Clock className="w-4 h-4 text-primary" />
-                <span>{product.time} • {product.duration}</span>
+                <span>
+                  {product.startTime && product.endTime 
+                    ? `${product.startTime} - ${product.endTime}`
+                    : `${product.time} • ${product.duration}`
+                  }
+                </span>
               </div>
               
               {product.responsible && (
