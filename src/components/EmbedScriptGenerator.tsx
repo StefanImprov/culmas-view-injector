@@ -113,196 +113,514 @@ export const EmbedScriptGenerator = ({ theme }: EmbedScriptGeneratorProps) => {
   }, []);
 
   const generateCSS = () => {
-    const primaryHsl = theme?.colors.primary || "222.2 84% 4.9%";
-    const primaryForegroundHsl = theme?.colors.primaryForeground || "210 40% 98%";
-    const cardHsl = theme?.colors.card || "0 0% 100%";
-    const borderHsl = theme?.colors.border || "214.3 31.8% 91.4%";
+    const themeColors = theme?.colors;
+    const primary = themeColors?.primary || 'rgb(139, 92, 246)';
+    const primaryForeground = themeColors?.primaryForeground || 'rgb(255, 255, 255)';
+    const background = themeColors?.background || 'rgb(255, 255, 255)';
+    const foreground = themeColors?.foreground || 'rgb(15, 23, 42)';
+    const card = themeColors?.card || 'rgb(255, 255, 255)';
+    const cardForeground = themeColors?.cardForeground || 'rgb(15, 23, 42)';
+    const border = themeColors?.border || 'rgb(226, 232, 240)';
+    const secondary = themeColors?.secondary || 'rgb(241, 245, 249)';
+    const secondaryForeground = themeColors?.secondaryForeground || 'rgb(15, 23, 42)';
+    const muted = themeColors?.muted || 'rgb(241, 245, 249)';
+    const mutedForeground = themeColors?.mutedForeground || 'rgb(100, 116, 139)';
+    const accent = themeColors?.accent || 'rgb(241, 245, 249)';
+    const accentForeground = themeColors?.accentForeground || 'rgb(15, 23, 42)';
     
     return `
-<style>
-.culmas-container {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  max-width: 100%;
-  margin: 0 auto;
-  padding: 1rem;
-}
-
-.culmas-controls {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-}
-
-@media (min-width: 1024px) {
-  .culmas-controls {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
-}
-
-.culmas-filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  align-items: center;
-}
-
-.culmas-filter-label {
-  color: hsl(${theme?.colors.mutedForeground || "215.4 16.3% 46.9%"});
-  font-size: 0.875rem;
-  font-weight: 500;
-}
-
-.culmas-filter-select {
-  padding: 0.5rem 0.75rem;
-  border: 1px solid hsl(${borderHsl});
-  border-radius: 0.375rem;
-  background: hsl(${cardHsl});
-  font-size: 0.875rem;
-  cursor: pointer;
-}
-
-.culmas-view-switcher {
-  display: flex;
-  gap: 0.25rem;
-  background: hsl(${theme?.colors.muted || "210 40% 96%"});
-  padding: 0.25rem;
-  border-radius: 0.375rem;
-}
-
-.culmas-view-btn {
-  padding: 0.5rem 1rem;
-  border: none;
-  background: transparent;
-  border-radius: 0.25rem;
-  cursor: pointer;
-  font-size: 0.875rem;
-  transition: all 0.2s;
-}
-
-.culmas-view-btn.active {
-  background: hsl(${cardHsl});
-  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-}
-
-.culmas-products-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1.5rem;
-}
-
-.culmas-products-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.culmas-product-card {
-  border: 1px solid hsl(${borderHsl});
-  border-radius: 0.5rem;
-  padding: 1.5rem;
-  background: hsl(${cardHsl});
-  transition: all 0.2s;
-  cursor: pointer;
-}
-
-.culmas-product-card:hover {
-  border-color: hsl(${primaryHsl});
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-}
-
-.culmas-product-title {
-  font-size: 1.125rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  color: hsl(${theme?.colors.foreground || "222.2 84% 4.9%"});
-}
-
-.culmas-product-description {
-  color: hsl(${theme?.colors.mutedForeground || "215.4 16.3% 46.9%"});
-  margin-bottom: 1rem;
-  font-size: 0.875rem;
-}
-
-.culmas-product-details {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-  font-size: 0.875rem;
-}
-
-.culmas-product-price {
-  font-weight: 600;
-  color: hsl(${primaryHsl});
-}
-
-.culmas-product-time {
-  color: hsl(${theme?.colors.mutedForeground || "215.4 16.3% 46.9%"});
-}
-
-.culmas-product-book-btn {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  background: hsl(${primaryHsl});
-  color: hsl(${primaryForegroundHsl});
-  border: none;
-  border-radius: 0.375rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.culmas-product-book-btn:hover {
-  background: hsl(${primaryHsl} / 0.9);
-}
-
-.culmas-product-book-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.culmas-show-more-btn {
-  display: block;
-  margin: 2rem auto 0;
-  padding: 0.75rem 1.5rem;
-  border: 1px solid hsl(${borderHsl});
-  background: hsl(${cardHsl});
-  border-radius: 0.375rem;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.culmas-show-more-btn:hover {
-  background: hsl(${theme?.colors.accent || "210 40% 96%"});
-}
-
-.hidden {
-  display: none !important;
-}
-
-.culmas-loading {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 3rem;
-  color: hsl(${theme?.colors.mutedForeground || "215.4 16.3% 46.9%"});
-}
-
-.culmas-error {
-  text-align: center;
-  padding: 3rem;
-  color: hsl(0 84.2% 60.2%);
-}
-</style>`;
+    <style>
+      /* Design System Variables */
+      .culmas-widget {
+        --primary: ${primary};
+        --primary-foreground: ${primaryForeground};
+        --background: ${background};
+        --foreground: ${foreground};
+        --card: ${card};
+        --card-foreground: ${cardForeground};
+        --border: ${border};
+        --secondary: ${secondary};
+        --secondary-foreground: ${secondaryForeground};
+        --muted: ${muted};
+        --muted-foreground: ${mutedForeground};
+        --accent: ${accent};
+        --accent-foreground: ${accentForeground};
+        --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+        --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -1px rgb(0 0 0 / 0.06);
+        --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgb(0 0 0 / 0.04);
+        --shadow-glow: 0 0 30px color-mix(in srgb, ${primary} 30%, transparent);
+        --gradient-primary: linear-gradient(135deg, ${primary}, color-mix(in srgb, ${primary} 80%, white 20%));
+        --gradient-secondary: linear-gradient(180deg, ${background}, ${accent});
+        --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      
+      #${containerId} {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+        line-height: 1.6;
+        color: var(--foreground);
+        background-color: var(--background);
+        border-radius: 12px;
+        padding: 24px;
+      }
+      
+      .culmas-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0;
+      }
+      
+      /* View Controls */
+      .culmas-controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+        flex-wrap: wrap;
+        gap: 16px;
+      }
+      
+      .culmas-view-switcher {
+        display: flex;
+        gap: 8px;
+      }
+      
+      .culmas-view-btn {
+        padding: 8px 12px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: var(--background);
+        color: var(--foreground);
+        cursor: pointer;
+        transition: var(--transition-smooth);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 14px;
+        font-weight: 500;
+      }
+      
+      .culmas-view-btn:hover {
+        background: var(--accent);
+        border-color: var(--primary);
+      }
+      
+      .culmas-view-btn.active {
+        background: var(--primary);
+        color: var(--primary-foreground);
+        border-color: var(--primary);
+      }
+      
+      /* Filters */
+      .culmas-filters {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+      }
+      
+      .culmas-filter {
+        padding: 8px 16px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: var(--background);
+        color: var(--foreground);
+        cursor: pointer;
+        transition: var(--transition-smooth);
+        font-size: 14px;
+        font-weight: 500;
+      }
+      
+      .culmas-filter:hover {
+        background: var(--accent);
+        border-color: var(--primary);
+      }
+      
+      .culmas-filter.active {
+        background: var(--primary);
+        color: var(--primary-foreground);
+        border-color: var(--primary);
+        box-shadow: var(--shadow-glow);
+      }
+      
+      /* Card View Styles */
+      .culmas-products.card-view {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 24px;
+        margin-bottom: 24px;
+      }
+      
+      .culmas-product-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        overflow: hidden;
+        transition: var(--transition-smooth);
+        cursor: pointer;
+        box-shadow: var(--shadow-sm);
+        transform: translateZ(0);
+      }
+      
+      .culmas-product-card:hover {
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: var(--shadow-lg);
+        border-color: color-mix(in srgb, var(--primary) 20%, var(--border) 80%);
+      }
+      
+      .culmas-product-image {
+        width: 100%;
+        height: 192px;
+        background: var(--gradient-secondary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 48px;
+        color: color-mix(in srgb, var(--muted-foreground) 30%, transparent);
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .culmas-product-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: var(--transition-smooth);
+      }
+      
+      .culmas-product-card:hover .culmas-product-image img {
+        transform: scale(1.1);
+      }
+      
+      .culmas-product-image::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: var(--gradient-primary);
+        opacity: 0;
+        transition: var(--transition-smooth);
+      }
+      
+      .culmas-product-card:hover .culmas-product-image::before {
+        opacity: 0.2;
+      }
+      
+      .culmas-sold-out-badge {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        background: #dc2626;
+        color: white;
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-size: 11px;
+        font-weight: 600;
+      }
+      
+      .culmas-product-content {
+        padding: 20px;
+      }
+      
+      .culmas-product-header {
+        margin-bottom: 12px;
+      }
+      
+      .culmas-product-title {
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 8px;
+        color: var(--card-foreground);
+        transition: var(--transition-smooth);
+        line-height: 1.3;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      
+      .culmas-product-card:hover .culmas-product-title {
+        color: var(--primary);
+      }
+      
+      .culmas-product-description {
+        font-size: 14px;
+        color: var(--muted-foreground);
+        margin-bottom: 16px;
+        line-height: 1.5;
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      
+      .culmas-icon {
+        width: 16px;
+        height: 16px;
+        color: var(--primary);
+        flex-shrink: 0;
+        margin-top: 2px;
+      }
+      
+      .culmas-product-details {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-bottom: 20px;
+        font-size: 14px;
+        color: var(--muted-foreground);
+      }
+      
+      .culmas-product-detail {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      
+      .culmas-product-footer {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding-top: 16px;
+        border-top: 1px solid var(--border);
+      }
+      
+      .culmas-price-category {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .culmas-product-price {
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--primary);
+      }
+      
+      .culmas-product-category {
+        background: color-mix(in srgb, var(--accent) 50%, transparent);
+        color: var(--accent-foreground);
+        padding: 4px 12px;
+        border-radius: 16px;
+        font-size: 12px;
+        font-weight: 500;
+      }
+      
+      .culmas-product-button {
+        width: 100%;
+        background: var(--primary);
+        color: var(--primary-foreground);
+        border: none;
+        padding: 12px 16px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        transition: var(--transition-smooth);
+        min-height: 44px;
+      }
+      
+      .culmas-product-button:hover {
+        box-shadow: var(--shadow-glow);
+        transform: translateY(-1px) scale(1.02);
+      }
+      
+      .culmas-product-button.waitlist {
+        background: var(--secondary);
+        color: var(--secondary-foreground);
+      }
+      
+      .culmas-product-button.waitlist:hover {
+        background: var(--accent);
+      }
+      
+      /* List View Styles */
+      .culmas-products.list-view {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+      
+      .culmas-products.list-view .culmas-product-card {
+        display: flex;
+        align-items: stretch;
+        padding: 24px;
+        height: auto;
+      }
+      
+      .culmas-products.list-view .culmas-product-image {
+        width: 80px;
+        height: 80px;
+        border-radius: 12px;
+        margin-right: 24px;
+        flex-shrink: 0;
+        font-size: 24px;
+      }
+      
+      .culmas-products.list-view .culmas-product-content {
+        display: flex;
+        flex: 1;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0;
+        gap: 24px;
+      }
+      
+      .culmas-list-main-content {
+        flex: 1;
+        min-width: 0;
+      }
+      
+      .culmas-list-header {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-bottom: 8px;
+      }
+      
+      .culmas-list-badges {
+        display: flex;
+        gap: 8px;
+      }
+      
+      .culmas-list-details {
+        display: flex;
+        gap: 24px;
+        flex-wrap: wrap;
+        margin-top: 8px;
+      }
+      
+      .culmas-list-action {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 12px;
+        min-width: 120px;
+      }
+      
+      .culmas-list-price {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        text-align: right;
+      }
+      
+      .culmas-list-per-session {
+        font-size: 12px;
+        color: var(--muted-foreground);
+      }
+      
+      /* Show More Button */
+      .culmas-show-more {
+        text-align: center;
+        margin-top: 24px;
+      }
+      
+      .culmas-show-more button {
+        background: var(--secondary);
+        color: var(--secondary-foreground);
+        border: 1px solid var(--border);
+        padding: 12px 24px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 500;
+        font-size: 14px;
+        transition: var(--transition-smooth);
+      }
+      
+      .culmas-show-more button:hover {
+        background: var(--accent);
+        border-color: var(--primary);
+      }
+      
+      /* Utility Classes */
+      .culmas-hidden {
+        display: none !important;
+      }
+      
+      .culmas-sold-out {
+        opacity: 0.6;
+        filter: grayscale(1);
+      }
+      
+      /* Responsive Design */
+      @media (max-width: 1024px) {
+        .culmas-products.card-view {
+          grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+          gap: 20px;
+        }
+      }
+      
+      @media (max-width: 768px) {
+        #${containerId} {
+          padding: 16px;
+        }
+        
+        .culmas-products.card-view {
+          grid-template-columns: 1fr;
+          gap: 16px;
+        }
+        
+        .culmas-controls {
+          flex-direction: column;
+          align-items: stretch;
+        }
+        
+        .culmas-filters {
+          justify-content: center;
+        }
+        
+        .culmas-products.list-view .culmas-product-card {
+          flex-direction: column;
+          padding: 16px;
+        }
+        
+        .culmas-products.list-view .culmas-product-image {
+          width: 100%;
+          height: 120px;
+          margin: 0 0 16px 0;
+        }
+        
+        .culmas-products.list-view .culmas-product-content {
+          flex-direction: column;
+          align-items: stretch;
+          gap: 16px;
+        }
+        
+        .culmas-list-action {
+          align-items: stretch;
+          min-width: unset;
+        }
+        
+        .culmas-list-price {
+          align-items: center;
+          text-align: center;
+        }
+      }
+      
+      @media (max-width: 480px) {
+        .culmas-view-switcher {
+          width: 100%;
+          justify-content: center;
+        }
+        
+        .culmas-view-btn {
+          flex: 1;
+          justify-content: center;
+        }
+      }
+    </style>`;
   };
 
   const generateHTML = () => {
-    return `<div id="${containerId}">
-  <div class="culmas-loading">
-    <div>Loading products...</div>
+    return `<div id="${containerId}" class="culmas-widget">
+  <div class="culmas-container">
+    <div class="culmas-loading">
+      <div>Loading products...</div>
+    </div>
   </div>
 </div>`;
   };
@@ -348,19 +666,154 @@ export const EmbedScriptGenerator = ({ theme }: EmbedScriptGeneratorProps) => {
       bookingUrl = url.toString();
     }
 
-    return \`
-      <div class="culmas-product-card" data-product-id="\${product.id}">
-        <div class="culmas-product-title">\${product.title}</div>
-        <div class="culmas-product-description">\${product.description}</div>
-        <div class="culmas-product-details">
-          <span class="culmas-product-price">\${formatPrice(product.price)}</span>
-          <span class="culmas-product-time">\${formatDate(product.date)}</span>
+    const cardClasses = ['culmas-product-card'];
+    if (!product.available) {
+      cardClasses.push('culmas-sold-out');
+    }
+
+    if (viewMode === 'list') {
+      return \`
+        <div class="\${cardClasses.join(' ')}" data-product-id="\${product.id}">
+          <div class="culmas-product-image">
+            \${product.image ? \`<img src="\${product.image}" alt="\${product.title}" />\` : '🎭'}
+          </div>
+          <div class="culmas-product-content">
+            <div class="culmas-list-main-content">
+              <div class="culmas-list-header">
+                <h3 class="culmas-product-title">\${product.title}</h3>
+                <div class="culmas-list-badges">
+                  \${!product.available ? '<span class="culmas-sold-out-badge">Sold Out</span>' : ''}
+                  <span class="culmas-product-category">\${product.category}</span>
+                </div>
+              </div>
+              <div class="culmas-product-description">
+                <svg class="culmas-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+                <span>\${product.description}</span>
+              </div>
+              <div class="culmas-list-details">
+                <div class="culmas-product-detail">
+                  <svg class="culmas-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                  </svg>
+                  <span>\${formatDate(product.date)}</span>
+                </div>
+                \${product.startTime ? \`
+                  <div class="culmas-product-detail">
+                    <svg class="culmas-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span>\${product.startTime} - \${product.endTime || ''}</span>
+                  </div>
+                \` : ''}
+                \${product.responsible ? \`
+                  <div class="culmas-product-detail">
+                    <svg class="culmas-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
+                    <span>\${product.responsible}</span>
+                  </div>
+                \` : ''}
+              </div>
+            </div>
+            <div class="culmas-list-action">
+              <div class="culmas-list-price">
+                <div class="culmas-product-price">
+                  <svg class="culmas-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="display: inline; width: 20px; height: 20px;">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                  </svg>
+                  \${formatPrice(product.price)}
+                </div>
+                <div class="culmas-list-per-session">per session</div>
+              </div>
+              \${product.available ? \`
+                <button class="culmas-product-button" onclick="window.open('\${bookingUrl}', '_blank')">
+                  Book Now
+                </button>
+              \` : (product.waitlistStatus === 'ACTIVE' ? \`
+                <button class="culmas-product-button waitlist" onclick="window.open('\${bookingUrl}', '_blank')">
+                  Join Waitlist
+                </button>
+              \` : '')}
+            </div>
+          </div>
         </div>
-        <button class="culmas-product-book-btn" 
-                onclick="window.open('\${bookingUrl}', '_blank')"
-                \${!product.available ? 'disabled' : ''}>
-          \${product.available ? 'Book Now' : 'Sold Out'}
-        </button>
+      \`;
+    }
+
+    return \`
+      <div class="\${cardClasses.join(' ')}" data-product-id="\${product.id}">
+        <div class="culmas-product-image">
+          \${product.image ? \`<img src="\${product.image}" alt="\${product.title}" />\` : '🎭'}
+          \${!product.available ? '<div class="culmas-sold-out-badge">Sold Out</div>' : ''}
+        </div>
+        <div class="culmas-product-content">
+          <div class="culmas-product-header">
+            <h3 class="culmas-product-title">\${product.title}</h3>
+            <div class="culmas-product-description">
+              <svg class="culmas-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+              </svg>
+              <span>\${product.description}</span>
+            </div>
+          </div>
+          
+          <div class="culmas-product-details">
+            <div class="culmas-product-detail">
+              <svg class="culmas-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+              </svg>
+              <span>\${formatDate(product.date)}</span>
+            </div>
+            
+            \${product.startTime ? \`
+              <div class="culmas-product-detail">
+                <svg class="culmas-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span>\${product.startTime} - \${product.endTime || ''}</span>
+              </div>
+            \` : ''}
+            
+            \${product.responsible ? \`
+              <div class="culmas-product-detail">
+                <svg class="culmas-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                </svg>
+                <span>\${product.responsible}</span>
+              </div>
+            \` : ''}
+
+            \${product.instructor ? \`
+              <div class="culmas-product-detail">
+                <svg class="culmas-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                </svg>
+                <span>\${product.instructor}</span>
+              </div>
+            \` : ''}
+          </div>
+          
+          <div class="culmas-product-footer">
+            <div class="culmas-price-category">
+              <span class="culmas-product-price">\${formatPrice(product.price)}</span>
+              <span class="culmas-product-category">\${product.category}</span>
+            </div>
+            
+            \${product.available ? \`
+              <button class="culmas-product-button" onclick="window.open('\${bookingUrl}', '_blank')">
+                Book Now
+              </button>
+            \` : (product.waitlistStatus === 'ACTIVE' ? \`
+              <button class="culmas-product-button waitlist" onclick="window.open('\${bookingUrl}', '_blank')">
+                Join Waitlist
+              </button>
+            \` : '')}
+          </div>
+        </div>
       </div>
     \`;
   }
@@ -391,7 +844,7 @@ export const EmbedScriptGenerator = ({ theme }: EmbedScriptGeneratorProps) => {
   }
 
   function renderProducts(products, viewMode = 'card', showCount = 6) {
-    const containerClass = viewMode === 'card' ? 'culmas-products-grid' : 'culmas-products-list';
+    const containerClass = viewMode === 'card' ? 'culmas-products card-view' : 'culmas-products list-view';
     const visibleProducts = products.slice(0, showCount);
     const hiddenProducts = products.slice(showCount);
     
@@ -402,19 +855,21 @@ export const EmbedScriptGenerator = ({ theme }: EmbedScriptGeneratorProps) => {
     });
     
     hiddenProducts.forEach(product => {
-      html += createProductCard(product, viewMode).replace('class="culmas-product-card"', 'class="culmas-product-card hidden culmas-hidden-product"');
+      html += createProductCard(product, viewMode).replace('class="culmas-product-card', 'class="culmas-product-card culmas-hidden');
     });
     
     html += '</div>';
     
     if (products.length > showCount) {
       html += \`
-        <button class="culmas-show-more-btn" onclick="culmasShowMore()">
-          Show More (\${products.length - showCount} remaining)
-        </button>
-        <button class="culmas-show-more-btn hidden" onclick="culmasShowLess()" id="culmas-show-less">
-          Show Less
-        </button>
+        <div class="culmas-show-more">
+          <button onclick="culmasShowMore()">
+            Show More (\${products.length - showCount} remaining)
+          </button>
+          <button class="culmas-hidden" onclick="culmasShowLess()" id="culmas-show-less">
+            Show Less
+          </button>
+        </div>
       \`;
     }
     
@@ -476,15 +931,27 @@ export const EmbedScriptGenerator = ({ theme }: EmbedScriptGeneratorProps) => {
         const price = prices.length ? Math.min(...prices) : 0;
         const totalLeft = Number(p?.tickets?.totalTicketsLeft ?? 0);
         
+        // Extract responsible person info
+        const responsibles = Array.isArray(p.responsiblesShown) ? p.responsiblesShown : [];
+        const responsible = responsibles.length > 0 
+          ? \`\${responsibles[0].firstName || ''} \${responsibles[0].lastName || ''}\`.trim()
+          : '';
+        
         return {
           id: String(p?.id || Math.random().toString(36).slice(2)),
           title: p?.title || p?.venue?.title || 'Event',
           description: p?.venue?.formatted_address || p?.status || 'No description available',
+          image: p?.descriptionImg || null,
           price: price,
           date: startDate.toISOString(),
+          startTime: p?.startTime || null,
+          endTime: p?.endTime || null,
           venue: p?.venue?.title,
           category: p?.category || 'Event',
-          available: totalLeft > 0
+          responsible: responsible,
+          instructor: responsible, // Using same field for instructor for now
+          available: totalLeft > 0,
+          waitlistStatus: p?.waitlistStatus || null
         };
       });
 
