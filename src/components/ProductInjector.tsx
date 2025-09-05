@@ -7,6 +7,10 @@ import { CalendarView } from "./views/CalendarView";
 import { WeekView } from "./views/WeekView";
 import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ProductDetailsModal } from "./ProductDetailsModal";
+import { ThemeProvider } from "./ThemeProvider";
+import { Theme } from "@/types/theme";
+import { Button } from "./ui/button";
 
 export type ViewMode = "card" | "list" | "calendar" | "week";
 
@@ -123,6 +127,7 @@ interface ProductInjectorProps {
   venueIds?: string[];
   apiUrl?: string;
   className?: string;
+  theme?: Theme;
 }
 
 // Define default values outside component to prevent infinite re-renders
@@ -134,18 +139,23 @@ export const ProductInjector = ({
   templateIds = DEFAULT_TEMPLATE_IDS, 
   venueIds = DEFAULT_VENUE_IDS, 
   apiUrl = DEFAULT_API_URL,
-  className = "" 
+  className = "",
+  theme 
 }: ProductInjectorProps) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>("card");
-  const [showAll, setShowAll] = useState(false);
+  const [itemsToShow, setItemsToShow] = useState(6);
   
   // Filter states
   const [selectedVenue, setSelectedVenue] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
+  
+  // Modal states
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -308,8 +318,11 @@ export const ProductInjector = ({
     fetchProducts();
   }, [templateIds, venueIds]);
 
-  const handleShowMore = () => setShowAll(true);
-  const handleShowLess = () => setShowAll(false);
+  // Global product click handler
+  const handleProductClick = (product: Product) => {
+    setSelectedProduct(product);
+    setIsModalOpen(true);
+  };
 
   if (loading) {
     return (
@@ -324,19 +337,12 @@ export const ProductInjector = ({
 
   if (error) {
     return (
-      <div className={`flex items-center justify-center py-12 ${className}`}>
-        <div className="text-center">
-          <div className="text-destructive text-lg font-medium mb-2">
-            {error}
-          </div>
-          <button
-            onClick={() => window.location.reload()}
-            className="text-primary hover:text-primary-glow transition-colors underline"
-          >
-            Try again
-          </button>
+      <ThemeProvider initialTheme={theme}>
+        <div className="text-center py-12">
+          <p className="text-red-500 mb-4">Error loading products: {error}</p>
+          <p className="text-muted-foreground">Using mock data instead.</p>
         </div>
-      </div>
+      </ThemeProvider>
     );
   }
 
@@ -348,62 +354,93 @@ export const ProductInjector = ({
     return venueMatch && categoryMatch && templateMatch;
   });
 
-  const visibleProducts = showAll ? filteredProducts : filteredProducts.slice(0, 4);
+  const displayedProducts = filteredProducts.slice(0, itemsToShow);
 
-  return (
-    <div className={cn("space-y-4 sm:space-y-6", className)}>
-      {/* Filters and View Switcher */}
-      <div className="px-4 sm:px-0 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 lg:gap-6">
-        <div className="flex-1">
-          <FilterDropdowns 
-            products={products}
-            selectedVenue={selectedVenue}
-            selectedCategory={selectedCategory}
-            selectedTemplate={selectedTemplate}
-            onVenueChange={setSelectedVenue}
-            onCategoryChange={setSelectedCategory}
-            onTemplateChange={setSelectedTemplate}
-          />
-        </div>
-        <div className="flex-shrink-0">
-          <ViewSwitcher viewMode={viewMode} onViewModeChange={setViewMode} />
-        </div>
-      </div>
-      
-      <div className="transition-all duration-300 ease-in-out">
-        {viewMode === "card" && (
-          <CardView products={visibleProducts} />
-        )}
-        {viewMode === "list" && (
-          <ListView products={visibleProducts} />
-        )}
-        {viewMode === "calendar" && (
-          <CalendarView products={visibleProducts} />
-        )}
-        {viewMode === "week" && (
-          <WeekView products={visibleProducts} />
-        )}
-      </div>
-
-      {products.length > 4 && (
-        <div className="flex justify-center pt-4 px-4 sm:px-0">
-          {!showAll ? (
-            <button
-              onClick={handleShowMore}
-              className="w-full sm:w-auto bg-gradient-primary text-primary-foreground px-6 py-3 rounded-lg font-medium hover:shadow-glow transition-all duration-300 transform hover:scale-105 min-h-[44px]"
-            >
-              Show More ({filteredProducts.length - 4} more)
-            </button>
-          ) : (
-            <button
-              onClick={handleShowLess}
-              className="w-full sm:w-auto bg-secondary text-secondary-foreground px-6 py-3 rounded-lg font-medium hover:bg-accent transition-all duration-300 min-h-[44px]"
-            >
-              Show Less
-            </button>
-          )}
+  const content = (
+    <div className={cn("w-full space-y-6", className)}>
+      {loading && (
+        <div className="flex items-center justify-center py-12">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
         </div>
       )}
+      
+      {!loading && (
+        <>
+          {/* Controls */}
+          <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
+            <div className="flex flex-col sm:flex-row gap-4 flex-1">
+              <FilterDropdowns
+                products={products}
+                selectedVenue={selectedVenue}
+                selectedCategory={selectedCategory}
+                selectedTemplate={selectedTemplate}
+                onVenueChange={setSelectedVenue}
+                onCategoryChange={setSelectedCategory}
+                onTemplateChange={setSelectedTemplate}
+              />
+            </div>
+            
+            <ViewSwitcher 
+              viewMode={viewMode} 
+              onViewModeChange={setViewMode} 
+            />
+          </div>
+
+          {/* Products Display */}
+          <div className="min-h-[400px]">
+            {filteredProducts.length === 0 ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">No products found matching your criteria.</p>
+              </div>
+            ) : (
+              <>
+                {viewMode === "card" && <CardView products={displayedProducts} />}
+                {viewMode === "list" && <ListView products={displayedProducts} />}
+                {viewMode === "calendar" && <CalendarView products={displayedProducts} />}
+                {viewMode === "week" && <WeekView products={displayedProducts} />}
+                
+                {filteredProducts.length > itemsToShow && (
+                  <div className="flex justify-center mt-8">
+                    <Button
+                      onClick={() => setItemsToShow(itemsToShow + 6)}
+                      variant="outline"
+                      className="min-w-[120px]"
+                    >
+                      Show More ({filteredProducts.length - itemsToShow} remaining)
+                    </Button>
+                  </div>
+                )}
+                
+                {itemsToShow > 6 && filteredProducts.length <= itemsToShow && (
+                  <div className="flex justify-center mt-8">
+                    <Button
+                      onClick={() => setItemsToShow(6)}
+                      variant="outline"
+                      className="min-w-[120px]"
+                    >
+                      Show Less
+                    </Button>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        </>
+      )}
+      
+      <ProductDetailsModal 
+        product={selectedProduct} 
+        open={isModalOpen} 
+        onOpenChange={setIsModalOpen} 
+      />
     </div>
+  );
+
+  return theme ? (
+    <ThemeProvider initialTheme={theme}>
+      {content}
+    </ThemeProvider>
+  ) : (
+    content
   );
 };
