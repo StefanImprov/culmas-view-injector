@@ -145,7 +145,14 @@ export const ProductDetailsModal = ({ product, open, onOpenChange }: ProductDeta
 
           {/* Description */}
           <div>
-            <h3 className="font-semibold text-lg mb-2">Description</h3>
+            <h3 className="font-semibold text-lg mb-2">
+              {product.category.toLowerCase() === "class" 
+                ? "Class location" 
+                : product.category.toLowerCase() === "show" 
+                  ? "Venue" 
+                  : "Description"
+              }
+            </h3>
             <p className="text-muted-foreground leading-relaxed">
               {product.description}
             </p>
