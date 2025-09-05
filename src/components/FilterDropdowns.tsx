@@ -41,7 +41,7 @@ export const FilterDropdowns = ({
 
   return (
     <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
-      <div className="flex items-center gap-2 flex-wrap">
+      <div className="flex items-center gap-2 sm:gap-3 flex-nowrap min-w-0">
         <div className="flex items-center gap-1 text-muted-foreground">
           <Filter className="w-4 h-4" />
           <span className="text-sm font-medium">Filters:</span>

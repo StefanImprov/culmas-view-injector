@@ -372,18 +372,16 @@ export const ProductInjector = ({
       {!loading && (
         <>
           {/* Controls */}
-          <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
-            <div className="flex flex-col sm:flex-row gap-4 flex-1">
-              <FilterDropdowns
-                products={products}
-                selectedVenue={selectedVenue}
-                selectedCategory={selectedCategory}
-                selectedTemplate={selectedTemplate}
-                onVenueChange={setSelectedVenue}
-                onCategoryChange={setSelectedCategory}
-                onTemplateChange={setSelectedTemplate}
-              />
-            </div>
+          <div className="flex flex-col lg:flex-row gap-4 items-stretch lg:items-center justify-between">
+            <FilterDropdowns
+              products={products}
+              selectedVenue={selectedVenue}
+              selectedCategory={selectedCategory}
+              selectedTemplate={selectedTemplate}
+              onVenueChange={setSelectedVenue}
+              onCategoryChange={setSelectedCategory}
+              onTemplateChange={setSelectedTemplate}
+            />
             
             <ViewSwitcher 
               viewMode={viewMode} 
