@@ -201,6 +201,11 @@ ${cssVars}
               onChange={(value) => handleColorChange('primary', value)}
             />
             <ColorPicker
+              label="Gradient Color"
+              value={theme.colors.gradientPrimary}
+              onChange={(value) => handleColorChange('gradientPrimary', value)}
+            />
+            <ColorPicker
               label="Secondary Color"
               value={theme.colors.secondary}
               onChange={(value) => handleColorChange('secondary', value)}

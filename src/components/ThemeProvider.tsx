@@ -66,8 +66,8 @@ export const ThemeProvider = ({ children, initialTheme }: ThemeProviderProps) =>
     
     // Apply gradients based on design settings
     if (selectedTheme.design.gradients) {
-      root.style.setProperty('--gradient-primary', `linear-gradient(135deg, hsl(${selectedTheme.colors.primary}), hsl(${selectedTheme.colors.primaryGlow}))`);
-      root.style.setProperty('--gradient-hero', `linear-gradient(135deg, hsl(${selectedTheme.colors.primary}), hsl(${selectedTheme.colors.primaryGlow}), hsl(${selectedTheme.colors.accent}))`);
+      root.style.setProperty('--gradient-primary', `linear-gradient(135deg, hsl(${selectedTheme.colors.primary}), hsl(${selectedTheme.colors.gradientPrimary}))`);
+      root.style.setProperty('--gradient-hero', `linear-gradient(135deg, hsl(${selectedTheme.colors.primary}), hsl(${selectedTheme.colors.gradientPrimary}), hsl(${selectedTheme.colors.accent}))`);
     } else {
       root.style.setProperty('--gradient-primary', `hsl(${selectedTheme.colors.primary})`);
       root.style.setProperty('--gradient-hero', `hsl(${selectedTheme.colors.primary})`);

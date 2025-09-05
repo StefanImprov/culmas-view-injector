@@ -4,6 +4,7 @@ export interface ThemeColors {
   primary: string;
   primaryForeground: string;
   primaryGlow: string;
+  gradientPrimary: string;
   secondary: string;
   secondaryForeground: string;
   background: string;
@@ -41,6 +42,7 @@ export const defaultThemes: Theme[] = [
       primary: '262 83% 58%',
       primaryForeground: '210 40% 98%',
       primaryGlow: '262 83% 70%',
+      gradientPrimary: '262 83% 65%',
       secondary: '210 40% 96%',
       secondaryForeground: '222.2 84% 4.9%',
       background: '0 0% 100%',
@@ -68,6 +70,7 @@ export const defaultThemes: Theme[] = [
       primary: '221 83% 53%',
       primaryForeground: '210 40% 98%',
       primaryGlow: '221 83% 65%',
+      gradientPrimary: '221 83% 60%',
       secondary: '221 14% 91%',
       secondaryForeground: '221 83% 53%',
       background: '0 0% 100%',
@@ -95,6 +98,7 @@ export const defaultThemes: Theme[] = [
       primary: '24 95% 53%',
       primaryForeground: '210 40% 98%',
       primaryGlow: '24 95% 65%',
+      gradientPrimary: '24 95% 60%',
       secondary: '210 40% 96%',
       secondaryForeground: '222.2 84% 4.9%',
       background: '0 0% 100%',
