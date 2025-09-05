@@ -337,20 +337,20 @@ export const ProductInjector = ({
 
   return (
     <div className={cn("space-y-4 sm:space-y-6", className)}>
-      {/* Filters */}
-      <div className="px-4 sm:px-0">
-        <FilterDropdowns 
-          products={products}
-          selectedVenue={selectedVenue}
-          selectedCategory={selectedCategory}
-          onVenueChange={setSelectedVenue}
-          onCategoryChange={setSelectedCategory}
-        />
-      </div>
-
-      {/* View Switcher */}
-      <div className="px-4 sm:px-0">
-        <ViewSwitcher viewMode={viewMode} onViewModeChange={setViewMode} />
+      {/* Filters and View Switcher */}
+      <div className="px-4 sm:px-0 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 lg:gap-6">
+        <div className="flex-1">
+          <FilterDropdowns 
+            products={products}
+            selectedVenue={selectedVenue}
+            selectedCategory={selectedCategory}
+            onVenueChange={setSelectedVenue}
+            onCategoryChange={setSelectedCategory}
+          />
+        </div>
+        <div className="flex-shrink-0">
+          <ViewSwitcher viewMode={viewMode} onViewModeChange={setViewMode} />
+        </div>
       </div>
       
       <div className="transition-all duration-300 ease-in-out">
