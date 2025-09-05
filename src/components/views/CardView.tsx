@@ -96,11 +96,15 @@ export const CardView = ({ products }: CardViewProps) => {
                 </span>
               </div>
               
-              {product.available && (
+              {product.available ? (
                 <button className="w-full bg-gradient-primary text-primary-foreground px-4 py-2.5 sm:py-2 rounded-lg text-sm font-semibold hover:shadow-glow transition-all duration-300 transform hover:scale-105 min-h-[44px]">
                   Book Now
                 </button>
-              )}
+              ) : product.waitlistStatus === "ACTIVE" ? (
+                <button className="w-full bg-secondary text-secondary-foreground px-4 py-2.5 sm:py-2 rounded-lg text-sm font-semibold hover:bg-accent transition-all duration-300 min-h-[44px]">
+                  Join Waitlist
+                </button>
+              ) : null}
             </div>
           </div>
         </div>

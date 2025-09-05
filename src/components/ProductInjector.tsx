@@ -26,6 +26,7 @@ export interface Product {
   available: boolean;
   venue?: string;
   responsible?: string;
+  waitlistStatus?: string;
 }
 
 // Mock data simulating API response
@@ -171,6 +172,7 @@ export const ProductInjector = ({
     endTime
     nextEventStart
     status
+    waitlistStatus
     tickets {
       tickets {
         numberOfTicketLeft
@@ -271,6 +273,7 @@ export const ProductInjector = ({
               available,
               venue: venueTitle || undefined,
               responsible,
+              waitlistStatus: p?.waitlistStatus,
             } as Product;
           });
 
