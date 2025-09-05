@@ -40,7 +40,14 @@ export const ProductDetailsModal = ({ product, open, onOpenChange }: ProductDeta
               <div className="flex items-center space-x-3">
                 <Calendar className="w-5 h-5 text-primary" />
                 <div>
-                  <div className="font-semibold">Date & Time</div>
+                  <div className="font-semibold">
+                    {product.status === "ONGOING" 
+                      ? "Next class" 
+                      : product.status === "PUBLISHED" 
+                        ? "Starts at" 
+                        : "Date & Time"
+                    }
+                  </div>
                   <div className="text-muted-foreground">
                     {product.date.toLocaleDateString()} at {product.time}
                   </div>

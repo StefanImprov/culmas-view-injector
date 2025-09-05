@@ -26,6 +26,7 @@ export interface Product {
   available: boolean;
   venue?: string;
   responsible?: string;
+  status?: string;
   waitlistStatus?: string;
   templateTitle?: string;
   responsiblesShown?: {
@@ -280,6 +281,7 @@ export const ProductInjector = ({
               available,
               venue: venueTitle || undefined,
               responsible,
+              status: p?.status,
               waitlistStatus: p?.waitlistStatus,
               templateTitle: p?.template?.title,
               responsiblesShown: responsibleShown,
