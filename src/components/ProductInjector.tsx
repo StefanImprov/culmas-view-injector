@@ -128,22 +128,41 @@ export const ProductInjector = ({
         setLoading(true);
         setError(null);
         
-        // Simulate API call delay
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        // Build the API URL
+        const baseUrl = "https://api-misty.culmas.io/templateComponents/theaters/SoffieDanceStudio/template";
+        const templateIdsParam = templateIds.length > 0 ? templateIds.join(',') : 'BmpIkNsUSXCmxNLKdYJr,OaP3yjEnHmebHosBEmFk,VlAsnZcnMMDORZD0tVwH,VofjhOK5dasYJV3GRYoB';
+        const venueIdsParam = venueIds.length > 0 ? venueIds.join(',') : '';
         
-        // For demo purposes, use mock data
-        // In production, this would fetch from the actual API
+        const apiUrl = `${baseUrl}?templateIds=${templateIdsParam}&venueIds=${venueIdsParam}`;
+        
+        console.log('Fetching from Culmas API:', apiUrl);
+        
+        const response = await fetch(apiUrl);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const htmlContent = await response.text();
+        console.log('API Response:', htmlContent);
+        
+        // For now, we'll use mock data but log the real API response
+        // TODO: Parse the HTML content to extract real product data
         setProducts(mockProducts);
+        
       } catch (err) {
-        setError("An error occurred while loading the products");
         console.error("Failed to fetch products:", err);
+        setError("An error occurred while loading the products");
+        
+        // Fallback to mock data for demo purposes
+        setProducts(mockProducts);
       } finally {
         setLoading(false);
       }
     };
 
     fetchProducts();
-  }, [templateIds, venueIds, apiUrl]);
+  }, [templateIds, venueIds]);
 
   const handleShowMore = () => setShowAll(true);
   const handleShowLess = () => setShowAll(false);
