@@ -282,6 +282,7 @@ export const ProductInjector = ({
               responsible,
               waitlistStatus: p?.waitlistStatus,
               templateTitle: p?.template?.title,
+              responsiblesShown: responsibleShown,
             } as Product;
           });
 
