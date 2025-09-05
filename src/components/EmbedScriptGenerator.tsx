@@ -4,11 +4,13 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
-import { Copy, Download, Eye, EyeOff, ChevronDown, Loader2 } from "lucide-react";
+import { Copy, Download, Eye, EyeOff, ChevronDown, Loader2, AlertTriangle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Theme } from "@/types/theme";
 import { Checkbox } from "./ui/checkbox";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { Switch } from "./ui/switch";
+import { Alert, AlertDescription } from "./ui/alert";
 
 interface EmbedScriptGeneratorProps {
   theme?: Theme;
@@ -29,6 +31,8 @@ export const EmbedScriptGenerator = ({ theme }: EmbedScriptGeneratorProps) => {
   const [selectedVenueIds, setSelectedVenueIds] = useState<string[]>([]);
   const [containerId, setContainerId] = useState("culmas-products");
   const [showPreview, setShowPreview] = useState(false);
+  const [isDevelopmentMode, setIsDevelopmentMode] = useState(true);
+  const [customWidgetUrl, setCustomWidgetUrl] = useState("");
   
   // API data states
   const [templateOptions, setTemplateOptions] = useState<TemplateOption[]>([]);
@@ -122,10 +126,23 @@ export const EmbedScriptGenerator = ({ theme }: EmbedScriptGeneratorProps) => {
       theme: theme
     };
 
+    // Determine the widget URL based on mode
+    let widgetUrl;
+    if (customWidgetUrl.trim()) {
+      widgetUrl = customWidgetUrl.trim();
+    } else if (isDevelopmentMode) {
+      // Use current Lovable project URL for development
+      const currentUrl = window.location.origin;
+      widgetUrl = `${currentUrl}/dist/widget/culmas-widget.umd.js`;
+    } else {
+      // Production CDN URL
+      widgetUrl = "https://cdn.culmas.io/widget/culmas-widget.umd.js";
+    }
+
     return `<!-- Culmas Product Widget -->
 <div id="${containerId || 'culmas-widget'}"></div>
 <script 
-  src="https://cdn.culmas.io/widget/culmas-widget.umd.js"
+  src="${widgetUrl}"
   data-culmas-widget="true"
   data-container="#${containerId || 'culmas-widget'}"
   data-api-url="https://api.dev.culmas.io/"
@@ -1259,6 +1276,46 @@ export const EmbedScriptGenerator = ({ theme }: EmbedScriptGeneratorProps) => {
               value={containerId}
               onChange={(e) => setContainerId(e.target.value)}
             />
+          </div>
+
+          <div className="space-y-4 border-t pt-4">
+            <div className="flex items-center justify-between">
+              <div className="space-y-0.5">
+                <Label>Development Mode</Label>
+                <p className="text-sm text-muted-foreground">
+                  Use local build URL for testing (requires building the widget first)
+                </p>
+              </div>
+              <Switch
+                checked={isDevelopmentMode}
+                onCheckedChange={setIsDevelopmentMode}
+              />
+            </div>
+            
+            {isDevelopmentMode && (
+              <Alert>
+                <AlertTriangle className="h-4 w-4" />
+                <AlertDescription>
+                  <strong>Development Mode Active:</strong> 
+                  <br />1. Build the widget: <code className="bg-muted px-1 rounded">npm run build:widget</code>
+                  <br />2. Ensure the built file is accessible at: <code className="bg-muted px-1 rounded">{window.location.origin}/dist/widget/culmas-widget.umd.js</code>
+                  <br />3. For production, toggle off Development Mode to use the CDN URL
+                </AlertDescription>
+              </Alert>
+            )}
+
+            <div>
+              <Label htmlFor="customWidgetUrl">Custom Widget URL (Optional)</Label>
+              <Input
+                id="customWidgetUrl"
+                placeholder="https://your-cdn.com/culmas-widget.umd.js"
+                value={customWidgetUrl}
+                onChange={(e) => setCustomWidgetUrl(e.target.value)}
+              />
+              <p className="text-sm text-muted-foreground mt-1">
+                Override the widget URL for custom CDN hosting
+              </p>
+            </div>
           </div>
 
           <div className="flex gap-2">
