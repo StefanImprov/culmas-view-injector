@@ -1,0 +1,455 @@
+/* Scoped Widget Styles - Prefixed to prevent conflicts */
+
+.culmas-widget-container {
+  /* Reset and isolation */
+  all: initial;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  
+  /* CSS Variables scoped to widget */
+  --cw-background: 0 0% 100%;
+  --cw-foreground: 222.2 84% 4.9%;
+  --cw-card: 0 0% 100%;
+  --cw-card-foreground: 222.2 84% 4.9%;
+  --cw-popover: 0 0% 100%;
+  --cw-popover-foreground: 222.2 84% 4.9%;
+  --cw-primary: 262 83% 58%;
+  --cw-primary-foreground: 210 40% 98%;
+  --cw-primary-glow: 262 83% 70%;
+  --cw-secondary: 210 40% 96%;
+  --cw-secondary-foreground: 222.2 84% 4.9%;
+  --cw-muted: 210 40% 96%;
+  --cw-muted-foreground: 215.4 16.3% 46.9%;
+  --cw-accent: 210 40% 96%;
+  --cw-accent-foreground: 222.2 84% 4.9%;
+  --cw-destructive: 0 84.2% 60.2%;
+  --cw-destructive-foreground: 210 40% 98%;
+  --cw-border: 214.3 31.8% 91.4%;
+  --cw-input: 214.3 31.8% 91.4%;
+  --cw-ring: 262 83% 58%;
+  --cw-radius: 0.75rem;
+  
+  /* Custom design tokens */
+  --cw-gradient-primary: linear-gradient(135deg, hsl(var(--cw-primary)), hsl(var(--cw-primary-glow)));
+  --cw-gradient-secondary: linear-gradient(180deg, hsl(var(--cw-background)), hsl(var(--cw-accent)));
+  --cw-shadow-glow: 0 0 30px hsl(var(--cw-primary-glow) / 0.3);
+  --cw-transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Override all child elements to use scoped variables */
+.culmas-widget-container *,
+.culmas-widget-container *::before,
+.culmas-widget-container *::after {
+  box-sizing: border-box;
+}
+
+/* Scoped utility classes */
+.culmas-widget-container .culmas-widget {
+  background-color: hsl(var(--cw-background));
+  color: hsl(var(--cw-foreground));
+}
+
+.culmas-widget-container .bg-card {
+  background-color: hsl(var(--cw-card)) !important;
+}
+
+.culmas-widget-container .text-card-foreground {
+  color: hsl(var(--cw-card-foreground)) !important;
+}
+
+.culmas-widget-container .bg-primary {
+  background-color: hsl(var(--cw-primary)) !important;
+}
+
+.culmas-widget-container .text-primary {
+  color: hsl(var(--cw-primary)) !important;
+}
+
+.culmas-widget-container .text-primary-foreground {
+  color: hsl(var(--cw-primary-foreground)) !important;
+}
+
+.culmas-widget-container .bg-secondary {
+  background-color: hsl(var(--cw-secondary)) !important;
+}
+
+.culmas-widget-container .text-secondary-foreground {
+  color: hsl(var(--cw-secondary-foreground)) !important;
+}
+
+.culmas-widget-container .text-muted-foreground {
+  color: hsl(var(--cw-muted-foreground)) !important;
+}
+
+.culmas-widget-container .bg-accent {
+  background-color: hsl(var(--cw-accent)) !important;
+}
+
+.culmas-widget-container .border-border {
+  border-color: hsl(var(--cw-border)) !important;
+}
+
+.culmas-widget-container .bg-destructive {
+  background-color: hsl(var(--cw-destructive)) !important;
+}
+
+.culmas-widget-container .text-destructive-foreground {
+  color: hsl(var(--cw-destructive-foreground)) !important;
+}
+
+.culmas-widget-container .bg-gradient-primary {
+  background-image: var(--cw-gradient-primary) !important;
+}
+
+.culmas-widget-container .bg-gradient-secondary {
+  background-image: var(--cw-gradient-secondary) !important;
+}
+
+.culmas-widget-container .shadow-glow {
+  box-shadow: var(--cw-shadow-glow) !important;
+}
+
+/* Grid and layout */
+.culmas-widget-container .grid {
+  display: grid;
+}
+
+.culmas-widget-container .grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+@media (min-width: 640px) {
+  .culmas-widget-container .sm\\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .culmas-widget-container .lg\\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .culmas-widget-container .xl\\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.culmas-widget-container .gap-4 {
+  gap: 1rem;
+}
+
+.culmas-widget-container .gap-6 {
+  gap: 1.5rem;
+}
+
+/* Flexbox */
+.culmas-widget-container .flex {
+  display: flex;
+}
+
+.culmas-widget-container .items-center {
+  align-items: center;
+}
+
+.culmas-widget-container .justify-between {
+  justify-content: space-between;
+}
+
+.culmas-widget-container .space-x-2 > * + * {
+  margin-left: 0.5rem;
+}
+
+.culmas-widget-container .space-y-3 > * + * {
+  margin-top: 0.75rem;
+}
+
+/* Typography */
+.culmas-widget-container .font-bold {
+  font-weight: 700;
+}
+
+.culmas-widget-container .font-semibold {
+  font-weight: 600;
+}
+
+.culmas-widget-container .text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.culmas-widget-container .text-base {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+.culmas-widget-container .text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+
+.culmas-widget-container .text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
+.culmas-widget-container .text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+/* Spacing */
+.culmas-widget-container .p-4 {
+  padding: 1rem;
+}
+
+.culmas-widget-container .p-5 {
+  padding: 1.25rem;
+}
+
+.culmas-widget-container .px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.culmas-widget-container .px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.culmas-widget-container .py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+.culmas-widget-container .py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.culmas-widget-container .pt-3 {
+  padding-top: 0.75rem;
+}
+
+/* Borders and radius */
+.culmas-widget-container .border {
+  border-width: 1px;
+}
+
+.culmas-widget-container .border-t {
+  border-top-width: 1px;
+}
+
+.culmas-widget-container .rounded-lg {
+  border-radius: 0.5rem;
+}
+
+.culmas-widget-container .rounded-xl {
+  border-radius: 0.75rem;
+}
+
+.culmas-widget-container .rounded-full {
+  border-radius: 9999px;
+}
+
+/* Positioning */
+.culmas-widget-container .relative {
+  position: relative;
+}
+
+.culmas-widget-container .absolute {
+  position: absolute;
+}
+
+.culmas-widget-container .inset-0 {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.culmas-widget-container .top-3 {
+  top: 0.75rem;
+}
+
+.culmas-widget-container .right-3 {
+  right: 0.75rem;
+}
+
+/* Sizing */
+.culmas-widget-container .w-full {
+  width: 100%;
+}
+
+.culmas-widget-container .w-4 {
+  width: 1rem;
+}
+
+.culmas-widget-container .h-full {
+  height: 100%;
+}
+
+.culmas-widget-container .h-4 {
+  height: 1rem;
+}
+
+.culmas-widget-container .h-40 {
+  height: 10rem;
+}
+
+.culmas-widget-container .min-h-[44px] {
+  min-height: 44px;
+}
+
+/* Display */
+.culmas-widget-container .overflow-hidden {
+  overflow: hidden;
+}
+
+.culmas-widget-container .cursor-pointer {
+  cursor: pointer;
+}
+
+/* Effects */
+.culmas-widget-container .shadow-md {
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -1px rgb(0 0 0 / 0.06);
+}
+
+.culmas-widget-container .shadow-xl {
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgb(0 0 0 / 0.04);
+}
+
+.culmas-widget-container .transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.culmas-widget-container .duration-300 {
+  transition-duration: 300ms;
+}
+
+.culmas-widget-container .group:hover .group-hover\\:scale-105 {
+  transform: scale(1.05);
+}
+
+.culmas-widget-container .group:hover .group-hover\\:scale-110 {
+  transform: scale(1.1);
+}
+
+.culmas-widget-container .hover\\:scale-105:hover {
+  transform: scale(1.05);
+}
+
+.culmas-widget-container .hover\\:shadow-xl:hover {
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgb(0 0 0 / 0.04);
+}
+
+.culmas-widget-container .group:hover .group-hover\\:text-primary {
+  color: hsl(var(--cw-primary)) !important;
+}
+
+.culmas-widget-container .group:hover .group-hover\\:opacity-20 {
+  opacity: 0.2;
+}
+
+.culmas-widget-container .opacity-60 {
+  opacity: 0.6;
+}
+
+.culmas-widget-container .grayscale {
+  filter: grayscale(100%);
+}
+
+/* Line clamp */
+.culmas-widget-container .line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+/* Responsive utilities */
+@media (min-width: 640px) {
+  .culmas-widget-container .sm\\:h-48 {
+    height: 12rem;
+  }
+  
+  .culmas-widget-container .sm\\:p-5 {
+    padding: 1.25rem;
+  }
+  
+  .culmas-widget-container .sm\\:space-y-4 > * + * {
+    margin-top: 1rem;
+  }
+  
+  .culmas-widget-container .sm\\:text-lg {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+  }
+  
+  .culmas-widget-container .sm\\:text-2xl {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+  
+  .culmas-widget-container .sm\\:py-2 {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .culmas-widget-container .md\\:gap-6 {
+    gap: 1.5rem;
+  }
+}
+
+/* Text sizing */
+.culmas-widget-container .text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.culmas-widget-container .text-6xl {
+  font-size: 3.75rem;
+  line-height: 1;
+}
+
+/* Additional flex utilities */
+.culmas-widget-container .flex-shrink-0 {
+  flex-shrink: 0;
+}
+
+.culmas-widget-container .leading-relaxed {
+  line-height: 1.625;
+}
+
+.culmas-widget-container .space-y-2 > * + * {
+  margin-top: 0.5rem;
+}
+
+.culmas-widget-container .space-y-2\\.5 > * + * {
+  margin-top: 0.625rem;
+}
+
+.culmas-widget-container .transform {
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.culmas-widget-container .object-cover {
+  object-fit: cover;
+}
+
+/* Button hover states */
+.culmas-widget-container .hover\\:bg-accent:hover {
+  background-color: hsl(var(--cw-accent)) !important;
+}
+
+.culmas-widget-container .transition-colors {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.culmas-widget-container .hover\\:border-primary\\/20:hover {
+  border-color: hsl(var(--cw-primary) / 0.2) !important;
+}

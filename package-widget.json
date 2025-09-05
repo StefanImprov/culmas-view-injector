@@ -1,0 +1,10 @@
+{
+  "name": "culmas-widget-build",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "build:widget": "vite build --config vite.widget.config.ts",
+    "preview:widget": "vite preview --config vite.widget.config.ts"
+  }
+}

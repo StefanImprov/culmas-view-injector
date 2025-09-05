@@ -112,6 +112,30 @@ export const EmbedScriptGenerator = ({ theme }: EmbedScriptGeneratorProps) => {
     fetchOptions();
   }, []);
 
+  // Widget-based embed code generation
+  const generateWidgetEmbedCode = () => {
+    const widgetConfig = {
+      container: containerId || '#culmas-widget',
+      apiUrl: 'https://api.dev.culmas.io/',
+      templateIds: selectedTemplateIds,
+      venueIds: selectedVenueIds,
+      theme: theme
+    };
+
+    return `<!-- Culmas Product Widget -->
+<div id="${containerId || 'culmas-widget'}"></div>
+<script 
+  src="https://cdn.culmas.io/widget/culmas-widget.umd.js"
+  data-culmas-widget="true"
+  data-container="#${containerId || 'culmas-widget'}"
+  data-api-url="https://api.dev.culmas.io/"
+  ${selectedTemplateIds.length > 0 ? `data-template-ids="${selectedTemplateIds.join(',')}"` : ''}
+  ${selectedVenueIds.length > 0 ? `data-venue-ids="${selectedVenueIds.join(',')}"` : ''}
+  ${theme ? `data-theme='${JSON.stringify(theme)}'` : ''}
+></script>`;
+  };
+
+  // Legacy CSS Generation (kept for reference)
   const generateCSS = () => {
     const themeColors = theme?.colors;
     const primary = themeColors?.primary || 'rgb(139, 92, 246)';
@@ -130,28 +154,25 @@ export const EmbedScriptGenerator = ({ theme }: EmbedScriptGeneratorProps) => {
     
     return `
     <style>
-      /* Design System Variables */
-      .culmas-widget {
-        --primary: ${primary};
-        --primary-foreground: ${primaryForeground};
-        --background: ${background};
-        --foreground: ${foreground};
-        --card: ${card};
-        --card-foreground: ${cardForeground};
-        --border: ${border};
-        --secondary: ${secondary};
-        --secondary-foreground: ${secondaryForeground};
-        --muted: ${muted};
-        --muted-foreground: ${mutedForeground};
-        --accent: ${accent};
-        --accent-foreground: ${accentForeground};
-        --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-        --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -1px rgb(0 0 0 / 0.06);
-        --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgb(0 0 0 / 0.04);
-        --shadow-glow: 0 0 30px color-mix(in srgb, ${primary} 30%, transparent);
-        --gradient-primary: linear-gradient(135deg, ${primary}, color-mix(in srgb, ${primary} 80%, white 20%));
-        --gradient-secondary: linear-gradient(180deg, ${background}, ${accent});
-        --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      /* Widget CSS is now bundled with the JavaScript - this is kept for legacy support */
+      .culmas-widget-container {
+        --cw-primary: ${primary};
+        --cw-primary-foreground: ${primaryForeground};
+        --cw-background: ${background};
+        --cw-foreground: ${foreground};
+        --cw-card: ${card};
+        --cw-card-foreground: ${cardForeground};
+        --cw-border: ${border};
+        --cw-secondary: ${secondary};
+        --cw-secondary-foreground: ${secondaryForeground};
+        --cw-muted: ${muted};
+        --cw-muted-foreground: ${mutedForeground};
+        --cw-accent: ${accent};
+        --cw-accent-foreground: ${accentForeground};
+        --cw-shadow-glow: 0 0 30px color-mix(in srgb, ${primary} 30%, transparent);
+        --cw-gradient-primary: linear-gradient(135deg, ${primary}, color-mix(in srgb, ${primary} 80%, white 20%));
+        --cw-gradient-secondary: linear-gradient(180deg, ${background}, ${accent});
+        --cw-transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       }
       
       #${containerId} {
@@ -1056,7 +1077,7 @@ export const EmbedScriptGenerator = ({ theme }: EmbedScriptGeneratorProps) => {
   };
 
   const generateFullEmbedCode = () => {
-    return generateCSS() + '\n\n' + generateHTML() + '\n\n' + generateScript();
+    return generateWidgetEmbedCode();
   };
 
   const copyToClipboard = async (text: string) => {
@@ -1076,12 +1097,12 @@ export const EmbedScriptGenerator = ({ theme }: EmbedScriptGeneratorProps) => {
   };
 
   const downloadEmbedCode = () => {
-    const embedCode = generateFullEmbedCode();
+    const embedCode = generateWidgetEmbedCode();
     const blob = new Blob([embedCode], { type: 'text/html' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'culmas-embed.html';
+    a.download = 'culmas-widget-embed.html';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -1089,7 +1110,7 @@ export const EmbedScriptGenerator = ({ theme }: EmbedScriptGeneratorProps) => {
 
     toast({
       title: "Downloaded!",
-      description: "Embed code downloaded successfully",
+      description: "Widget embed code downloaded successfully",
     });
   };
 
@@ -1099,7 +1120,7 @@ export const EmbedScriptGenerator = ({ theme }: EmbedScriptGeneratorProps) => {
         <CardHeader>
           <CardTitle>Generate Embed Script</CardTitle>
           <CardDescription>
-            Create a script that can be embedded on any website to display your products
+            Create a React widget that can be embedded on any website to display your products with all features (Card, List, Calendar, Week views) and exact Live Preview styling
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -1241,9 +1262,9 @@ export const EmbedScriptGenerator = ({ theme }: EmbedScriptGeneratorProps) => {
           </div>
 
           <div className="flex gap-2">
-            <Button onClick={() => copyToClipboard(generateFullEmbedCode())}>
+            <Button onClick={() => copyToClipboard(generateWidgetEmbedCode())}>
               <Copy className="w-4 h-4 mr-2" />
-              Copy Embed Code
+              Copy Widget Embed Code
             </Button>
             <Button variant="outline" onClick={downloadEmbedCode}>
               <Download className="w-4 h-4 mr-2" />
@@ -1260,11 +1281,11 @@ export const EmbedScriptGenerator = ({ theme }: EmbedScriptGeneratorProps) => {
 
           {showPreview && (
             <div>
-              <Label>Generated Embed Code:</Label>
+              <Label>Generated Widget Embed Code:</Label>
               <Textarea
-                value={generateFullEmbedCode()}
+                value={generateWidgetEmbedCode()}
                 readOnly
-                className="h-96 font-mono text-xs"
+                className="h-32 font-mono text-xs"
               />
             </div>
           )}
