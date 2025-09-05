@@ -57,7 +57,6 @@ export const ProductDetailsModal = ({ product, open, onOpenChange }: ProductDeta
 
               {product.responsiblesShown && (
                 <div className="flex items-center space-x-3">
-                  <User className="w-5 h-5 text-primary" />
                   <div className="flex items-center space-x-2">
                     <Avatar className="w-8 h-8">
                       <AvatarImage 
