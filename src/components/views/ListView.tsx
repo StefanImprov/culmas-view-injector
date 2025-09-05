@@ -22,9 +22,19 @@ export const ListView = ({ products }: ListViewProps) => {
           <div className="flex items-center justify-between">
             {/* Left content */}
             <div className="flex items-center space-x-6 flex-1">
-              {/* Icon */}
-              <div className="w-16 h-16 bg-gradient-secondary rounded-xl flex items-center justify-center text-2xl group-hover:bg-gradient-primary group-hover:text-primary-foreground transition-all duration-300">
-                🎭
+              {/* Icon/Image */}
+              <div className="w-16 h-16 bg-gradient-secondary rounded-xl overflow-hidden group-hover:bg-gradient-primary transition-all duration-300">
+                {product.image ? (
+                  <img 
+                    src={product.image} 
+                    alt={product.title}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-2xl group-hover:text-primary-foreground transition-all duration-300">
+                    🎭
+                  </div>
+                )}
               </div>
 
               {/* Main content */}
