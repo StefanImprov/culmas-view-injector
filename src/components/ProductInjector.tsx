@@ -176,6 +176,7 @@ export const ProductInjector = ({
     id
     title
     template {
+      id
       title
     }
     responsiblesShown {
@@ -203,6 +204,7 @@ export const ProductInjector = ({
       totalTicketsLeft
     }
     venue {
+      id
       title
       formatted_address
       geoPoint

@@ -1,23 +1,116 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
-import { Copy, Download, Eye, EyeOff } from "lucide-react";
+import { Copy, Download, Eye, EyeOff, ChevronDown, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Theme } from "@/types/theme";
+import { Checkbox } from "./ui/checkbox";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 
 interface EmbedScriptGeneratorProps {
   theme?: Theme;
 }
 
+interface TemplateOption {
+  id: string;
+  title: string;
+}
+
+interface VenueOption {
+  id: string;
+  title: string;
+}
+
 export const EmbedScriptGenerator = ({ theme }: EmbedScriptGeneratorProps) => {
-  const [templateIds, setTemplateIds] = useState("");
-  const [venueIds, setVenueIds] = useState("");
+  const [selectedTemplateIds, setSelectedTemplateIds] = useState<string[]>([]);
+  const [selectedVenueIds, setSelectedVenueIds] = useState<string[]>([]);
   const [containerId, setContainerId] = useState("culmas-products");
   const [showPreview, setShowPreview] = useState(false);
+  
+  // API data states
+  const [templateOptions, setTemplateOptions] = useState<TemplateOption[]>([]);
+  const [venueOptions, setVenueOptions] = useState<VenueOption[]>([]);
+  const [loadingOptions, setLoadingOptions] = useState(true);
+  const [optionsError, setOptionsError] = useState<string | null>(null);
+  
   const { toast } = useToast();
+
+  // Fetch template and venue options from API
+  useEffect(() => {
+    const fetchOptions = async () => {
+      try {
+        setLoadingOptions(true);
+        setOptionsError(null);
+        
+        const graphqlEndpoint = "https://api.dev.culmas.io/";
+        const sharedHeaders = {
+          "Content-Type": "application/json",
+          "domain": "globe-dance.dev.culmas.io",
+        };
+
+        const CULMAS_QUERY = `query AllProducts($onlyAvailableForSale: Boolean) {
+          allProducts(onlyAvailableForSale: $onlyAvailableForSale) {
+            template {
+              id
+              title
+            }
+            venue {
+              id
+              title
+            }
+          }
+        }`;
+
+        const response = await fetch(graphqlEndpoint, {
+          method: "POST",
+          headers: sharedHeaders,
+          body: JSON.stringify({
+            query: CULMAS_QUERY,
+            variables: { onlyAvailableForSale: true },
+          }),
+        });
+
+        const result = await response.json();
+        const products = result?.data?.allProducts || [];
+        
+        // Extract unique templates
+        const uniqueTemplates = new Map<string, TemplateOption>();
+        products.forEach((product: any) => {
+          if (product.template?.id && product.template?.title) {
+            uniqueTemplates.set(product.template.id, {
+              id: product.template.id,
+              title: product.template.title
+            });
+          }
+        });
+
+        // Extract unique venues
+        const uniqueVenues = new Map<string, VenueOption>();
+        products.forEach((product: any) => {
+          if (product.venue?.id && product.venue?.title) {
+            uniqueVenues.set(product.venue.id, {
+              id: product.venue.id,
+              title: product.venue.title
+            });
+          }
+        });
+
+        setTemplateOptions(Array.from(uniqueTemplates.values()));
+        setVenueOptions(Array.from(uniqueVenues.values()));
+        
+      } catch (error) {
+        console.error("Failed to fetch options:", error);
+        setOptionsError("Failed to load template and venue options");
+      } finally {
+        setLoadingOptions(false);
+      }
+    };
+
+    fetchOptions();
+  }, []);
 
   const generateCSS = () => {
     const primaryHsl = theme?.colors.primary || "222.2 84% 4.9%";
@@ -216,12 +309,14 @@ export const EmbedScriptGenerator = ({ theme }: EmbedScriptGeneratorProps) => {
 
   const generateScript = () => {
     const domain = "globe-dance.dev.culmas.io"; // This should be configurable
+    const templateIdsString = selectedTemplateIds.join(',');
+    const venueIdsString = selectedVenueIds.join(',');
     
     return `<script>
 (function() {
   const CONFIG = {
-    templateIds: "${templateIds}",
-    venueIds: "${venueIds}",
+    templateIds: "${templateIdsString}",
+    venueIds: "${venueIdsString}",
     containerId: "${containerId}",
     domain: "${domain}"
   };
@@ -332,7 +427,10 @@ export const EmbedScriptGenerator = ({ theme }: EmbedScriptGeneratorProps) => {
         allProducts(category: $category, onlyAvailableForSale: $onlyAvailableForSale) {
           id
           title
-          template { title }
+          template { 
+            id
+            title 
+          }
           responsiblesShown { firstName lastName profileImg }
           category
           descriptionImg
@@ -347,7 +445,12 @@ export const EmbedScriptGenerator = ({ theme }: EmbedScriptGeneratorProps) => {
             totalTickets
             totalTicketsLeft
           }
-          venue { title formatted_address geoPoint }
+          venue { 
+            id
+            title 
+            formatted_address 
+            geoPoint 
+          }
         }
       }\`;
 
@@ -535,22 +638,128 @@ export const EmbedScriptGenerator = ({ theme }: EmbedScriptGeneratorProps) => {
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="templateIds">Template IDs (comma-separated)</Label>
-              <Input
-                id="templateIds"
-                placeholder="DdBMJDXGaxogjGXphbtr,BxKmPQRstuvWxYz123AB"
-                value={templateIds}
-                onChange={(e) => setTemplateIds(e.target.value)}
-              />
+              <Label>Template Selection</Label>
+              {loadingOptions ? (
+                <div className="flex items-center space-x-2 py-2">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <span className="text-sm text-muted-foreground">Loading templates...</span>
+                </div>
+              ) : optionsError ? (
+                <div className="text-sm text-destructive py-2">{optionsError}</div>
+              ) : (
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button variant="outline" className="w-full justify-between">
+                      {selectedTemplateIds.length === 0
+                        ? "Select templates..."
+                        : `${selectedTemplateIds.length} template(s) selected`}
+                      <ChevronDown className="h-4 w-4 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-full p-0" align="start">
+                    <div className="max-h-60 overflow-y-auto p-2">
+                      <div className="flex items-center space-x-2 px-2 py-1.5 border-b">
+                        <Checkbox
+                          checked={selectedTemplateIds.length === templateOptions.length}
+                          onCheckedChange={(checked) => {
+                            if (checked) {
+                              setSelectedTemplateIds(templateOptions.map(t => t.id));
+                            } else {
+                              setSelectedTemplateIds([]);
+                            }
+                          }}
+                        />
+                        <label className="text-sm font-medium">Select All</label>
+                      </div>
+                      {templateOptions.map((template) => (
+                        <div key={template.id} className="flex items-center space-x-2 px-2 py-1.5">
+                          <Checkbox
+                            checked={selectedTemplateIds.includes(template.id)}
+                            onCheckedChange={(checked) => {
+                              if (checked) {
+                                setSelectedTemplateIds([...selectedTemplateIds, template.id]);
+                              } else {
+                                setSelectedTemplateIds(selectedTemplateIds.filter(id => id !== template.id));
+                              }
+                            }}
+                          />
+                          <label className="text-sm cursor-pointer flex-1">
+                            {template.title} 
+                            <span className="text-muted-foreground">({template.id})</span>
+                          </label>
+                        </div>
+                      ))}
+                      {templateOptions.length === 0 && (
+                        <div className="text-sm text-muted-foreground px-2 py-4 text-center">
+                          No templates available
+                        </div>
+                      )}
+                    </div>
+                  </PopoverContent>
+                </Popover>
+              )}
             </div>
             <div>
-              <Label htmlFor="venueIds">Venue IDs (comma-separated)</Label>
-              <Input
-                id="venueIds"
-                placeholder="StudioA_MainHall_001,StudioB_Practice_002"
-                value={venueIds}
-                onChange={(e) => setVenueIds(e.target.value)}
-              />
+              <Label>Venue Selection</Label>
+              {loadingOptions ? (
+                <div className="flex items-center space-x-2 py-2">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <span className="text-sm text-muted-foreground">Loading venues...</span>
+                </div>
+              ) : optionsError ? (
+                <div className="text-sm text-destructive py-2">{optionsError}</div>
+              ) : (
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button variant="outline" className="w-full justify-between">
+                      {selectedVenueIds.length === 0
+                        ? "Select venues..."
+                        : `${selectedVenueIds.length} venue(s) selected`}
+                      <ChevronDown className="h-4 w-4 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-full p-0" align="start">
+                    <div className="max-h-60 overflow-y-auto p-2">
+                      <div className="flex items-center space-x-2 px-2 py-1.5 border-b">
+                        <Checkbox
+                          checked={selectedVenueIds.length === venueOptions.length}
+                          onCheckedChange={(checked) => {
+                            if (checked) {
+                              setSelectedVenueIds(venueOptions.map(v => v.id));
+                            } else {
+                              setSelectedVenueIds([]);
+                            }
+                          }}
+                        />
+                        <label className="text-sm font-medium">Select All</label>
+                      </div>
+                      {venueOptions.map((venue) => (
+                        <div key={venue.id} className="flex items-center space-x-2 px-2 py-1.5">
+                          <Checkbox
+                            checked={selectedVenueIds.includes(venue.id)}
+                            onCheckedChange={(checked) => {
+                              if (checked) {
+                                setSelectedVenueIds([...selectedVenueIds, venue.id]);
+                              } else {
+                                setSelectedVenueIds(selectedVenueIds.filter(id => id !== venue.id));
+                              }
+                            }}
+                          />
+                          <label className="text-sm cursor-pointer flex-1">
+                            {venue.title}
+                            <span className="text-muted-foreground">({venue.id})</span>
+                          </label>
+                        </div>
+                      ))}
+                      {venueOptions.length === 0 && (
+                        <div className="text-sm text-muted-foreground px-2 py-4 text-center">
+                          No venues available
+                        </div>
+                      )}
+                    </div>
+                  </PopoverContent>
+                </Popover>
+              )}
             </div>
           </div>
           
