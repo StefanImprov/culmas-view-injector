@@ -58,7 +58,19 @@ export const ProductDetailsModal = ({ product, open, onOpenChange }: ProductDeta
                 <Clock className="w-5 h-5 text-primary" />
                 <div>
                   <div className="font-semibold">Duration</div>
-                  <div className="text-muted-foreground">{product.duration}</div>
+                  <div className="text-muted-foreground">
+                    {(() => {
+                      if (product.startTime && product.endTime) {
+                        const [startHour, startMin] = product.startTime.split(':').map(Number);
+                        const [endHour, endMin] = product.endTime.split(':').map(Number);
+                        const startMinutes = startHour * 60 + startMin;
+                        const endMinutes = endHour * 60 + endMin;
+                        const duration = endMinutes - startMinutes;
+                        return `${duration}min`;
+                      }
+                      return product.duration;
+                    })()}
+                  </div>
                 </div>
               </div>
 
