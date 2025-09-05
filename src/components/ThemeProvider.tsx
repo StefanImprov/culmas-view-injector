@@ -66,11 +66,11 @@ export const ThemeProvider = ({ children, initialTheme }: ThemeProviderProps) =>
     
     // Apply gradients based on design settings
     if (selectedTheme.design.gradients) {
-      root.style.setProperty('--gradient-primary', `linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)))`);
-      root.style.setProperty('--gradient-hero', `linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)), hsl(var(--accent)))`);
+      root.style.setProperty('--gradient-primary', `linear-gradient(135deg, hsl(${selectedTheme.colors.primary}), hsl(${selectedTheme.colors.primaryGlow}))`);
+      root.style.setProperty('--gradient-hero', `linear-gradient(135deg, hsl(${selectedTheme.colors.primary}), hsl(${selectedTheme.colors.primaryGlow}), hsl(${selectedTheme.colors.accent}))`);
     } else {
-      root.style.setProperty('--gradient-primary', `hsl(var(--primary))`);
-      root.style.setProperty('--gradient-hero', `hsl(var(--primary))`);
+      root.style.setProperty('--gradient-primary', `hsl(${selectedTheme.colors.primary})`);
+      root.style.setProperty('--gradient-hero', `hsl(${selectedTheme.colors.primary})`);
     }
     
     // Apply hover effects
