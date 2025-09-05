@@ -33,23 +33,26 @@ const viewOptions = [
 export const ViewSwitcher = ({ viewMode, onViewModeChange }: ViewSwitcherProps) => {
   return (
     <div className="flex items-center justify-center w-full">
-      <div className="bg-secondary/50 backdrop-blur-sm p-1 rounded-xl border border-border shadow-md">
+      <div className="bg-secondary/50 backdrop-blur-sm p-1 rounded-xl border border-border shadow-md flex items-center">
         {viewOptions.map(({ mode, label, icon: Icon }) => (
           <button
             key={mode}
             onClick={() => onViewModeChange(mode)}
             className={cn(
-              "flex items-center justify-center min-h-[44px] min-w-[44px] rounded-lg font-medium transition-all duration-300 ease-out",
+              "flex items-center justify-center rounded-lg font-medium transition-all duration-300 ease-out",
               "hover:bg-accent/80 hover:text-accent-foreground",
-              // Mobile: icon only, larger touch targets
-              "px-2 py-2 sm:px-4 sm:py-2.5 sm:space-x-2",
+              // Mobile: icon only with adequate touch targets
+              "px-3 py-2.5 min-h-[44px] min-w-[44px]",
+              // Laptop and up: add horizontal padding for text and spacing
+              "lg:px-4 lg:space-x-2",
               viewMode === mode
                 ? "bg-gradient-primary text-primary-foreground shadow-glow scale-105"
                 : "text-muted-foreground hover:text-foreground"
             )}
           >
             <Icon className="w-4 h-4 flex-shrink-0" />
-            <span className="hidden sm:block text-sm font-semibold">{label}</span>
+            {/* Hidden on mobile, visible on laptop+ */}
+            <span className="hidden lg:block text-sm font-semibold whitespace-nowrap">{label}</span>
           </button>
         ))}
       </div>
