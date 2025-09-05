@@ -54,6 +54,27 @@ export const ProductDetailsModal = ({ product, open, onOpenChange }: ProductDeta
                 </div>
               </div>
 
+              {product.responsiblesShown && (
+                <div className="flex items-center space-x-3">
+                  <User className="w-5 h-5 text-primary" />
+                  <div className="flex items-center space-x-2">
+                    {product.responsiblesShown.profileImg && (
+                      <img 
+                        src={product.responsiblesShown.profileImg} 
+                        alt="Responsible person"
+                        className="w-8 h-8 rounded-full object-cover border border-border"
+                      />
+                    )}
+                    <div>
+                      <div className="font-semibold">Responsible</div>
+                      <div className="text-muted-foreground">
+                        {product.responsiblesShown.firstName} {product.responsiblesShown.lastName}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {product.instructor && (
                 <div className="flex items-center space-x-3">
                   <User className="w-5 h-5 text-primary" />

@@ -28,6 +28,11 @@ export interface Product {
   responsible?: string;
   waitlistStatus?: string;
   templateTitle?: string;
+  responsiblesShown?: {
+    profileImg?: string;
+    firstName?: string;
+    lastName?: string;
+  };
 }
 
 // Mock data simulating API response
