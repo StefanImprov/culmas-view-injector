@@ -1,5 +1,5 @@
 import { Product } from "../ProductInjector";
-import { Clock, Calendar, User, DollarSign } from "lucide-react";
+import { Clock, Calendar, User, DollarSign, MapPin } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface ListViewProps {
@@ -55,8 +55,9 @@ export const ListView = ({ products }: ListViewProps) => {
                   </div>
                 </div>
                 
-                <p className="text-muted-foreground text-sm sm:text-base line-clamp-2 sm:line-clamp-none">
-                  {product.description}
+                <p className="text-muted-foreground text-sm sm:text-base line-clamp-2 sm:line-clamp-none flex items-start space-x-1">
+                  <MapPin className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                  <span>{product.description}</span>
                 </p>
 
                 {/* Details row */}
