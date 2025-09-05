@@ -356,6 +356,11 @@ export const ProductInjector = ({
 
   const displayedProducts = filteredProducts.slice(0, itemsToShow);
 
+  // For calendar and week views, always show all products
+  const getProductsForView = (viewMode: ViewMode) => {
+    return (viewMode === "calendar" || viewMode === "week") ? filteredProducts : displayedProducts;
+  };
+
   const content = (
     <div className={cn("w-full space-y-6", className)}>
       {loading && (
@@ -394,33 +399,38 @@ export const ProductInjector = ({
               </div>
             ) : (
               <>
-                {viewMode === "card" && <CardView products={displayedProducts} />}
-                {viewMode === "list" && <ListView products={displayedProducts} />}
-                {viewMode === "calendar" && <CalendarView products={displayedProducts} />}
-                {viewMode === "week" && <WeekView products={displayedProducts} />}
+                {viewMode === "card" && <CardView products={getProductsForView(viewMode)} />}
+                {viewMode === "list" && <ListView products={getProductsForView(viewMode)} />}
+                {viewMode === "calendar" && <CalendarView products={getProductsForView(viewMode)} />}
+                {viewMode === "week" && <WeekView products={getProductsForView(viewMode)} />}
                 
-                {filteredProducts.length > itemsToShow && (
-                  <div className="flex justify-center mt-8">
-                    <Button
-                      onClick={() => setItemsToShow(itemsToShow + 6)}
-                      variant="outline"
-                      className="min-w-[120px]"
-                    >
-                      Show More ({filteredProducts.length - itemsToShow} remaining)
-                    </Button>
-                  </div>
-                )}
-                
-                {itemsToShow > 6 && filteredProducts.length <= itemsToShow && (
-                  <div className="flex justify-center mt-8">
-                    <Button
-                      onClick={() => setItemsToShow(6)}
-                      variant="outline"
-                      className="min-w-[120px]"
-                    >
-                      Show Less
-                    </Button>
-                  </div>
+                {/* Only show pagination buttons for card and list views */}
+                {(viewMode === "card" || viewMode === "list") && (
+                  <>
+                    {filteredProducts.length > itemsToShow && (
+                      <div className="flex justify-center mt-8">
+                        <Button
+                          onClick={() => setItemsToShow(itemsToShow + 6)}
+                          variant="outline"
+                          className="min-w-[120px]"
+                        >
+                          Show More ({filteredProducts.length - itemsToShow} remaining)
+                        </Button>
+                      </div>
+                    )}
+                    
+                    {itemsToShow > 6 && filteredProducts.length <= itemsToShow && (
+                      <div className="flex justify-center mt-8">
+                        <Button
+                          onClick={() => setItemsToShow(6)}
+                          variant="outline"
+                          className="min-w-[120px]"
+                        >
+                          Show Less
+                        </Button>
+                      </div>
+                    )}
+                  </>
                 )}
               </>
             )}
