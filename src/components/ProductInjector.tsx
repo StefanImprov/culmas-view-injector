@@ -23,6 +23,7 @@ export interface Product {
   image?: string;
   available: boolean;
   venue?: string;
+  responsible?: string;
 }
 
 // Mock data simulating API response
@@ -242,6 +243,14 @@ export const ProductInjector = ({
             const title = productTitle || venueTitle || `Event ${p?.id || 'Unknown'}`;
             const description = formattedAddress || (p?.status ?? "No description available");
 
+            // Extract responsible person name
+            const responsibleShown = Array.isArray(p?.responsiblesShown) && p.responsiblesShown.length > 0 
+              ? p.responsiblesShown[0] 
+              : null;
+            const responsible = responsibleShown 
+              ? `${responsibleShown.firstName || ''} ${responsibleShown.lastName || ''}`.trim()
+              : undefined;
+
             console.log(`Mapped product: ${title}`);
 
             return {
@@ -257,6 +266,7 @@ export const ProductInjector = ({
               image: p?.descriptionImg,
               available,
               venue: venueTitle || undefined,
+              responsible,
             } as Product;
           });
 
