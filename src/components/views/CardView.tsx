@@ -65,13 +65,6 @@ export const CardView = ({ products }: CardViewProps) => {
                 <span>{product.time} • {product.duration}</span>
               </div>
               
-              {product.responsible && (
-                <div className="flex items-center space-x-2">
-                  <User className="w-4 h-4 text-primary" />
-                  <span>{product.responsible}</span>
-                </div>
-              )}
-              
               {product.instructor && (
                 <div className="flex items-center space-x-2">
                   <User className="w-4 h-4 text-primary" />
