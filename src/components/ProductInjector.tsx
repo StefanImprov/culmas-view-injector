@@ -18,6 +18,8 @@ export interface Product {
   duration: string;
   category: string;
   instructor?: string;
+  responsible?: string;
+  venue?: string;
   image?: string;
   available: boolean;
 }
@@ -156,7 +158,8 @@ export const ProductInjector = ({
       totalTicketsLeft
     }
     responsibles {
-
+      firstName
+      lastName
     }
     venue {
       title
@@ -215,6 +218,12 @@ export const ProductInjector = ({
 
             const venueTitle = p?.venue?.title ?? "";
             const formattedAddress = p?.venue?.formatted_address ?? "";
+            
+            // Extract responsible person info
+            const responsibles = Array.isArray(p?.responsibles) ? p.responsibles : [];
+            const responsible = responsibles.length > 0 
+              ? `${responsibles[0]?.firstName || ''} ${responsibles[0]?.lastName || ''}`.trim()
+              : undefined;
 
             // Create a meaningful title from available data
             const title = venueTitle || `Event ${p?.id || 'Unknown'}`;
@@ -232,6 +241,8 @@ export const ProductInjector = ({
               duration,
               category: p?.status ?? "Event",
               instructor: undefined,
+              responsible: responsible,
+              venue: venueTitle || undefined,
               image: p?.descriptionImg,
               available,
             } as Product;
