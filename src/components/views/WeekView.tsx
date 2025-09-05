@@ -61,25 +61,25 @@ export const WeekView = ({ products }: WeekViewProps) => {
   return (
     <div className="bg-card border border-border rounded-xl shadow-lg overflow-hidden">
       {/* Week Header */}
-      <div className="bg-gradient-secondary px-6 py-4 border-b border-border">
-        <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-card-foreground">
+      <div className="bg-gradient-secondary px-4 sm:px-6 py-4 border-b border-border">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between space-y-2 sm:space-y-0">
+          <h2 className="text-xl sm:text-2xl font-bold text-card-foreground">
             Week View
           </h2>
-          <div className="flex items-center space-x-4">
-            <span className="text-lg text-muted-foreground">
+          <div className="flex items-center justify-between sm:justify-end space-x-4">
+            <span className="text-sm sm:text-lg text-muted-foreground">
               {formatWeekRange()}
             </span>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-1 sm:space-x-2">
               <button
                 onClick={() => navigateWeek('prev')}
-                className="p-2 rounded-lg hover:bg-accent transition-colors"
+                className="p-2 rounded-lg hover:bg-accent transition-colors min-h-[44px] min-w-[44px]"
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
               <button
                 onClick={() => navigateWeek('next')}
-                className="p-2 rounded-lg hover:bg-accent transition-colors"
+                className="p-2 rounded-lg hover:bg-accent transition-colors min-h-[44px] min-w-[44px]"
               >
                 <ChevronRight className="w-5 h-5" />
               </button>
@@ -88,8 +88,66 @@ export const WeekView = ({ products }: WeekViewProps) => {
         </div>
       </div>
 
-      {/* Week Grid */}
-      <div className="overflow-x-auto">
+      {/* Week Grid - Mobile and Desktop versions */}
+      <div className="block sm:hidden">
+        {/* Mobile: List view of events */}
+        <div className="p-4 space-y-3">
+          {weekDays.map((date, dayIndex) => {
+            const dayProducts = getProductsForDay(date);
+            const isToday = date.toDateString() === new Date().toDateString();
+            
+            return (
+              <div key={dayIndex} className="space-y-2">
+                <div className={cn(
+                  "font-semibold text-sm p-2 rounded-lg",
+                  isToday ? "bg-accent text-primary" : "text-muted-foreground"
+                )}>
+                  {dayNames[dayIndex]}, {date.getDate()}
+                </div>
+                
+                {dayProducts.length > 0 ? (
+                  <div className="space-y-2 pl-4">
+                    {dayProducts.map((product) => (
+                      <div
+                        key={product.id}
+                        onClick={() => setSelectedProduct(product)}
+                        className={cn(
+                          "p-3 rounded-lg text-sm cursor-pointer transition-all duration-300",
+                          product.available
+                            ? "bg-gradient-primary text-primary-foreground hover:shadow-md"
+                            : "bg-muted text-muted-foreground"
+                        )}
+                      >
+                        <div className="font-medium mb-2">{product.title}</div>
+                        <div className="space-y-1 opacity-90 text-xs">
+                          <div className="flex items-center space-x-2">
+                            <Clock className="w-3 h-3" />
+                            <span>{product.time} • {product.duration}</span>
+                          </div>
+                          {product.instructor && (
+                            <div className="flex items-center space-x-2">
+                              <User className="w-3 h-3" />
+                              <span>{product.instructor}</span>
+                            </div>
+                          )}
+                          <div className="flex items-center space-x-2 font-semibold">
+                            <DollarSign className="w-3 h-3" />
+                            <span>${product.price}</span>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-xs text-muted-foreground pl-4">No events</div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="hidden sm:block overflow-x-auto">
         <div className="min-w-[800px]">
           {/* Day Headers */}
           <div className="grid grid-cols-8 border-b border-border">
@@ -184,28 +242,28 @@ export const WeekView = ({ products }: WeekViewProps) => {
       </div>
 
       {/* Week Summary */}
-      <div className="p-6 border-t border-border bg-secondary/20">
-        <h3 className="font-semibold text-lg mb-4 text-card-foreground">
+      <div className="p-4 sm:p-6 border-t border-border bg-secondary/20">
+        <h3 className="font-semibold text-base sm:text-lg mb-4 text-card-foreground">
           This Week Summary
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <div className="bg-card border border-border rounded-lg p-4">
-            <div className="text-2xl font-bold text-primary">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+          <div className="bg-card border border-border rounded-lg p-3 sm:p-4">
+            <div className="text-xl sm:text-2xl font-bold text-primary">
               {products.length}
             </div>
-            <div className="text-sm text-muted-foreground">Total Classes</div>
+            <div className="text-xs sm:text-sm text-muted-foreground">Total Classes</div>
           </div>
-          <div className="bg-card border border-border rounded-lg p-4">
-            <div className="text-2xl font-bold text-primary">
+          <div className="bg-card border border-border rounded-lg p-3 sm:p-4">
+            <div className="text-xl sm:text-2xl font-bold text-primary">
               {products.filter(p => p.available).length}
             </div>
-            <div className="text-sm text-muted-foreground">Available Spots</div>
+            <div className="text-xs sm:text-sm text-muted-foreground">Available Spots</div>
           </div>
-          <div className="bg-card border border-border rounded-lg p-4">
-            <div className="text-2xl font-bold text-primary">
+          <div className="bg-card border border-border rounded-lg p-3 sm:p-4 sm:col-span-2 lg:col-span-1">
+            <div className="text-xl sm:text-2xl font-bold text-primary">
               ${Math.min(...products.map(p => p.price))} - ${Math.max(...products.map(p => p.price))}
             </div>
-            <div className="text-sm text-muted-foreground">Price Range</div>
+            <div className="text-xs sm:text-sm text-muted-foreground">Price Range</div>
           </div>
         </div>
       </div>

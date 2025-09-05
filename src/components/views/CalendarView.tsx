@@ -60,21 +60,21 @@ export const CalendarView = ({ products }: CalendarViewProps) => {
   return (
     <div className="bg-card border border-border rounded-xl shadow-lg overflow-hidden">
       {/* Calendar Header */}
-      <div className="bg-gradient-secondary px-6 py-4 border-b border-border">
+      <div className="bg-gradient-secondary px-4 sm:px-6 py-4 border-b border-border">
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-card-foreground">
+          <h2 className="text-xl sm:text-2xl font-bold text-card-foreground">
             {monthNames[month]} {year}
           </h2>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-1 sm:space-x-2">
             <button
               onClick={() => navigateMonth('prev')}
-              className="p-2 rounded-lg hover:bg-accent transition-colors"
+              className="p-2 rounded-lg hover:bg-accent transition-colors min-h-[44px] min-w-[44px]"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
             <button
               onClick={() => navigateMonth('next')}
-              className="p-2 rounded-lg hover:bg-accent transition-colors"
+              className="p-2 rounded-lg hover:bg-accent transition-colors min-h-[44px] min-w-[44px]"
             >
               <ChevronRight className="w-5 h-5" />
             </button>
@@ -85,8 +85,9 @@ export const CalendarView = ({ products }: CalendarViewProps) => {
       {/* Day Headers */}
       <div className="grid grid-cols-7 border-b border-border">
         {dayNames.map(day => (
-          <div key={day} className="p-4 text-center font-semibold text-muted-foreground bg-secondary/30">
-            {day}
+          <div key={day} className="p-2 sm:p-4 text-center font-semibold text-muted-foreground bg-secondary/30 text-xs sm:text-sm">
+            <span className="sm:hidden">{day.slice(0, 1)}</span>
+            <span className="hidden sm:block">{day}</span>
           </div>
         ))}
       </div>
@@ -101,37 +102,42 @@ export const CalendarView = ({ products }: CalendarViewProps) => {
             <div
               key={index}
               className={cn(
-                "min-h-[120px] p-2 border-b border-r border-border last:border-r-0",
+                "min-h-[80px] sm:min-h-[120px] p-1 sm:p-2 border-b border-r border-border last:border-r-0",
                 isCurrentMonth ? "bg-card" : "bg-muted/30",
                 isToday && "bg-accent/20"
               )}
             >
               <div className={cn(
-                "text-sm font-medium mb-2",
+                "text-xs sm:text-sm font-medium mb-1 sm:mb-2",
                 isCurrentMonth ? "text-card-foreground" : "text-muted-foreground",
                 isToday && "text-primary font-bold"
               )}>
                 {date.getDate()}
               </div>
               
-              <div className="space-y-1">
-                {dayProducts.map((product) => (
+              <div className="space-y-0.5 sm:space-y-1">
+                {dayProducts.slice(0, 2).map((product) => (
                   <div
                     key={product.id}
                     className={cn(
-                      "p-1.5 rounded-md text-xs cursor-pointer transition-colors",
+                      "p-1 sm:p-1.5 rounded-md text-xs cursor-pointer transition-colors",
                       product.available 
                         ? "bg-gradient-primary text-primary-foreground hover:shadow-sm" 
                         : "bg-muted text-muted-foreground"
                     )}
                   >
-                    <div className="font-medium truncate">{product.title}</div>
-                    <div className="flex items-center space-x-1 opacity-90">
+                    <div className="font-medium truncate text-xs sm:text-xs">{product.title}</div>
+                    <div className="hidden sm:flex items-center space-x-1 opacity-90">
                       <Clock className="w-3 h-3" />
                       <span>{product.time}</span>
                     </div>
                   </div>
                 ))}
+                {dayProducts.length > 2 && (
+                  <div className="text-xs text-muted-foreground p-1">
+                    +{dayProducts.length - 2} more
+                  </div>
+                )}
               </div>
             </div>
           );
@@ -140,42 +146,42 @@ export const CalendarView = ({ products }: CalendarViewProps) => {
 
       {/* Products List for Selected Month */}
       {products.length > 0 && (
-        <div className="p-6 border-t border-border bg-secondary/20">
-          <h3 className="font-semibold text-lg mb-4 text-card-foreground">
+        <div className="p-4 sm:p-6 border-t border-border bg-secondary/20">
+          <h3 className="font-semibold text-base sm:text-lg mb-4 text-card-foreground">
             Classes This Month
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             {products.map((product) => (
               <div
                 key={product.id}
                 className={cn(
-                  "p-4 rounded-lg border border-border bg-card hover:bg-accent/5 transition-colors",
+                  "p-3 sm:p-4 rounded-lg border border-border bg-card hover:bg-accent/5 transition-colors",
                   !product.available && "opacity-60"
                 )}
               >
                 <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <h4 className="font-medium text-card-foreground mb-1">
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-medium text-card-foreground mb-1 text-sm sm:text-base truncate">
                       {product.title}
                     </h4>
-                    <div className="space-y-1 text-sm text-muted-foreground">
+                    <div className="space-y-1 text-xs sm:text-sm text-muted-foreground">
                       <div className="flex items-center space-x-2">
                         <span>{product.date.toLocaleDateString()}</span>
-                        <Clock className="w-3 h-3" />
+                        <Clock className="w-3 h-3 flex-shrink-0" />
                         <span>{product.time}</span>
                       </div>
                       {product.instructor && (
                         <div className="flex items-center space-x-2">
-                          <User className="w-3 h-3" />
-                          <span>{product.instructor}</span>
+                          <User className="w-3 h-3 flex-shrink-0" />
+                          <span className="truncate">{product.instructor}</span>
                         </div>
                       )}
                     </div>
                   </div>
-                  <div className="text-right">
+                  <div className="text-right flex-shrink-0 ml-3">
                     <div className="flex items-center space-x-1 text-primary font-semibold">
-                      <DollarSign className="w-4 h-4" />
-                      <span>{product.price}</span>
+                      <DollarSign className="w-3 sm:w-4 h-3 sm:h-4" />
+                      <span className="text-sm sm:text-base">{product.price}</span>
                     </div>
                     {!product.available && (
                       <div className="text-xs text-destructive mt-1">

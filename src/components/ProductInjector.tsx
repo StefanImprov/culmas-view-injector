@@ -310,18 +310,18 @@ export const ProductInjector = ({
       </div>
 
       {products.length > 4 && (
-        <div className="flex justify-center pt-4">
+        <div className="flex justify-center pt-4 px-4 sm:px-0">
           {!showAll ? (
             <button
               onClick={handleShowMore}
-              className="bg-gradient-primary text-primary-foreground px-6 py-3 rounded-lg font-medium hover:shadow-glow transition-all duration-300 transform hover:scale-105"
+              className="w-full sm:w-auto bg-gradient-primary text-primary-foreground px-6 py-3 rounded-lg font-medium hover:shadow-glow transition-all duration-300 transform hover:scale-105 min-h-[44px]"
             >
               Show More ({products.length - 4} more)
             </button>
           ) : (
             <button
               onClick={handleShowLess}
-              className="bg-secondary text-secondary-foreground px-6 py-3 rounded-lg font-medium hover:bg-accent transition-all duration-300"
+              className="w-full sm:w-auto bg-secondary text-secondary-foreground px-6 py-3 rounded-lg font-medium hover:bg-accent transition-all duration-300 min-h-[44px]"
             >
               Show Less
             </button>
