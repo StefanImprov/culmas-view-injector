@@ -55,10 +55,10 @@ export const ListView = ({ products }: ListViewProps) => {
                   </div>
                 </div>
                 
-                <p className="text-muted-foreground text-sm sm:text-base line-clamp-2 sm:line-clamp-none flex items-start space-x-1">
+                <div className="text-muted-foreground text-sm sm:text-base line-clamp-2 sm:line-clamp-none flex items-start space-x-1">
                   <MapPin className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
                   <span>{product.description}</span>
-                </p>
+                </div>
 
                 {/* Details row */}
                 <div className="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-6 text-sm text-muted-foreground">
