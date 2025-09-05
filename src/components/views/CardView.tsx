@@ -48,8 +48,8 @@ export const CardView = ({ products }: CardViewProps) => {
               <h3 className="font-bold text-base sm:text-lg text-card-foreground group-hover:text-primary transition-colors line-clamp-2">
                 {product.title}
               </h3>
-              <div className="text-muted-foreground text-sm leading-relaxed line-clamp-2 flex items-start space-x-1">
-                <MapPin className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+              <div className="text-muted-foreground text-sm leading-relaxed line-clamp-2 flex items-center space-x-2">
+                <MapPin className="w-4 h-4 text-primary flex-shrink-0" />
                 <span>{product.description}</span>
               </div>
             </div>
