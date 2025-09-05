@@ -211,11 +211,12 @@ export const ProductInjector = ({
             const totalLeft = Number(p?.tickets?.totalTicketsLeft ?? 0);
             const available = totalLeft > 0;
 
-            const venueTitle = p?.venue?.title ?? "";
+            const productTitle = (p?.title ?? "").trim();
+            const venueTitle = (p?.venue?.title ?? "").trim();
             const formattedAddress = p?.venue?.formatted_address ?? "";
 
-            // Create a meaningful title from available data
-            const title = venueTitle || `Event ${p?.id || 'Unknown'}`;
+            // Prefer product title; fallback to venue title then ID
+            const title = productTitle || venueTitle || `Event ${p?.id || 'Unknown'}`;
             const description = formattedAddress || (p?.status ?? "No description available");
 
             console.log(`Mapped product: ${title}`);
