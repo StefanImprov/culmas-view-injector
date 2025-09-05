@@ -128,28 +128,69 @@ export const ProductInjector = ({
         setLoading(true);
         setError(null);
         
-        // Build the API URL
-        const baseUrl = "https://api-misty.culmas.io/templateComponents/theaters/SoffieDanceStudio/template";
-        const templateIdsParam = templateIds.length > 0 ? templateIds.join(',') : 'BmpIkNsUSXCmxNLKdYJr,OaP3yjEnHmebHosBEmFk,VlAsnZcnMMDORZD0tVwH,VofjhOK5dasYJV3GRYoB';
-        const venueIdsParam = venueIds.length > 0 ? venueIds.join(',') : '';
-        
-        const apiUrl = `${baseUrl}?templateIds=${templateIdsParam}&venueIds=${venueIdsParam}`;
-        
-        console.log('Fetching from Culmas API:', apiUrl);
-        
-        const response = await fetch(apiUrl);
-        
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+        // Call Culmas DEV GraphQL API and log what we get back
+        const graphqlEndpoint = "https://api.dev.culmas.io/";
+        const sharedHeaders: Record<string, string> = {
+          "Content-Type": "application/json",
+          // Required tenant header per user instructions (no trailing slash)
+          domain: "globe-dance.dev.culmas.io",
+        };
+
+        // We'll try a few likely queries since introspection is disabled.
+        const candidates = [
+          {
+            name: "products_ONLYAVAILABLEFORSALE",
+            query: `query ($ONLYAVAILABLEFORSALE: Boolean!) {\n              products(ONLYAVAILABLEFORSALE: $ONLYAVAILABLEFORSALE) {\n                id\n                title\n                description\n                price\n                date\n                time\n                duration\n                category\n                instructor\n                image\n                available\n              }\n            }`,
+            variables: { ONLYAVAILABLEFORSALE: true },
+          },
+          {
+            name: "products_onlyAvailableForSale",
+            query: `query ($onlyAvailableForSale: Boolean!) {\n              products(onlyAvailableForSale: $onlyAvailableForSale) {\n                id\n                title\n                description\n                price\n                date\n                time\n                duration\n                category\n                instructor\n                image\n                available\n              }\n            }`,
+            variables: { onlyAvailableForSale: true },
+          },
+          {
+            name: "allProducts_onlyAvailableForSale",
+            query: `query ($onlyAvailableForSale: Boolean!) {\n              allProducts(onlyAvailableForSale: $onlyAvailableForSale) {\n                id\n                title\n                description\n                price\n                date\n                time\n                duration\n                category\n                instructor\n                image\n                available\n              }\n            }`,
+            variables: { onlyAvailableForSale: true },
+          },
+        ];
+
+        let extracted: any[] | null = null;
+        for (const cand of candidates) {
+          try {
+            console.log("Trying Culmas DEV API:", cand.name);
+            const resp = await fetch(graphqlEndpoint, {
+              method: "POST",
+              headers: sharedHeaders,
+              body: JSON.stringify({ query: cand.query, variables: cand.variables }),
+            });
+
+            const text = await resp.text();
+            let json: any;
+            try {
+              json = JSON.parse(text);
+            } catch {
+              json = { raw: text };
+            }
+            console.log("Culmas DEV API response (", cand.name, "):", json);
+
+            const maybeData = json?.data;
+            if (maybeData?.products && Array.isArray(maybeData.products)) {
+              extracted = maybeData.products;
+              break;
+            }
+            if (maybeData?.allProducts && Array.isArray(maybeData.allProducts)) {
+              extracted = maybeData.allProducts;
+              break;
+            }
+          } catch (e) {
+            console.warn("Culmas DEV API try failed for", cand.name, e);
+          }
         }
-        
-        const htmlContent = await response.text();
-        console.log('API Response:', htmlContent);
-        
-        // For now, we'll use mock data but log the real API response
-        // TODO: Parse the HTML content to extract real product data
+
+        // For now, keep using mock data for UI while we inspect API shape in console
+        // TODO: Once schema is confirmed, map 'extracted' into Product[] and render real data
         setProducts(mockProducts);
-        
       } catch (err) {
         console.error("Failed to fetch products:", err);
         setError("An error occurred while loading the products");
