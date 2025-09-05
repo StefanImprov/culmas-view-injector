@@ -128,69 +128,113 @@ export const ProductInjector = ({
         setLoading(true);
         setError(null);
         
-        // Call Culmas DEV GraphQL API and log what we get back
+        // Call Culmas DEV GraphQL API with the provided query
         const graphqlEndpoint = "https://api.dev.culmas.io/";
         const sharedHeaders: Record<string, string> = {
           "Content-Type": "application/json",
-          // Required tenant header per user instructions (no trailing slash)
+          // Tenant header
           domain: "globe-dance.dev.culmas.io",
         };
 
-        // We'll try a few likely queries since introspection is disabled.
-        const candidates = [
-          {
-            name: "products_ONLYAVAILABLEFORSALE",
-            query: `query ($ONLYAVAILABLEFORSALE: Boolean!) {\n              products(ONLYAVAILABLEFORSALE: $ONLYAVAILABLEFORSALE) {\n                id\n                title\n                description\n                price\n                date\n                time\n                duration\n                category\n                instructor\n                image\n                available\n              }\n            }`,
-            variables: { ONLYAVAILABLEFORSALE: true },
-          },
-          {
-            name: "products_onlyAvailableForSale",
-            query: `query ($onlyAvailableForSale: Boolean!) {\n              products(onlyAvailableForSale: $onlyAvailableForSale) {\n                id\n                title\n                description\n                price\n                date\n                time\n                duration\n                category\n                instructor\n                image\n                available\n              }\n            }`,
+        const CULMAS_QUERY = `query allProducts($onlyAvailableForSale: Boolean) {
+  allProducts(onlyAvailableForSale: $onlyAvailableForSale) {
+    id
+    descriptionImg
+    end
+    endTime
+    nextEventStart
+    status
+    tickets {
+      tickets {
+        numberOfTicketLeft
+        numberOfTicket
+        price
+        ticketType
+        isRecurring
+      }
+      totalTickets
+      totalTicketsLeft
+    }
+    venue {
+      title
+      formatted_address
+      geoPoint
+    }
+  }
+}`;
+
+        console.log("Calling Culmas DEV API allProducts with onlyAvailableForSale=true");
+        const resp = await fetch(graphqlEndpoint, {
+          method: "POST",
+          headers: sharedHeaders,
+          body: JSON.stringify({
+            query: CULMAS_QUERY,
             variables: { onlyAvailableForSale: true },
-          },
-          {
-            name: "allProducts_onlyAvailableForSale",
-            query: `query ($onlyAvailableForSale: Boolean!) {\n              allProducts(onlyAvailableForSale: $onlyAvailableForSale) {\n                id\n                title\n                description\n                price\n                date\n                time\n                duration\n                category\n                instructor\n                image\n                available\n              }\n            }`,
-            variables: { onlyAvailableForSale: true },
-          },
-        ];
+          }),
+        });
 
-        let extracted: any[] | null = null;
-        for (const cand of candidates) {
-          try {
-            console.log("Trying Culmas DEV API:", cand.name);
-            const resp = await fetch(graphqlEndpoint, {
-              method: "POST",
-              headers: sharedHeaders,
-              body: JSON.stringify({ query: cand.query, variables: cand.variables }),
-            });
-
-            const text = await resp.text();
-            let json: any;
-            try {
-              json = JSON.parse(text);
-            } catch {
-              json = { raw: text };
-            }
-            console.log("Culmas DEV API response (", cand.name, "):", json);
-
-            const maybeData = json?.data;
-            if (maybeData?.products && Array.isArray(maybeData.products)) {
-              extracted = maybeData.products;
-              break;
-            }
-            if (maybeData?.allProducts && Array.isArray(maybeData.allProducts)) {
-              extracted = maybeData.allProducts;
-              break;
-            }
-          } catch (e) {
-            console.warn("Culmas DEV API try failed for", cand.name, e);
-          }
+        const text = await resp.text();
+        let json: any;
+        try {
+          json = JSON.parse(text);
+        } catch {
+          json = { raw: text };
         }
+        console.log("Culmas DEV API raw response (allProducts):", json);
 
-        // For now, keep using mock data for UI while we inspect API shape in console
-        // TODO: Once schema is confirmed, map 'extracted' into Product[] and render real data
-        setProducts(mockProducts);
+        const arr = json?.data?.allProducts;
+        if (Array.isArray(arr)) {
+          const mapped: Product[] = arr.map((p: any) => {
+            const startStr: string | null = p?.nextEventStart ?? null;
+            const endStr: string | null = p?.end ?? null;
+            const startDate = startStr ? new Date(startStr) : null;
+            const endDate = endStr ? new Date(endStr) : null;
+            const validStart = !!(startDate && !isNaN(startDate.getTime()));
+
+            const timeStr = validStart
+              ? startDate!.toTimeString().slice(0, 5)
+              : (p?.endTime ?? "00:00");
+
+            let duration = "60min";
+            if (validStart && endDate && !isNaN(endDate.getTime())) {
+              const mins = Math.max(0, Math.round((endDate.getTime() - startDate!.getTime()) / 60000));
+              if (mins > 0) duration = `${mins}min`;
+            }
+
+            const ticketLines = Array.isArray(p?.tickets?.tickets) ? p.tickets.tickets : [];
+            const prices = ticketLines
+              .map((t: any) => Number(t?.price))
+              .filter((n: number) => !isNaN(n));
+            const price = prices.length ? Math.min(...prices) : 0;
+            const totalLeft = Number(p?.tickets?.totalTicketsLeft ?? 0);
+            const available = totalLeft > 0;
+
+            const venueTitle = p?.venue?.title ?? "";
+            const formattedAddress = p?.venue?.formatted_address ?? "";
+
+            const title = venueTitle ? `Event at ${venueTitle}` : "Event";
+            const description = formattedAddress || (p?.status ?? "");
+
+            return {
+              id: String(p?.id ?? Math.random().toString(36).slice(2)),
+              title,
+              description,
+              price,
+              date: validStart ? (startDate as Date) : new Date(),
+              time: timeStr,
+              duration,
+              category: p?.status ?? "Event",
+              instructor: undefined,
+              image: p?.descriptionImg,
+              available,
+            } as Product;
+          });
+
+          setProducts(mapped);
+        } else {
+          console.warn("Culmas DEV API allProducts not an array; falling back to mock data", json);
+          setProducts(mockProducts);
+        }
       } catch (err) {
         console.error("Failed to fetch products:", err);
         setError("An error occurred while loading the products");
