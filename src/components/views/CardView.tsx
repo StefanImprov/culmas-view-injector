@@ -1,17 +1,31 @@
 import { Product } from "../ProductInjector";
-import { Clock, Calendar, User, MapPin } from "lucide-react";
+import { Clock, Calendar, User, DollarSign, MapPin } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useState } from "react";
+import { ProductDetailsModal } from "../ProductDetailsModal";
 
 interface CardViewProps {
   products: Product[];
 }
 
 export const CardView = ({ products }: CardViewProps) => {
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+
+  const handleCardClick = (product: Product) => {
+    setSelectedProduct(product);
+  };
+
+  const handleBookClick = (e: React.MouseEvent, product: Product) => {
+    e.stopPropagation();
+    setSelectedProduct(product);
+  };
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
       {products.map((product) => (
         <div
           key={product.id}
+          onClick={() => handleCardClick(product)}
           className={cn(
             "bg-card border border-border rounded-xl overflow-hidden shadow-md transition-all duration-300",
             "hover:shadow-xl hover:border-primary/20 hover:scale-105 transform",
@@ -98,11 +112,17 @@ export const CardView = ({ products }: CardViewProps) => {
               </div>
               
               {product.available ? (
-                <button className="w-full bg-gradient-primary text-primary-foreground px-4 py-2.5 sm:py-2 rounded-lg text-sm font-semibold hover:shadow-glow transition-all duration-300 transform hover:scale-105 min-h-[44px]">
+                <button 
+                  onClick={(e) => handleBookClick(e, product)}
+                  className="w-full bg-gradient-primary text-primary-foreground px-4 py-2.5 sm:py-2 rounded-lg text-sm font-semibold hover:shadow-glow transition-all duration-300 transform hover:scale-105 min-h-[44px]"
+                >
                   Book Now
                 </button>
               ) : product.waitlistStatus === "ACTIVE" ? (
-                <button className="w-full bg-secondary text-secondary-foreground px-4 py-2.5 sm:py-2 rounded-lg text-sm font-semibold hover:bg-accent transition-all duration-300 min-h-[44px]">
+                <button 
+                  onClick={(e) => handleBookClick(e, product)}
+                  className="w-full bg-secondary text-secondary-foreground px-4 py-2.5 sm:py-2 rounded-lg text-sm font-semibold hover:bg-accent transition-all duration-300 min-h-[44px]"
+                >
                   Join Waitlist
                 </button>
               ) : null}
@@ -110,6 +130,12 @@ export const CardView = ({ products }: CardViewProps) => {
           </div>
         </div>
       ))}
+      
+      <ProductDetailsModal 
+        product={selectedProduct}
+        open={!!selectedProduct}
+        onOpenChange={() => setSelectedProduct(null)}
+      />
     </div>
   );
 };

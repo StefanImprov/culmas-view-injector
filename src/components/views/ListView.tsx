@@ -1,17 +1,31 @@
 import { Product } from "../ProductInjector";
 import { Clock, Calendar, User, DollarSign, MapPin } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useState } from "react";
+import { ProductDetailsModal } from "../ProductDetailsModal";
 
 interface ListViewProps {
   products: Product[];
 }
 
 export const ListView = ({ products }: ListViewProps) => {
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+
+  const handleCardClick = (product: Product) => {
+    setSelectedProduct(product);
+  };
+
+  const handleBookClick = (e: React.MouseEvent, product: Product) => {
+    e.stopPropagation();
+    setSelectedProduct(product);
+  };
+
   return (
     <div className="space-y-3">
       {products.map((product) => (
         <div
           key={product.id}
+          onClick={() => handleCardClick(product)}
           className={cn(
             "bg-card border border-border rounded-xl p-4 sm:p-6 shadow-sm transition-all duration-300",
             "hover:shadow-lg hover:border-primary/20 hover:bg-accent/5",
@@ -107,11 +121,17 @@ export const ListView = ({ products }: ListViewProps) => {
 
               {/* Action */}
               {product.available ? (
-                <button className="w-full sm:w-auto bg-gradient-primary text-primary-foreground px-4 sm:px-6 py-3 rounded-lg font-semibold hover:shadow-glow transition-all duration-300 transform hover:scale-105 min-h-[44px]">
+                <button 
+                  onClick={(e) => handleBookClick(e, product)}
+                  className="w-full sm:w-auto bg-gradient-primary text-primary-foreground px-4 sm:px-6 py-3 rounded-lg font-semibold hover:shadow-glow transition-all duration-300 transform hover:scale-105 min-h-[44px]"
+                >
                   Book Now
                 </button>
               ) : product.waitlistStatus === "ACTIVE" ? (
-                <button className="w-full sm:w-auto bg-secondary text-secondary-foreground px-4 sm:px-6 py-3 rounded-lg font-semibold hover:bg-accent transition-all duration-300 min-h-[44px]">
+                <button 
+                  onClick={(e) => handleBookClick(e, product)}
+                  className="w-full sm:w-auto bg-secondary text-secondary-foreground px-4 sm:px-6 py-3 rounded-lg font-semibold hover:bg-accent transition-all duration-300 min-h-[44px]"
+                >
                   Join Waitlist
                 </button>
               ) : null}
@@ -119,6 +139,12 @@ export const ListView = ({ products }: ListViewProps) => {
           </div>
         </div>
       ))}
+      
+      <ProductDetailsModal 
+        product={selectedProduct}
+        open={!!selectedProduct}
+        onOpenChange={() => setSelectedProduct(null)}
+      />
     </div>
   );
 };
