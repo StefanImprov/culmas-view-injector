@@ -2,15 +2,15 @@ import { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Palette, Download, Eye, RefreshCw } from 'lucide-react';
+import { Palette, RefreshCw } from 'lucide-react';
 import { useTheme } from '@/components/ThemeProvider';
 import { Theme, DesignStyle } from '@/types/theme';
 import { ColorPicker } from '@/components/ColorPicker';
+import { EmbedScriptGenerator } from '@/components/EmbedScriptGenerator';
 import { cn } from '@/lib/utils';
 
 export const ThemeCustomizer = () => {
   const { theme, setTheme, availableThemes } = useTheme();
-  const [showPreview, setShowPreview] = useState(false);
   const [isCustomizing, setIsCustomizing] = useState(false);
 
   const handleColorChange = (colorKey: keyof typeof theme.colors, newValue: string) => {
@@ -42,47 +42,6 @@ export const ThemeCustomizer = () => {
       case 'vibrant':
         return 'Bold, energetic design with strong gradients and enhanced effects';
     }
-  };
-
-  const generateEmbedCode = (selectedTheme: Theme) => {
-    const cssVars = Object.entries(selectedTheme.colors)
-      .map(([key, value]) => {
-        const cssVarName = key.replace(/([A-Z])/g, '-$1').toLowerCase();
-        return `    --${cssVarName}: ${value};`;
-      })
-      .join('\n');
-
-    return `<!-- Culmas Product Injector -->
-<div id="culmas-products"></div>
-<style>
-  :root {
-${cssVars}
-    --radius: ${selectedTheme.design.borderRadius};
-  }
-  .culmas-products { 
-    font-family: system-ui, -apple-system, sans-serif; 
-  }
-</style>
-<script>
-  // Initialize Culmas Product Injector with theme: ${selectedTheme.name}
-  window.CulmasProductInjector.init({
-    elementId: 'culmas-products',
-    theme: '${selectedTheme.id}'
-  });
-</script>`;
-  };
-
-  const downloadEmbedCode = () => {
-    const code = generateEmbedCode(theme);
-    const blob = new Blob([code], { type: 'text/html' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `culmas-product-injector-${theme.id}.html`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
   };
 
   return (
@@ -159,36 +118,17 @@ ${cssVars}
             Current Theme: {theme.name}
             {isCustomizing && <Badge variant="secondary" className="ml-2">Customized</Badge>}
           </h3>
-          <div className="flex gap-2">
-            {isCustomizing && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={resetToOriginal}
-                className="flex items-center gap-2"
-              >
-                <RefreshCw className="w-4 h-4" />
-                Reset
-              </Button>
-            )}
+          {isCustomizing && (
             <Button
               variant="outline"
               size="sm"
-              onClick={() => setShowPreview(!showPreview)}
+              onClick={resetToOriginal}
               className="flex items-center gap-2"
             >
-              <Eye className="w-4 h-4" />
-              {showPreview ? 'Hide' : 'Show'} Code
+              <RefreshCw className="w-4 h-4" />
+              Reset
             </Button>
-            <Button
-              size="sm"
-              onClick={downloadEmbedCode}
-              className="flex items-center gap-2"
-            >
-              <Download className="w-4 h-4" />
-              Download Code
-            </Button>
-          </div>
+          )}
         </div>
 
         {/* Color Customization */}
@@ -268,17 +208,10 @@ ${cssVars}
             </div>
           </div>
         </div>
-
-        {/* Embed Code Preview */}
-        {showPreview && (
-          <div className="mt-6 p-4 bg-muted rounded-lg">
-            <h4 className="font-medium mb-2">Embed Code</h4>
-            <pre className="text-xs text-muted-foreground overflow-x-auto whitespace-pre-wrap">
-              {generateEmbedCode(theme)}
-            </pre>
-          </div>
-        )}
       </Card>
+
+      {/* Embed Script Generator */}
+      <EmbedScriptGenerator theme={theme} />
     </div>
   );
 };
