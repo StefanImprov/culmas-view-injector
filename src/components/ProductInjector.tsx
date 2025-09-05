@@ -183,7 +183,8 @@ export const ProductInjector = ({
         console.log("Culmas DEV API raw response (allProducts):", json);
 
         const arr = json?.data?.allProducts;
-        if (Array.isArray(arr)) {
+        if (Array.isArray(arr) && arr.length > 0) {
+          console.log("Mapping API products to display format...");
           const mapped: Product[] = arr.map((p: any) => {
             const startStr: string | null = p?.nextEventStart ?? null;
             const endStr: string | null = p?.end ?? null;
@@ -212,8 +213,11 @@ export const ProductInjector = ({
             const venueTitle = p?.venue?.title ?? "";
             const formattedAddress = p?.venue?.formatted_address ?? "";
 
-            const title = venueTitle ? `Event at ${venueTitle}` : "Event";
-            const description = formattedAddress || (p?.status ?? "");
+            // Create a meaningful title from available data
+            const title = venueTitle || `Event ${p?.id || 'Unknown'}`;
+            const description = formattedAddress || (p?.status ?? "No description available");
+
+            console.log(`Mapped product: ${title}`);
 
             return {
               id: String(p?.id ?? Math.random().toString(36).slice(2)),
@@ -230,9 +234,10 @@ export const ProductInjector = ({
             } as Product;
           });
 
+          console.log(`Successfully mapped ${mapped.length} products from API`);
           setProducts(mapped);
         } else {
-          console.warn("Culmas DEV API allProducts not an array; falling back to mock data", json);
+          console.warn("Culmas DEV API allProducts not valid; falling back to mock data", json);
           setProducts(mockProducts);
         }
       } catch (err) {
