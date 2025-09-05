@@ -62,7 +62,7 @@ export const CalendarView = ({ products }: CalendarViewProps) => {
   return (
     <div className="bg-card border border-border rounded-xl shadow-lg overflow-hidden">
       {/* Calendar Header */}
-      <div className="bg-gradient-secondary px-4 sm:px-6 py-4 border-b border-border">
+      <div className="bg-muted/30 px-4 sm:px-6 py-4 border-b border-border">
         <div className="flex items-center justify-between">
           <h2 className="text-xl sm:text-2xl font-bold text-card-foreground">
             {monthNames[month]} {year}
