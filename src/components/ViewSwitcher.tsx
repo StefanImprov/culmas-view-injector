@@ -1,36 +1,45 @@
 import { ViewMode } from "./ProductInjector";
 import { Calendar, List, Grid3X3, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface ViewSwitcherProps {
   viewMode: ViewMode;
   onViewModeChange: (mode: ViewMode) => void;
 }
 
-const viewOptions = [
-  {
-    mode: "card" as ViewMode,
-    label: "Card View",
-    icon: Grid3X3,
-  },
-  {
-    mode: "list" as ViewMode,
-    label: "List View", 
-    icon: List,
-  },
-  {
-    mode: "calendar" as ViewMode,
-    label: "Calendar View",
-    icon: Calendar,
-  },
-  {
-    mode: "week" as ViewMode,
-    label: "Week View",
-    icon: Clock,
-  },
-];
-
 export const ViewSwitcher = ({ viewMode, onViewModeChange }: ViewSwitcherProps) => {
+  const isMobile = useIsMobile();
+  
+  const getViewOptions = () => {
+    const allViews = [
+      {
+        mode: "card" as ViewMode,
+        label: "Card View",
+        icon: Grid3X3,
+      },
+      {
+        mode: "list" as ViewMode,
+        label: "List View", 
+        icon: List,
+      },
+      {
+        mode: "calendar" as ViewMode,
+        label: "Calendar View",
+        icon: Calendar,
+      },
+      {
+        mode: "week" as ViewMode,
+        label: "Week View",
+        icon: isMobile ? Calendar : Clock, // Use Calendar icon on mobile
+      },
+    ];
+    
+    // Filter out calendar view on mobile
+    return isMobile ? allViews.filter(view => view.mode !== "calendar") : allViews;
+  };
+
+  const viewOptions = getViewOptions();
   return (
     <div className="flex items-center justify-center w-full">
       <div className="bg-secondary/50 backdrop-blur-sm p-1 rounded-xl border border-border shadow-md flex items-center">
