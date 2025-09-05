@@ -105,10 +105,15 @@ interface ProductInjectorProps {
   className?: string;
 }
 
+// Define default values outside component to prevent infinite re-renders
+const DEFAULT_TEMPLATE_IDS: string[] = [];
+const DEFAULT_VENUE_IDS: string[] = [];
+const DEFAULT_API_URL = "";
+
 export const ProductInjector = ({ 
-  templateIds = [], 
-  venueIds = [], 
-  apiUrl = "",
+  templateIds = DEFAULT_TEMPLATE_IDS, 
+  venueIds = DEFAULT_VENUE_IDS, 
+  apiUrl = DEFAULT_API_URL,
   className = "" 
 }: ProductInjectorProps) => {
   const [products, setProducts] = useState<Product[]>([]);
