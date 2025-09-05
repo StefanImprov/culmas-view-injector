@@ -37,7 +37,7 @@ export const ListView = ({ products }: ListViewProps) => {
             {/* Left content */}
             <div className="flex items-start sm:items-center space-x-4 sm:space-x-6 flex-1">
               {/* Icon/Image */}
-              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-secondary rounded-xl overflow-hidden group-hover:bg-gradient-primary transition-all duration-300 flex-shrink-0">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-secondary rounded-xl overflow-hidden group-hover:bg-primary transition-all duration-300 flex-shrink-0">
                 {product.image ? (
                   <img 
                     src={product.image} 
@@ -45,7 +45,7 @@ export const ListView = ({ products }: ListViewProps) => {
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center text-lg sm:text-2xl group-hover:text-primary-foreground transition-all duration-300">
+                  <div className="w-full h-full flex items-center justify-center text-lg sm:text-2xl group-hover:text-white transition-all duration-300">
                     🎭
                   </div>
                 )}

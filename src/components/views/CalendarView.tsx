@@ -119,13 +119,13 @@ export const CalendarView = ({ products }: CalendarViewProps) => {
               
               <div className="space-y-0.5 sm:space-y-1">
                 {dayProducts.slice(0, 2).map((product) => (
-                  <div
+                   <div
                     key={product.id}
                     onClick={() => setSelectedProduct(product)}
                     className={cn(
                       "p-1 sm:p-1.5 rounded-md text-xs cursor-pointer transition-colors",
                       product.available 
-                        ? "bg-gradient-primary text-primary-foreground hover:shadow-sm" 
+                        ? "bg-primary text-white hover:shadow-sm" 
                         : "bg-muted text-muted-foreground"
                     )}
                   >

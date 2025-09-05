@@ -114,7 +114,7 @@ export const WeekView = ({ products }: WeekViewProps) => {
                         className={cn(
                           "p-3 rounded-lg text-sm cursor-pointer transition-all duration-300",
                           product.available
-                            ? "bg-gradient-primary text-primary-foreground hover:shadow-md"
+                            ? "bg-primary text-white hover:shadow-md"
                             : "bg-muted text-muted-foreground"
                         )}
                       >
@@ -203,7 +203,7 @@ export const WeekView = ({ products }: WeekViewProps) => {
                         className={cn(
                           "p-2 rounded-lg text-xs cursor-pointer transition-all duration-300 mb-1 last:mb-0",
                           product.available
-                            ? "bg-gradient-primary text-primary-foreground hover:shadow-md hover:scale-105"
+                            ? "bg-primary text-white hover:shadow-md hover:scale-105"
                             : "bg-muted text-muted-foreground"
                         )}
                       >
@@ -370,7 +370,7 @@ export const WeekView = ({ products }: WeekViewProps) => {
                 {/* Action Button */}
                 {selectedProduct.available && (
                   <div className="flex justify-end pt-4 border-t">
-                    <button className="bg-gradient-primary text-primary-foreground px-6 py-3 rounded-lg font-semibold hover:shadow-glow transition-all duration-300 transform hover:scale-105">
+                    <button className="bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:shadow-glow transition-all duration-300 transform hover:scale-105">
                       Book This Event
                     </button>
                   </div>

@@ -66,6 +66,8 @@
     --gradient-primary: hsl(var(--primary));
     --gradient-hero: hsl(var(--primary));
     --transition-smooth: all 0.15s ease;
+    /* Ensure better contrast for events */
+    --primary-foreground: 210 40% 98%;
   }
   
   .theme-vibrant {
