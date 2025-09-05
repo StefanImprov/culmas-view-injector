@@ -265,7 +265,7 @@ export const ProductInjector = ({
               startTime: p?.startTime || timeStr,
               endTime: p?.endTime,
               duration,
-              category: p?.status ?? "Event",
+              category: p?.category ?? "Event",
               instructor: undefined,
               image: p?.descriptionImg,
               available,
