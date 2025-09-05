@@ -241,33 +241,6 @@ export const WeekView = ({ products }: WeekViewProps) => {
         </div>
       </div>
 
-      {/* Week Summary */}
-      <div className="p-4 sm:p-6 border-t border-border bg-secondary/20">
-        <h3 className="font-semibold text-base sm:text-lg mb-4 text-card-foreground">
-          This Week Summary
-        </h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-          <div className="bg-card border border-border rounded-lg p-3 sm:p-4">
-            <div className="text-xl sm:text-2xl font-bold text-primary">
-              {products.length}
-            </div>
-            <div className="text-xs sm:text-sm text-muted-foreground">Total Classes</div>
-          </div>
-          <div className="bg-card border border-border rounded-lg p-3 sm:p-4">
-            <div className="text-xl sm:text-2xl font-bold text-primary">
-              {products.filter(p => p.available).length}
-            </div>
-            <div className="text-xs sm:text-sm text-muted-foreground">Available Spots</div>
-          </div>
-          <div className="bg-card border border-border rounded-lg p-3 sm:p-4 sm:col-span-2 lg:col-span-1">
-            <div className="text-xl sm:text-2xl font-bold text-primary">
-              ${Math.min(...products.map(p => p.price))} - ${Math.max(...products.map(p => p.price))}
-            </div>
-            <div className="text-xs sm:text-sm text-muted-foreground">Price Range</div>
-          </div>
-        </div>
-      </div>
-
       {/* Event Details Modal */}
       <Dialog open={!!selectedProduct} onOpenChange={() => setSelectedProduct(null)}>
         <DialogContent className="max-w-2xl">
