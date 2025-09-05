@@ -1,12 +1,10 @@
 import { useState, useEffect } from "react";
 import { ViewSwitcher } from "./ViewSwitcher";
-import { FilterDropdowns } from "./FilterDropdowns";
 import { CardView } from "./views/CardView";
 import { ListView } from "./views/ListView";
 import { CalendarView } from "./views/CalendarView";
 import { WeekView } from "./views/WeekView";
 import { Loader2 } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 export type ViewMode = "card" | "list" | "calendar" | "week";
 
@@ -22,7 +20,6 @@ export interface Product {
   instructor?: string;
   image?: string;
   available: boolean;
-  venue?: string;
 }
 
 // Mock data simulating API response
@@ -38,7 +35,6 @@ const mockProducts: Product[] = [
     category: "Dance",
     instructor: "Sarah Johnson",
     available: true,
-    venue: "Studio A",
   },
   {
     id: "2", 
@@ -51,7 +47,6 @@ const mockProducts: Product[] = [
     category: "Dance",
     instructor: "Marie Claire",
     available: true,
-    venue: "Main Hall",
   },
   {
     id: "3",
@@ -64,7 +59,6 @@ const mockProducts: Product[] = [
     category: "Dance",
     instructor: "Marcus Davis",
     available: false,
-    venue: "Studio B",
   },
   {
     id: "4",
@@ -74,10 +68,9 @@ const mockProducts: Product[] = [
     date: new Date("2024-09-13T17:00:00"),
     time: "17:00",
     duration: "75min",
-    category: "Workshop",
+    category: "Dance",
     instructor: "Lisa Thompson",
     available: true,
-    venue: "Studio A",
   },
   {
     id: "5",
@@ -90,7 +83,6 @@ const mockProducts: Product[] = [
     category: "Dance",
     instructor: "Alex Rivera",
     available: true,
-    venue: "Main Hall",
   },
   {
     id: "6",
@@ -103,8 +95,7 @@ const mockProducts: Product[] = [
     category: "Workshop",
     instructor: "Emma Wilson",
     available: true,
-    venue: "Studio C",
-  },
+  }
 ];
 
 interface ProductInjectorProps {
@@ -130,10 +121,6 @@ export const ProductInjector = ({
   const [error, setError] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>("card");
   const [showAll, setShowAll] = useState(false);
-  
-  // Filter states
-  const [selectedVenue, setSelectedVenue] = useState<string | null>(null);
-  const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -152,7 +139,6 @@ export const ProductInjector = ({
         const CULMAS_QUERY = `query allProducts($onlyAvailableForSale: Boolean) {
   allProducts(onlyAvailableForSale: $onlyAvailableForSale) {
     id
-    title
     descriptionImg
     end
     endTime
@@ -168,6 +154,9 @@ export const ProductInjector = ({
       }
       totalTickets
       totalTicketsLeft
+    }
+    responsibles {
+
     }
     venue {
       title
@@ -224,12 +213,11 @@ export const ProductInjector = ({
             const totalLeft = Number(p?.tickets?.totalTicketsLeft ?? 0);
             const available = totalLeft > 0;
 
-            const productTitle = (p?.title ?? "").trim();
-            const venueTitle = (p?.venue?.title ?? "").trim();
+            const venueTitle = p?.venue?.title ?? "";
             const formattedAddress = p?.venue?.formatted_address ?? "";
 
-            // Prefer product title; fallback to venue title then ID
-            const title = productTitle || venueTitle || `Event ${p?.id || 'Unknown'}`;
+            // Create a meaningful title from available data
+            const title = venueTitle || `Event ${p?.id || 'Unknown'}`;
             const description = formattedAddress || (p?.status ?? "No description available");
 
             console.log(`Mapped product: ${title}`);
@@ -246,7 +234,6 @@ export const ProductInjector = ({
               instructor: undefined,
               image: p?.descriptionImg,
               available,
-              venue: venueTitle || undefined,
             } as Product;
           });
 
@@ -302,32 +289,11 @@ export const ProductInjector = ({
     );
   }
 
-  // Apply filters
-  const filteredProducts = products.filter(product => {
-    const venueMatch = !selectedVenue || product.venue === selectedVenue;
-    const templateMatch = !selectedTemplate || product.category === selectedTemplate;
-    return venueMatch && templateMatch;
-  });
-
-  const visibleProducts = showAll ? filteredProducts : filteredProducts.slice(0, 4);
+  const visibleProducts = showAll ? products : products.slice(0, 4);
 
   return (
-    <div className={cn("space-y-4 sm:space-y-6", className)}>
-      {/* Filters */}
-      <div className="px-4 sm:px-0">
-        <FilterDropdowns 
-          products={products}
-          selectedVenue={selectedVenue}
-          selectedTemplate={selectedTemplate}
-          onVenueChange={setSelectedVenue}
-          onTemplateChange={setSelectedTemplate}
-        />
-      </div>
-
-      {/* View Switcher */}
-      <div className="px-4 sm:px-0">
-        <ViewSwitcher viewMode={viewMode} onViewModeChange={setViewMode} />
-      </div>
+    <div className={`space-y-6 ${className}`}>
+      <ViewSwitcher viewMode={viewMode} onViewModeChange={setViewMode} />
       
       <div className="transition-all duration-300 ease-in-out">
         {viewMode === "card" && (
@@ -345,18 +311,18 @@ export const ProductInjector = ({
       </div>
 
       {products.length > 4 && (
-        <div className="flex justify-center pt-4 px-4 sm:px-0">
+        <div className="flex justify-center pt-4">
           {!showAll ? (
             <button
               onClick={handleShowMore}
-              className="w-full sm:w-auto bg-gradient-primary text-primary-foreground px-6 py-3 rounded-lg font-medium hover:shadow-glow transition-all duration-300 transform hover:scale-105 min-h-[44px]"
+              className="bg-gradient-primary text-primary-foreground px-6 py-3 rounded-lg font-medium hover:shadow-glow transition-all duration-300 transform hover:scale-105"
             >
-              Show More ({filteredProducts.length - 4} more)
+              Show More ({products.length - 4} more)
             </button>
           ) : (
             <button
               onClick={handleShowLess}
-              className="w-full sm:w-auto bg-secondary text-secondary-foreground px-6 py-3 rounded-lg font-medium hover:bg-accent transition-all duration-300 min-h-[44px]"
+              className="bg-secondary text-secondary-foreground px-6 py-3 rounded-lg font-medium hover:bg-accent transition-all duration-300"
             >
               Show Less
             </button>
