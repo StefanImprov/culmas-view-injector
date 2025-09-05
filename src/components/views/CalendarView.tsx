@@ -2,6 +2,7 @@ import { Product } from "../ProductInjector";
 import { ChevronLeft, ChevronRight, Clock, User, DollarSign } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { ProductDetailsModal } from "../ProductDetailsModal";
 
 interface CalendarViewProps {
   products: Product[];
@@ -9,6 +10,7 @@ interface CalendarViewProps {
 
 export const CalendarView = ({ products }: CalendarViewProps) => {
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   
   // Generate calendar grid
   const year = currentDate.getFullYear();
@@ -119,6 +121,7 @@ export const CalendarView = ({ products }: CalendarViewProps) => {
                 {dayProducts.slice(0, 2).map((product) => (
                   <div
                     key={product.id}
+                    onClick={() => setSelectedProduct(product)}
                     className={cn(
                       "p-1 sm:p-1.5 rounded-md text-xs cursor-pointer transition-colors",
                       product.available 
@@ -154,8 +157,9 @@ export const CalendarView = ({ products }: CalendarViewProps) => {
             {products.map((product) => (
               <div
                 key={product.id}
+                onClick={() => setSelectedProduct(product)}
                 className={cn(
-                  "p-3 sm:p-4 rounded-lg border border-border bg-card hover:bg-accent/5 transition-colors",
+                  "p-3 sm:p-4 rounded-lg border border-border bg-card hover:bg-accent/5 transition-colors cursor-pointer",
                   !product.available && "opacity-60"
                 )}
               >
@@ -195,6 +199,12 @@ export const CalendarView = ({ products }: CalendarViewProps) => {
           </div>
         </div>
       )}
+      
+      <ProductDetailsModal 
+        product={selectedProduct}
+        open={!!selectedProduct}
+        onOpenChange={() => setSelectedProduct(null)}
+      />
     </div>
   );
 };
