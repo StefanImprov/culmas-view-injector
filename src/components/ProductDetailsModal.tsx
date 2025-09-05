@@ -49,7 +49,7 @@ export const ProductDetailsModal = ({ product, open, onOpenChange }: ProductDeta
                     }
                   </div>
                   <div className="text-muted-foreground">
-                    {product.date.toLocaleDateString()} at {product.time}
+                    {product.date.toLocaleDateString()} from {product.startTime} - {product.endTime}
                   </div>
                 </div>
               </div>
