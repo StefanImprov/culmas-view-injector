@@ -37,7 +37,7 @@ jobs:
         run: npm run build
 
       - name: Build widget
-        run: npm run build:widget
+        run: npx vite build --config vite.widget.config.ts
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
