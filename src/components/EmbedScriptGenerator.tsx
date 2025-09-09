@@ -126,23 +126,28 @@ export const EmbedScriptGenerator = ({ theme }: EmbedScriptGeneratorProps) => {
       theme: theme
     };
 
-    // Determine the widget URL based on mode
-    let widgetUrl;
+    // Determine the widget URLs based on mode
+    let widgetJsUrl, widgetCssUrl;
     if (customWidgetUrl.trim()) {
-      widgetUrl = customWidgetUrl.trim();
+      widgetJsUrl = customWidgetUrl.trim();
+      // Replace .js with .css for CSS file
+      widgetCssUrl = customWidgetUrl.trim().replace(/\.js$/, '.css');
     } else if (isDevelopmentMode) {
       // Use current Lovable project URL for development
       const currentUrl = window.location.origin;
-      widgetUrl = `${currentUrl}/widget/culmas-widget.js`;
+      widgetJsUrl = `${currentUrl}/widget/culmas-widget.js`;
+      widgetCssUrl = `${currentUrl}/widget/culmas-widget.css`;
     } else {
       // GitHub Pages URL for production
-      widgetUrl = "https://stefanimprov.github.io/culmas-view-injector/widget/culmas-widget.js";
+      widgetJsUrl = "https://stefanimprov.github.io/culmas-view-injector/widget/culmas-widget.js";
+      widgetCssUrl = "https://stefanimprov.github.io/culmas-view-injector/widget/culmas-widget.css";
     }
 
     return `<!-- Culmas Product Widget -->
+<link rel="stylesheet" href="${widgetCssUrl}">
 <div id="${containerId || 'culmas-widget'}"></div>
 <script 
-  src="${widgetUrl}"
+  src="${widgetJsUrl}"
   data-culmas-widget="true"
   data-container="#${containerId || 'culmas-widget'}"
   data-api-url="https://api.dev.culmas.io/"
