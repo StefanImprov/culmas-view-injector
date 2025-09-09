@@ -135,8 +135,8 @@ export const EmbedScriptGenerator = ({ theme }: EmbedScriptGeneratorProps) => {
       const currentUrl = window.location.origin;
       widgetUrl = `${currentUrl}/widget/culmas-widget.js`;
     } else {
-      // Production CDN URL
-      widgetUrl = "https://cdn.culmas.io/widget/culmas-widget.umd.js";
+      // GitHub Pages URL for production
+      widgetUrl = "https://stefanimprov.github.io/culmas-view-injector/widget/culmas-widget.js";
     }
 
     return `<!-- Culmas Product Widget -->
