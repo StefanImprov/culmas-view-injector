@@ -33,72 +33,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build widget
-        run: npx vite build --config vite.widget.config.ts
-
-      - name: Create demo page
-        run: |
-          mkdir -p public/widget
-          cp -r public/widget/* public/ || true
-          cat > public/index.html << 'EOF'
-          <!DOCTYPE html>
-          <html lang="en">
-          <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Culmas Widget - Embed Demo</title>
-            <link rel="stylesheet" href="./widget/culmas-widget.css">
-            <style>
-              body { font-family: system-ui, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
-              .container { max-width: 1200px; margin: 0 auto; background: white; padding: 40px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-              .demo-section { margin: 40px 0; padding: 20px; border: 1px solid #e0e0e0; border-radius: 6px; }
-              pre { background: #f8f9fa; padding: 15px; border-radius: 4px; overflow-x: auto; }
-              code { background: #f8f9fa; padding: 2px 4px; border-radius: 3px; }
-              #widget-container { min-height: 400px; border: 2px dashed #ccc; padding: 20px; margin: 20px 0; }
-            </style>
-          </head>
-          <body>
-            <div class="container">
-              <h1>Culmas Widget</h1>
-              <p>Embed the Culmas product injector widget on your website with a simple script tag.</p>
-              
-              <div class="demo-section">
-                <h2>Usage</h2>
-                <p>Add this to your HTML:</p>
-                <pre><code>&lt;link rel="stylesheet" href="https://stefanimprov.github.io/culmas-view-injector/widget/culmas-widget.css"&gt;
-          &lt;div id="my-widget-container"&gt;&lt;/div&gt;
-          &lt;script src="https://stefanimprov.github.io/culmas-view-injector/widget/culmas-widget.js" 
-                  data-culmas-widget="true" 
-                  data-container="#my-widget-container"
-                  data-template-ids="template1,template2"
-                  data-venue-ids="venue1,venue2"&gt;&lt;/script&gt;</code></pre>
-              </div>
-
-              <div class="demo-section">
-                <h2>Live Demo</h2>
-                <div id="widget-container">
-                  <p>Widget will load here...</p>
-                </div>
-              </div>
-
-              <div class="demo-section">
-                <h2>Configuration Options</h2>
-                <ul>
-                  <li><code>data-container</code>: CSS selector for the container element</li>
-                  <li><code>data-template-ids</code>: Comma-separated list of template IDs</li>
-                  <li><code>data-venue-ids</code>: Comma-separated list of venue IDs</li>
-                  <li><code>data-api-url</code>: Custom API URL (optional)</li>
-                  <li><code>data-theme</code>: JSON theme configuration (optional)</li>
-                </ul>
-              </div>
-            </div>
-
-            <script src="./widget/culmas-widget.js" 
-                    data-culmas-widget="true" 
-                    data-container="#widget-container"></script>
-          </body>
-          </html>
-          EOF
+      - name: Build main app
+        run: npm run build
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -106,7 +42,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './public'
+          path: './dist'
 
       - name: Deploy to GitHub Pages
         id: deployment
