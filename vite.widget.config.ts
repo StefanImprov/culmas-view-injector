@@ -23,7 +23,8 @@ export default defineConfig({
       external: [],
       output: {
         globals: {},
-        entryFileNames: 'culmas-widget.js'
+        entryFileNames: 'culmas-widget.js',
+        assetFileNames: 'culmas-widget.css'
       }
     },
     outDir: 'public/widget',
