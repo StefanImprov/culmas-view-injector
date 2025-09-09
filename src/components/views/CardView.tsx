@@ -1,23 +1,18 @@
 import { Product } from "../ProductInjector";
 import { Clock, Calendar, User, DollarSign, MapPin } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
-import { ProductDetailsModal } from "../ProductDetailsModal";
-
 interface CardViewProps {
   products: Product[];
 }
 
 export const CardView = ({ products }: CardViewProps) => {
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-
   const handleCardClick = (product: Product) => {
-    setSelectedProduct(product);
+    window.open(`https://globe-dance.dev.culmas.io/class/${product.id}?from=component-api`, '_blank');
   };
 
   const handleBookClick = (e: React.MouseEvent, product: Product) => {
     e.stopPropagation();
-    setSelectedProduct(product);
+    window.open(`https://globe-dance.dev.culmas.io/class/${product.id}?from=component-api`, '_blank');
   };
 
   return (
@@ -130,12 +125,6 @@ export const CardView = ({ products }: CardViewProps) => {
           </div>
         </div>
       ))}
-      
-      <ProductDetailsModal 
-        product={selectedProduct}
-        open={!!selectedProduct}
-        onOpenChange={() => setSelectedProduct(null)}
-      />
     </div>
   );
 };
