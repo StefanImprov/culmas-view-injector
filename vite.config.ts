@@ -5,7 +5,7 @@ import { componentTagger } from "lovable-tagger";
 process.env.ROLLUP_SKIP_NODEJS_NATIVE = '1';
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => (process.env.ROLLUP_SKIP_NODEJS_NATIVE='1', process.env.ROLLUP_DISABLE_NODEJS_NATIVE='1', {
-  base: process.env.NODE_ENV === 'production' ? '/culmas-view-injector/' : '/',
+  base: command === 'build' ? '/culmas-view-injector/' : '/',
   server: {
     host: "::",
     port: 8080,
