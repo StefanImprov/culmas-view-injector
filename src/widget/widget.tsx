@@ -32,6 +32,54 @@ class CulmasWidget {
     });
   }
 
+  // Apply theme to widget container
+  private applyWidgetTheme(container: HTMLElement, theme: any) {
+    if (!theme?.colors) return;
+
+    // Apply color variables with widget prefix
+    Object.entries(theme.colors).forEach(([key, value]) => {
+      const cssVarName = key.replace(/([A-Z])/g, '-$1').toLowerCase();
+      container.style.setProperty(`--cw-${cssVarName}`, value as string);
+    });
+    
+    // Apply design variables
+    if (theme.design) {
+      container.style.setProperty('--cw-radius', theme.design.borderRadius || '0.75rem');
+      
+      // Apply shadow intensity
+      const shadowIntensity = theme.design.shadowIntensity || 'medium';
+      switch (shadowIntensity) {
+        case 'subtle':
+          container.style.setProperty('--cw-shadow-glow', '0 0 20px hsl(var(--cw-primary-glow) / 0.2)');
+          break;
+        case 'medium':
+          container.style.setProperty('--cw-shadow-glow', '0 0 30px hsl(var(--cw-primary-glow) / 0.3)');
+          break;
+        case 'strong':
+          container.style.setProperty('--cw-shadow-glow', '0 0 40px hsl(var(--cw-primary-glow) / 0.4)');
+          break;
+      }
+      
+      // Apply gradients
+      if (theme.design.gradients) {
+        const primary = theme.colors.primary;
+        const gradientPrimary = theme.colors.gradientPrimary || theme.colors.primaryGlow;
+        container.style.setProperty('--cw-gradient-primary', 
+          `linear-gradient(135deg, hsl(${primary}), hsl(${gradientPrimary}))`);
+      } else {
+        container.style.setProperty('--cw-gradient-primary', 
+          `hsl(${theme.colors.primary})`);
+      }
+      
+      // Apply transitions
+      if (theme.design.hoverEffects) {
+        container.style.setProperty('--cw-transition-smooth', 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)');
+      } else {
+        container.style.setProperty('--cw-transition-smooth', 'all 0.15s ease');
+      }
+    }
+  }
+
   // Initialize widget in a container
   init(config: WidgetConfig) {
     const container = document.querySelector(config.container);
@@ -45,28 +93,22 @@ class CulmasWidget {
     widgetContainer.className = 'culmas-widget-container';
     container.appendChild(widgetContainer);
 
+    // Apply theme to widget container
+    if (config.theme) {
+      this.applyWidgetTheme(widgetContainer, config.theme);
+    }
+
     const root = createRoot(widgetContainer);
     
     const WidgetApp = () => (
       <QueryClientProvider client={this.queryClient}>
         <TooltipProvider>
-          {config.theme ? (
-            <ThemeProvider initialTheme={config.theme}>
-              <ProductInjector
-                templateIds={config.templateIds}
-                venueIds={config.venueIds}
-                apiUrl={config.apiUrl}
-                className="culmas-widget"
-              />
-            </ThemeProvider>
-          ) : (
-            <ProductInjector
-              templateIds={config.templateIds}
-              venueIds={config.venueIds}
-              apiUrl={config.apiUrl}
-              className="culmas-widget"
-            />
-          )}
+          <ProductInjector
+            templateIds={config.templateIds}
+            venueIds={config.venueIds}
+            apiUrl={config.apiUrl}
+            className="culmas-widget"
+          />
           <Toaster />
         </TooltipProvider>
       </QueryClientProvider>
