@@ -133,7 +133,7 @@ export const EmbedScriptGenerator = ({ theme }: EmbedScriptGeneratorProps) => {
     } else if (isDevelopmentMode) {
       // Use current Lovable project URL for development
       const currentUrl = window.location.origin;
-      widgetUrl = `${currentUrl}/dist/widget/culmas-widget.umd.js`;
+      widgetUrl = `${currentUrl}/widget/culmas-widget.js`;
     } else {
       // Production CDN URL
       widgetUrl = "https://cdn.culmas.io/widget/culmas-widget.umd.js";

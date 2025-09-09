@@ -20,10 +20,11 @@ export default defineConfig({
     rollupOptions: {
       external: [],
       output: {
-        globals: {}
+        globals: {},
+        entryFileNames: 'culmas-widget.js'
       }
     },
-    outDir: 'dist/widget',
+    outDir: 'public/widget',
     cssCodeSplit: false,
     minify: 'terser',
     terserOptions: {
