@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
+process.env.ROLLUP_SKIP_NODEJS_NATIVE = '1';
 
 // Widget-specific build configuration
 export default defineConfig({
