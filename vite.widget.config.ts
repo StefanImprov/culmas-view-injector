@@ -27,7 +27,7 @@ export default defineConfig({
         assetFileNames: 'culmas-widget.css'
       }
     },
-    outDir: 'dist/widget',
+    outDir: 'public/widget',
     cssCodeSplit: false,
     minify: 'terser',
     terserOptions: {
