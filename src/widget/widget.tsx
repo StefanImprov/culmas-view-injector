@@ -34,16 +34,24 @@ class CulmasWidget {
 
   // Apply theme to widget container
   private applyWidgetTheme(container: HTMLElement, theme: any) {
-    if (!theme?.colors) return;
+    console.log('🎨 Applying widget theme:', theme);
+    
+    if (!theme?.colors) {
+      console.warn('No theme colors provided');
+      return;
+    }
 
     // Apply color variables with widget prefix
     Object.entries(theme.colors).forEach(([key, value]) => {
       const cssVarName = key.replace(/([A-Z])/g, '-$1').toLowerCase();
-      container.style.setProperty(`--cw-${cssVarName}`, value as string);
+      const fullVarName = `--cw-${cssVarName}`;
+      console.log(`Setting ${fullVarName}: ${value}`);
+      container.style.setProperty(fullVarName, value as string);
     });
     
     // Apply design variables
     if (theme.design) {
+      console.log('🔧 Applying design settings:', theme.design);
       container.style.setProperty('--cw-radius', theme.design.borderRadius || '0.75rem');
       
       // Apply shadow intensity
@@ -64,11 +72,11 @@ class CulmasWidget {
       if (theme.design.gradients) {
         const primary = theme.colors.primary;
         const gradientPrimary = theme.colors.gradientPrimary || theme.colors.primaryGlow;
-        container.style.setProperty('--cw-gradient-primary', 
-          `linear-gradient(135deg, hsl(${primary}), hsl(${gradientPrimary}))`);
+        const gradientValue = `linear-gradient(135deg, hsl(${primary}), hsl(${gradientPrimary}))`;
+        console.log('Setting gradient:', gradientValue);
+        container.style.setProperty('--cw-gradient-primary', gradientValue);
       } else {
-        container.style.setProperty('--cw-gradient-primary', 
-          `hsl(${theme.colors.primary})`);
+        container.style.setProperty('--cw-gradient-primary', `hsl(${theme.colors.primary})`);
       }
       
       // Apply transitions
@@ -78,6 +86,14 @@ class CulmasWidget {
         container.style.setProperty('--cw-transition-smooth', 'all 0.15s ease');
       }
     }
+
+    // Debug: Show all applied CSS variables
+    console.log('🎯 Final computed styles:', {
+      primary: getComputedStyle(container).getPropertyValue('--cw-primary'),
+      secondary: getComputedStyle(container).getPropertyValue('--cw-secondary'),
+      background: getComputedStyle(container).getPropertyValue('--cw-background'),
+      accent: getComputedStyle(container).getPropertyValue('--cw-accent')
+    });
   }
 
   // Initialize widget in a container
