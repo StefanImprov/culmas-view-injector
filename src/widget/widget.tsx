@@ -180,6 +180,14 @@ class CulmasWidget {
         return;
       }
 
+      // Check if container already has a rendered widget
+      const existingContainer = document.querySelector(config.container);
+      if (existingContainer?.querySelector('.culmas-widget-container')) {
+        console.log('🚫 Container already has rendered widget, skipping:', config.container);
+        initializationState.initializedContainers.add(config.container);
+        return;
+      }
+
       console.log('🔧 Initializing Culmas Widget with config:', config);
       
       // Ensure CSS is loaded before proceeding
@@ -243,7 +251,7 @@ class CulmasWidget {
       // Mark container as initialized and clear timeouts
       initializationState.initializedContainers.add(config.container);
       this.clearAllTimeouts();
-      this.disconnectObserver();
+      this.disconnectObserver(); // Immediately disconnect observer when widget succeeds
       
       console.log('✅ Widget initialized successfully');
     } catch (error) {
@@ -479,9 +487,10 @@ function safeInit() {
     // Single MutationObserver for DOM changes (only if no widgets exist)
     if (!initializationState.observer) {
       initializationState.observer = new MutationObserver(() => {
-        // Only trigger if we have scripts but no initialized widgets
+        // Only trigger if we have scripts but no initialized widgets AND no rendered widgets
         const widgets = document.querySelectorAll('script[data-culmas-widget]');
-        if (widgets.length > 0 && initializationState.initializedContainers.size === 0) {
+        const renderedWidgets = document.querySelectorAll('.culmas-widget-container');
+        if (widgets.length > 0 && initializationState.initializedContainers.size === 0 && renderedWidgets.length === 0) {
           console.log('🔄 DOM changes detected, checking for widgets...');
           autoInit();
         }
