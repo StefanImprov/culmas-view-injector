@@ -116,22 +116,27 @@ export const EmbedScriptGenerator = ({ theme }: EmbedScriptGeneratorProps) => {
     fetchOptions();
   }, []);
 
-  // Simple widget embed code generation
+  // React widget embed code generation
   const generateWidgetEmbedCode = () => {
     // Determine the widget URL based on mode
-    let widgetJsUrl;
+    let widgetJsUrl, widgetCssUrl;
     if (customWidgetUrl.trim()) {
-      widgetJsUrl = customWidgetUrl.trim();
+      const baseUrl = customWidgetUrl.trim().replace(/\.js$/, '');
+      widgetJsUrl = `${baseUrl}.js`;
+      widgetCssUrl = `${baseUrl}.css`;
     } else if (isDevelopmentMode) {
-      // Use current Lovable project URL for development
+      // Use current Lovable project URL for development - build the React widget
       const currentUrl = window.location.origin;
-      widgetJsUrl = `${currentUrl}/simple-widget.js`;
+      widgetJsUrl = `${currentUrl}/dist/widget/culmas-widget.js`;
+      widgetCssUrl = `${currentUrl}/dist/widget/culmas-widget.css`;
     } else {
       // CDN URL for production
-      widgetJsUrl = "https://cdn.culmas.io/simple-widget.js";
+      widgetJsUrl = "https://cdn.culmas.io/culmas-widget.js";
+      widgetCssUrl = "https://cdn.culmas.io/culmas-widget.css";
     }
 
     return `<!-- Culmas Product Widget -->
+<link rel="stylesheet" href="${widgetCssUrl}">
 <div id="${containerId || 'culmas-widget'}"></div>
 <script 
   src="${widgetJsUrl}"

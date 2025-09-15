@@ -6,7 +6,7 @@ import { copyFileSync } from "fs";
 
 process.env.ROLLUP_SKIP_NODEJS_NATIVE = '1';
 
-// Custom plugin to copy simple widget to public directory
+// Custom plugin to copy simple widget to public directory  
 const copySimpleWidgetPlugin = () => ({
   name: 'copy-simple-widget',
   buildStart() {
