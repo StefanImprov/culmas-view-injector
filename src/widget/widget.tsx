@@ -7,51 +7,567 @@ console.log('🌐 Environment check:', {
 });
 
 
-// Enhanced CSS Loading Detection with Webflow Support
-function ensureCSSLoaded() {
-  return new Promise<boolean>((resolve) => {
-    console.log('🔍 CSS loading check');
+// Enhanced CSS Loading Detection with Critical CSS Injection
+function ensureCSSLoaded(): Promise<boolean> {
+  return new Promise((resolve) => {
+    console.log('🔍 Enhanced CSS loading check with injection');
     
-    // Create test element
+    // Check if widget CSS is loaded by testing for specific widget styles
     const testElement = document.createElement('div');
-    testElement.className = 'culmas-widget-container bg-primary';
-    testElement.setAttribute('data-culmas-widget-instance', 'true');
+    testElement.className = 'culmas-widget-container';
     testElement.style.position = 'absolute';
-    testElement.style.top = '-9999px';
-    testElement.style.left = '-9999px';
-    testElement.style.visibility = 'hidden';
+    testElement.style.visibility = 'hidden'; 
     testElement.style.pointerEvents = 'none';
-    testElement.style.width = '100px';
-    testElement.style.height = '100px';
     document.body.appendChild(testElement);
+
+    const computedStyle = window.getComputedStyle(testElement);
+    const hasWidgetCSS = computedStyle.boxSizing === 'border-box' && 
+                        computedStyle.fontFamily.includes('Inter');
     
-    const checkStyles = () => {
-      try {
-        const styles = getComputedStyle(testElement);
-        const bgColor = styles.backgroundColor;
-        const hasCorrectBackground = bgColor.includes('149') || 
-                                   bgColor.includes('66') || 
-                                   bgColor.includes('rgb(149') ||
-                                   bgColor.includes('hsl(262');
-        
-        document.body.removeChild(testElement);
-        
-        if (hasCorrectBackground) {
-          console.log('✅ CSS loaded successfully', { bgColor });
-          resolve(true);
-        } else {
-          console.warn('⚠️ CSS not loaded properly', { bgColor });
-          resolve(false);
-        }
-      } catch (error) {
-        console.error('CSS check failed:', error);
-        document.body.removeChild(testElement);
-        resolve(false);
-      }
-    };
+    document.body.removeChild(testElement);
     
-    setTimeout(checkStyles, 100);
+    if (hasWidgetCSS) {
+      console.log('✅ Widget CSS already loaded');
+      resolve(true);
+    } else {
+      console.log('📝 Injecting critical widget CSS');
+      injectCriticalCSS();
+      resolve(true);
+    }
   });
+}
+
+// Inject comprehensive critical CSS for widget styling
+function injectCriticalCSS() {
+  if (document.getElementById('culmas-widget-critical-css')) return;
+  
+  const style = document.createElement('style');
+  style.id = 'culmas-widget-critical-css';
+  style.innerHTML = `
+    /* Critical Widget Container Styles */
+    .culmas-widget-container {
+      box-sizing: border-box !important;
+      font-family: Inter, system-ui, -apple-system, sans-serif !important;
+      line-height: 1.5 !important;
+      color: hsl(222.2 84% 4.9%) !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      --background: 0 0% 100%;
+      --foreground: 222.2 84% 4.9%;
+      --card: 0 0% 100%;
+      --card-foreground: 222.2 84% 4.9%;
+      --primary: 262 83% 58%;
+      --primary-foreground: 210 40% 98%;
+      --secondary: 210 40% 96%;
+      --secondary-foreground: 222.2 84% 4.9%;
+      --muted: 210 40% 96%;
+      --muted-foreground: 215.4 16.3% 46.9%;
+      --accent: 210 40% 96%;
+      --accent-foreground: 222.2 84% 4.9%;
+      --border: 214.3 31.8% 91.4%;
+      --input: 214.3 31.8% 91.4%;
+      --ring: 262 83% 58%;
+      --radius: 0.75rem;
+      --destructive: 0 84.2% 60.2%;
+      --destructive-foreground: 210 40% 98%;
+      --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary)));
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -1px rgb(0 0 0 / 0.06);
+      --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgb(0 0 0 / 0.04);
+      --shadow-xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+      --shadow-glow: 0 0 30px hsl(var(--primary) / 0.3);
+      --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .culmas-widget-container *,
+    .culmas-widget-container *::before,
+    .culmas-widget-container *::after {
+      box-sizing: border-box !important;
+    }
+    
+    /* Grid System */
+    .culmas-widget-container .grid {
+      display: grid !important;
+    }
+    .culmas-widget-container .grid-cols-1 {
+      grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+    }
+    .culmas-widget-container .grid-cols-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+    .culmas-widget-container .grid-cols-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    }
+    .culmas-widget-container .grid-cols-4 {
+      grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    }
+    
+    /* Responsive Grid */
+    @media (min-width: 640px) {
+      .culmas-widget-container .sm\\:grid-cols-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      }
+    }
+    @media (min-width: 768px) {
+      .culmas-widget-container .md\\:grid-cols-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      }
+      .culmas-widget-container .md\\:gap-6 {
+        gap: 1.5rem !important;
+      }
+    }
+    @media (min-width: 1024px) {
+      .culmas-widget-container .lg\\:grid-cols-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+      }
+      .culmas-widget-container .lg\\:flex-row {
+        flex-direction: row !important;
+      }
+      .culmas-widget-container .lg\\:items-center {
+        align-items: center !important;
+      }
+      .culmas-widget-container .lg\\:px-4 {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+      }
+      .culmas-widget-container .lg\\:space-x-2 > :not([hidden]) ~ :not([hidden]) {
+        margin-left: 0.5rem !important;
+      }
+      .culmas-widget-container .lg\\:block {
+        display: block !important;
+      }
+    }
+    @media (min-width: 1280px) {
+      .culmas-widget-container .xl\\:grid-cols-4 {
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+      }
+    }
+    
+    /* Layout */
+    .culmas-widget-container .flex {
+      display: flex !important;
+    }
+    .culmas-widget-container .items-center {
+      align-items: center !important;
+    }
+    .culmas-widget-container .items-stretch {
+      align-items: stretch !important;
+    }
+    .culmas-widget-container .justify-between {
+      justify-content: space-between !important;
+    }
+    .culmas-widget-container .justify-center {
+      justify-content: center !important;
+    }
+    .culmas-widget-container .flex-col {
+      flex-direction: column !important;
+    }
+    .culmas-widget-container .flex-shrink-0 {
+      flex-shrink: 0 !important;
+    }
+    .culmas-widget-container .w-full {
+      width: 100% !important;
+    }
+    .culmas-widget-container .w-4 {
+      width: 1rem !important;
+    }
+    .culmas-widget-container .h-4 {
+      height: 1rem !important;
+    }
+    .culmas-widget-container .h-40 {
+      height: 10rem !important;
+    }
+    @media (min-width: 640px) {
+      .culmas-widget-container .sm\\:h-48 {
+        height: 12rem !important;
+      }
+    }
+    .culmas-widget-container .min-h-\\[400px\\] {
+      min-height: 400px !important;
+    }
+    .culmas-widget-container .min-h-\\[44px\\] {
+      min-height: 44px !important;
+    }
+    .culmas-widget-container .min-w-\\[44px\\] {
+      min-width: 44px !important;
+    }
+    .culmas-widget-container .min-w-\\[120px\\] {
+      min-width: 120px !important;
+    }
+    
+    /* Spacing */
+    .culmas-widget-container .space-y-6 > :not([hidden]) ~ :not([hidden]) {
+      margin-top: 1.5rem !important;
+    }
+    .culmas-widget-container .space-y-4 > :not([hidden]) ~ :not([hidden]) {
+      margin-top: 1rem !important;
+    }
+    .culmas-widget-container .space-y-3 > :not([hidden]) ~ :not([hidden]) {
+      margin-top: 0.75rem !important;
+    }
+    .culmas-widget-container .space-y-2 > :not([hidden]) ~ :not([hidden]) {
+      margin-top: 0.5rem !important;
+    }
+    .culmas-widget-container .space-x-2 > :not([hidden]) ~ :not([hidden]) {
+      margin-left: 0.5rem !important;
+    }
+    .culmas-widget-container .space-x-3 > :not([hidden]) ~ :not([hidden]) {
+      margin-left: 0.75rem !important;
+    }
+    .culmas-widget-container .gap-2 {
+      gap: 0.5rem !important;
+    }
+    .culmas-widget-container .gap-4 {
+      gap: 1rem !important;
+    }
+    .culmas-widget-container .gap-6 {
+      gap: 1.5rem !important;
+    }
+    .culmas-widget-container .p-1 {
+      padding: 0.25rem !important;
+    }
+    .culmas-widget-container .p-4 {
+      padding: 1rem !important;
+    }
+    .culmas-widget-container .p-6 {
+      padding: 1.5rem !important;
+    }
+    @media (min-width: 640px) {
+      .culmas-widget-container .sm\\:p-5 {
+        padding: 1.25rem !important;
+      }
+      .culmas-widget-container .sm\\:space-y-4 > :not([hidden]) ~ :not([hidden]) {
+        margin-top: 1rem !important;
+      }
+    }
+    .culmas-widget-container .px-2 {
+      padding-left: 0.5rem !important;
+      padding-right: 0.5rem !important;
+    }
+    .culmas-widget-container .px-3 {
+      padding-left: 0.75rem !important;
+      padding-right: 0.75rem !important;
+    }
+    .culmas-widget-container .px-4 {
+      padding-left: 1rem !important;
+      padding-right: 1rem !important;
+    }
+    .culmas-widget-container .py-1 {
+      padding-top: 0.25rem !important;
+      padding-bottom: 0.25rem !important;
+    }
+    .culmas-widget-container .py-2 {
+      padding-top: 0.5rem !important;
+      padding-bottom: 0.5rem !important;
+    }
+    .culmas-widget-container .py-2\\.5 {
+      padding-top: 0.625rem !important;
+      padding-bottom: 0.625rem !important;
+    }
+    @media (min-width: 640px) {
+      .culmas-widget-container .sm\\:py-2 {
+        padding-top: 0.5rem !important;
+        padding-bottom: 0.5rem !important;
+      }
+    }
+    .culmas-widget-container .py-12 {
+      padding-top: 3rem !important;
+      padding-bottom: 3rem !important;
+    }
+    .culmas-widget-container .pt-3 {
+      padding-top: 0.75rem !important;
+    }
+    .culmas-widget-container .mb-4 {
+      margin-bottom: 1rem !important;
+    }
+    .culmas-widget-container .mb-6 {
+      margin-bottom: 1.5rem !important;
+    }
+    .culmas-widget-container .mt-8 {
+      margin-top: 2rem !important;
+    }
+    
+    /* Borders and Radius */
+    .culmas-widget-container .rounded-lg {
+      border-radius: calc(var(--radius) - 2px) !important;
+    }
+    .culmas-widget-container .rounded-xl {
+      border-radius: calc(var(--radius) + 2px) !important;
+    }
+    .culmas-widget-container .rounded-full {
+      border-radius: 9999px !important;
+    }
+    .culmas-widget-container .border {
+      border-width: 1px !important;
+      border-style: solid !important;
+      border-color: hsl(var(--border)) !important;
+    }
+    .culmas-widget-container .border-t {
+      border-top-width: 1px !important;
+      border-style: solid !important;
+      border-color: hsl(var(--border)) !important;
+    }
+    .culmas-widget-container .overflow-hidden {
+      overflow: hidden !important;
+    }
+    
+    /* Backgrounds and Colors */
+    .culmas-widget-container .bg-card {
+      background-color: hsl(var(--card)) !important;
+    }
+    .culmas-widget-container .bg-primary {
+      background-color: hsl(var(--primary)) !important;
+    }
+    .culmas-widget-container .bg-secondary {
+      background-color: hsl(var(--secondary)) !important;
+    }
+    .culmas-widget-container .bg-secondary\\/50 {
+      background-color: hsl(var(--secondary) / 0.5) !important;
+    }
+    .culmas-widget-container .bg-accent\\/50 {
+      background-color: hsl(var(--accent) / 0.5) !important;
+    }
+    .culmas-widget-container .bg-gradient-primary {
+      background: var(--gradient-primary) !important;
+    }
+    .culmas-widget-container .bg-gradient-secondary {
+      background: var(--gradient-secondary, hsl(var(--secondary))) !important;
+    }
+    .culmas-widget-container .text-foreground {
+      color: hsl(var(--foreground)) !important;
+    }
+    .culmas-widget-container .text-card-foreground {
+      color: hsl(var(--card-foreground)) !important;
+    }
+    .culmas-widget-container .text-primary {
+      color: hsl(var(--primary)) !important;
+    }
+    .culmas-widget-container .text-primary-foreground {
+      color: hsl(var(--primary-foreground)) !important;
+    }
+    .culmas-widget-container .text-secondary-foreground {
+      color: hsl(var(--secondary-foreground)) !important;
+    }
+    .culmas-widget-container .text-muted-foreground {
+      color: hsl(var(--muted-foreground)) !important;
+    }
+    .culmas-widget-container .text-destructive {
+      color: hsl(var(--destructive)) !important;
+    }
+    .culmas-widget-container .text-destructive-foreground {
+      color: hsl(var(--destructive-foreground)) !important;
+    }
+    
+    /* Shadows */
+    .culmas-widget-container .shadow-sm {
+      box-shadow: var(--shadow-sm) !important;
+    }
+    .culmas-widget-container .shadow-md {
+      box-shadow: var(--shadow-md) !important;
+    }
+    .culmas-widget-container .shadow-lg {
+      box-shadow: var(--shadow-lg) !important;
+    }
+    .culmas-widget-container .shadow-xl {
+      box-shadow: var(--shadow-xl) !important;
+    }
+    .culmas-widget-container .shadow-glow {
+      box-shadow: var(--shadow-glow) !important;
+    }
+    
+    /* Typography */
+    .culmas-widget-container .text-xs {
+      font-size: 0.75rem !important;
+      line-height: 1rem !important;
+    }
+    .culmas-widget-container .text-sm {
+      font-size: 0.875rem !important;
+      line-height: 1.25rem !important;
+    }
+    .culmas-widget-container .text-base {
+      font-size: 1rem !important;
+      line-height: 1.5rem !important;
+    }
+    .culmas-widget-container .text-lg {
+      font-size: 1.125rem !important;
+      line-height: 1.75rem !important;
+    }
+    .culmas-widget-container .text-xl {
+      font-size: 1.25rem !important;
+      line-height: 1.75rem !important;
+    }
+    .culmas-widget-container .text-2xl {
+      font-size: 1.5rem !important;
+      line-height: 2rem !important;
+    }
+    @media (min-width: 640px) {
+      .culmas-widget-container .sm\\:text-lg {
+        font-size: 1.125rem !important;
+        line-height: 1.75rem !important;
+      }
+      .culmas-widget-container .sm\\:text-2xl {
+        font-size: 1.5rem !important;
+        line-height: 2rem !important;
+      }
+    }
+    .culmas-widget-container .font-medium {
+      font-weight: 500 !important;
+    }
+    .culmas-widget-container .font-semibold {
+      font-weight: 600 !important;
+    }
+    .culmas-widget-container .font-bold {
+      font-weight: 700 !important;
+    }
+    .culmas-widget-container .leading-relaxed {
+      line-height: 1.625 !important;
+    }
+    .culmas-widget-container .whitespace-nowrap {
+      white-space: nowrap !important;
+    }
+    
+    /* Line Clamp */
+    .culmas-widget-container .line-clamp-2 {
+      display: -webkit-box !important;
+      -webkit-box-orient: vertical !important;
+      -webkit-line-clamp: 2 !important;
+      overflow: hidden !important;
+    }
+    
+    /* Transitions and Transforms */
+    .culmas-widget-container .transition-all {
+      transition-property: all !important;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
+      transition-duration: 150ms !important;
+    }
+    .culmas-widget-container .transition-colors {
+      transition-property: color, background-color, border-color !important;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
+      transition-duration: 150ms !important;
+    }
+    .culmas-widget-container .transition-transform {
+      transition-property: transform !important;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
+      transition-duration: 150ms !important;
+    }
+    .culmas-widget-container .duration-300 {
+      transition-duration: 300ms !important;
+    }
+    .culmas-widget-container .ease-out {
+      transition-timing-function: cubic-bezier(0, 0, 0.2, 1) !important;
+    }
+    .culmas-widget-container .transform {
+      transform: translate(var(--tw-translate-x, 0), var(--tw-translate-y, 0)) rotate(var(--tw-rotate, 0)) skewX(var(--tw-skew-x, 0)) skewY(var(--tw-skew-y, 0)) scaleX(var(--tw-scale-x, 1)) scaleY(var(--tw-scale-y, 1)) !important;
+    }
+    .culmas-widget-container .scale-105 {
+      --tw-scale-x: 1.05 !important;
+      --tw-scale-y: 1.05 !important;
+      transform: translate(var(--tw-translate-x, 0), var(--tw-translate-y, 0)) rotate(var(--tw-rotate, 0)) skewX(var(--tw-skew-x, 0)) skewY(var(--tw-skew-y, 0)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)) !important;
+    }
+    
+    /* Interactive Elements and States */
+    .culmas-widget-container .cursor-pointer {
+      cursor: pointer !important;
+    }
+    .culmas-widget-container .backdrop-blur-sm {
+      backdrop-filter: blur(4px) !important;
+    }
+    .culmas-widget-container .group:hover .group-hover\\:scale-105 {
+      --tw-scale-x: 1.05 !important;
+      --tw-scale-y: 1.05 !important;
+      transform: translate(var(--tw-translate-x, 0), var(--tw-translate-y, 0)) rotate(var(--tw-rotate, 0)) skewX(var(--tw-skew-x, 0)) skewY(var(--tw-skew-y, 0)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)) !important;
+    }
+    .culmas-widget-container .group:hover .group-hover\\:scale-110 {
+      --tw-scale-x: 1.1 !important;
+      --tw-scale-y: 1.1 !important;
+      transform: translate(var(--tw-translate-x, 0), var(--tw-translate-y, 0)) rotate(var(--tw-rotate, 0)) skewX(var(--tw-skew-x, 0)) skewY(var(--tw-skew-y, 0)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)) !important;
+    }
+    .culmas-widget-container .group:hover .group-hover\\:text-primary {
+      color: hsl(var(--primary)) !important;
+    }
+    
+    /* Hover States */
+    .culmas-widget-container .hover\\:shadow-xl:hover {
+      box-shadow: var(--shadow-xl) !important;
+    }
+    .culmas-widget-container .hover\\:shadow-glow:hover {
+      box-shadow: var(--shadow-glow) !important;
+    }
+    .culmas-widget-container .hover\\:scale-105:hover {
+      --tw-scale-x: 1.05 !important;
+      --tw-scale-y: 1.05 !important;
+      transform: translate(var(--tw-translate-x, 0), var(--tw-translate-y, 0)) rotate(var(--tw-rotate, 0)) skewX(var(--tw-skew-x, 0)) skewY(var(--tw-skew-y, 0)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)) !important;
+    }
+    .culmas-widget-container .hover\\:border-primary\\/20:hover {
+      border-color: hsl(var(--primary) / 0.2) !important;
+    }
+    .culmas-widget-container .hover\\:bg-accent\\/80:hover {
+      background-color: hsl(var(--accent) / 0.8) !important;
+    }
+    .culmas-widget-container .hover\\:bg-accent:hover {
+      background-color: hsl(var(--accent)) !important;
+    }
+    .culmas-widget-container .hover\\:text-accent-foreground:hover {
+      color: hsl(var(--accent-foreground)) !important;
+    }
+    .culmas-widget-container .hover\\:text-foreground:hover {
+      color: hsl(var(--foreground)) !important;
+    }
+    
+    /* Display */
+    .culmas-widget-container .hidden {
+      display: none !important;
+    }
+    .culmas-widget-container .block {
+      display: block !important;
+    }
+    
+    /* Position */
+    .culmas-widget-container .relative {
+      position: relative !important;
+    }
+    .culmas-widget-container .absolute {
+      position: absolute !important;
+    }
+    .culmas-widget-container .inset-0 {
+      top: 0 !important;
+      right: 0 !important;
+      bottom: 0 !important;
+      left: 0 !important;
+    }
+    .culmas-widget-container .top-3 {
+      top: 0.75rem !important;
+    }
+    .culmas-widget-container .right-3 {
+      right: 0.75rem !important;
+    }
+    
+    /* Opacity and Effects */
+    .culmas-widget-container .opacity-0 {
+      opacity: 0 !important;
+    }
+    .culmas-widget-container .opacity-20 {
+      opacity: 0.2 !important;
+    }
+    .culmas-widget-container .opacity-60 {
+      opacity: 0.6 !important;
+    }
+    .culmas-widget-container .grayscale {
+      filter: grayscale(100%) !important;
+    }
+    
+    /* Object Fit */
+    .culmas-widget-container .object-cover {
+      object-fit: cover !important;
+    }
+    
+    /* Text Center */
+    .culmas-widget-container .text-center {
+      text-align: center !important;
+    }
+  `;
+  document.head.appendChild(style);
+  console.log('✅ Comprehensive critical CSS injected successfully');
 }
 
 
@@ -99,68 +615,100 @@ class CulmasWidget {
     });
   }
 
-  // Apply theme to widget container using standard CSS variable names
+  // Apply theme to widget container with complete CSS variable coverage
   private applyWidgetTheme(container: HTMLElement, theme: any) {
-    console.log('🎨 Applying widget theme:', theme);
+    console.log('🎨 Applying comprehensive widget theme:', theme);
     
     if (!theme?.colors) {
-      console.warn('No theme colors provided');
-      return;
+      console.warn('No theme colors provided, applying default theme');
+      // Apply default theme colors
+      const defaultVars = {
+        '--background': '0 0% 100%',
+        '--foreground': '222.2 84% 4.9%',
+        '--card': '0 0% 100%',
+        '--card-foreground': '222.2 84% 4.9%',
+        '--primary': '262 83% 58%',
+        '--primary-foreground': '210 40% 98%',
+        '--secondary': '210 40% 96%',
+        '--secondary-foreground': '222.2 84% 4.9%',
+        '--muted': '210 40% 96%',
+        '--muted-foreground': '215.4 16.3% 46.9%',
+        '--accent': '210 40% 96%',
+        '--accent-foreground': '222.2 84% 4.9%',
+        '--border': '214.3 31.8% 91.4%',
+        '--input': '214.3 31.8% 91.4%',
+        '--ring': '262 83% 58%',
+        '--destructive': '0 84.2% 60.2%',
+        '--destructive-foreground': '210 40% 98%',
+        '--radius': '0.75rem'
+      };
+      
+      Object.entries(defaultVars).forEach(([key, value]) => {
+        container.style.setProperty(key, value);
+      });
+    } else {
+      // Apply provided theme colors with proper CSS variable names
+      Object.entries(theme.colors).forEach(([key, value]) => {
+        const cssVarName = key.replace(/([A-Z])/g, '-$1').toLowerCase();
+        console.log(`Setting --${cssVarName}: ${value}`);
+        container.style.setProperty(`--${cssVarName}`, value as string);
+      });
     }
-
-    // Apply color variables with standard names (no prefix) to match ThemeProvider
-    Object.entries(theme.colors).forEach(([key, value]) => {
-      const cssVarName = key.replace(/([A-Z])/g, '-$1').toLowerCase();
-      console.log(`Setting --${cssVarName}: ${value}`);
-      container.style.setProperty(`--${cssVarName}`, value as string);
-    });
     
     // Apply design variables
-    if (theme.design) {
+    if (theme?.design) {
       console.log('🔧 Applying design settings:', theme.design);
       container.style.setProperty('--radius', theme.design.borderRadius || '0.75rem');
       
-      // Apply shadow intensity
+      // Apply shadow intensity with comprehensive coverage
       const shadowIntensity = theme.design.shadowIntensity || 'medium';
       switch (shadowIntensity) {
         case 'subtle':
           container.style.setProperty('--shadow-sm', '0 1px 2px 0 rgb(0 0 0 / 0.05)');
           container.style.setProperty('--shadow-md', '0 4px 6px -1px rgb(0 0 0 / 0.1)');
           container.style.setProperty('--shadow-lg', '0 10px 15px -3px rgb(0 0 0 / 0.1)');
-          container.style.setProperty('--shadow-glow', '0 0 20px hsl(var(--primary-glow) / 0.2)');
+          container.style.setProperty('--shadow-xl', '0 20px 25px -5px rgb(0 0 0 / 0.1)');
+          container.style.setProperty('--shadow-glow', '0 0 20px hsl(var(--primary) / 0.2)');
           break;
         case 'medium':
           container.style.setProperty('--shadow-sm', '0 1px 3px 0 rgb(0 0 0 / 0.1)');
           container.style.setProperty('--shadow-md', '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -1px rgb(0 0 0 / 0.06)');
           container.style.setProperty('--shadow-lg', '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgb(0 0 0 / 0.04)');
-          container.style.setProperty('--shadow-glow', '0 0 30px hsl(var(--primary-glow) / 0.3)');
+          container.style.setProperty('--shadow-xl', '0 25px 50px -12px rgb(0 0 0 / 0.25)');
+          container.style.setProperty('--shadow-glow', '0 0 30px hsl(var(--primary) / 0.3)');
           break;
         case 'strong':
           container.style.setProperty('--shadow-sm', '0 2px 4px 0 rgb(0 0 0 / 0.1)');
           container.style.setProperty('--shadow-md', '0 8px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.05)');
           container.style.setProperty('--shadow-lg', '0 25px 50px -12px rgb(0 0 0 / 0.25)');
-          container.style.setProperty('--shadow-glow', '0 0 40px hsl(var(--primary-glow) / 0.4)');
+          container.style.setProperty('--shadow-xl', '0 35px 60px -12px rgb(0 0 0 / 0.3)');
+          container.style.setProperty('--shadow-glow', '0 0 40px hsl(var(--primary) / 0.4)');
           break;
       }
       
-      // Apply gradients
-      if (theme.design.gradients) {
+      // Apply gradients with fallbacks
+      if (theme.design.gradients && theme.colors.primary) {
         const primary = theme.colors.primary;
-        const gradientPrimary = theme.colors.gradientPrimary || theme.colors.primaryGlow;
-        const gradientValue = `linear-gradient(135deg, hsl(${primary}), hsl(${gradientPrimary}))`;
-        console.log('Setting gradient:', gradientValue);
+        const primaryGlow = theme.colors.primaryGlow || theme.colors.gradientPrimary || primary;
+        const accent = theme.colors.accent || primary;
+        
+        const gradientValue = `linear-gradient(135deg, hsl(${primary}), hsl(${primaryGlow}))`;
         container.style.setProperty('--gradient-primary', gradientValue);
-        container.style.setProperty('--gradient-hero', `linear-gradient(135deg, hsl(${primary}), hsl(${gradientPrimary}), hsl(${theme.colors.accent}))`);
-      } else {
+        container.style.setProperty('--gradient-hero', `linear-gradient(135deg, hsl(${primary}), hsl(${primaryGlow}), hsl(${accent}))`);
+        container.style.setProperty('--gradient-secondary', `linear-gradient(180deg, hsl(var(--secondary)), hsl(var(--muted)))`);
+      } else if (theme.colors.primary) {
         container.style.setProperty('--gradient-primary', `hsl(${theme.colors.primary})`);
         container.style.setProperty('--gradient-hero', `hsl(${theme.colors.primary})`);
+        container.style.setProperty('--gradient-secondary', 'hsl(var(--secondary))');
       }
       
       // Apply transitions
       if (theme.design.hoverEffects) {
         container.style.setProperty('--transition-smooth', 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)');
+        container.style.setProperty('--transition-fast', 'all 0.15s cubic-bezier(0.4, 0, 0.2, 1)');
       } else {
         container.style.setProperty('--transition-smooth', 'all 0.15s ease');
+        container.style.setProperty('--transition-fast', 'all 0.1s ease');
       }
     }
 
@@ -169,7 +717,8 @@ class CulmasWidget {
       primary: getComputedStyle(container).getPropertyValue('--primary'),
       secondary: getComputedStyle(container).getPropertyValue('--secondary'),
       background: getComputedStyle(container).getPropertyValue('--background'),
-      accent: getComputedStyle(container).getPropertyValue('--accent')
+      accent: getComputedStyle(container).getPropertyValue('--accent'),
+      radius: getComputedStyle(container).getPropertyValue('--radius')
     });
   }
 
@@ -220,15 +769,20 @@ class CulmasWidget {
 
       console.log('✅ Container found:', container);
 
-      // Create scoped container with widget prefix
+      // Create properly configured widget container
       const widgetContainer = document.createElement('div');
       widgetContainer.className = 'culmas-widget-container';
       
-      // Add Webflow-safe attributes and enhanced specificity
+      // Add essential attributes for CSS scoping and Webflow compatibility
       widgetContainer.setAttribute('data-culmas-widget-instance', 'true');
       widgetContainer.setAttribute('data-widget-version', '1.0.0');
+      
+      // Apply essential container styles
       widgetContainer.style.position = 'relative';
       widgetContainer.style.zIndex = '1';
+      widgetContainer.style.width = '100%';
+      widgetContainer.style.maxWidth = '100%';
+      widgetContainer.style.minHeight = '200px';
       
       // Apply critical inline styles as fallback
       this.applyInlineStyleFallbacks(widgetContainer);
