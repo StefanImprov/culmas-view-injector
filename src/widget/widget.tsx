@@ -61,11 +61,11 @@ div[data-culmas-widget-instance="true"].culmas-widget-container *::after {
 .culmas-widget-container .gap-4 { gap: 1rem !important; }
 
 /* Essential styling classes */
-.culmas-widget-container .bg-card { background-color: rgb(255, 255, 255) !important; }
-.culmas-widget-container .text-card-foreground { color: rgb(14, 17, 47) !important; }
-.culmas-widget-container .bg-primary { background-color: rgb(149, 66, 232) !important; }
-.culmas-widget-container .text-primary-foreground { color: rgb(249, 250, 251) !important; }
-.culmas-widget-container .text-muted-foreground { color: rgb(107, 114, 128) !important; }
+.culmas-widget-container .bg-card { background-color: hsl(var(--card)) !important; }
+.culmas-widget-container .text-card-foreground { color: hsl(var(--card-foreground)) !important; }
+.culmas-widget-container .bg-primary { background-color: hsl(var(--primary)) !important; }
+.culmas-widget-container .text-primary-foreground { color: hsl(var(--primary-foreground)) !important; }
+.culmas-widget-container .text-muted-foreground { color: hsl(var(--muted-foreground)) !important; }
 
 /* Essential spacing */
 .culmas-widget-container .p-4 { padding: 1rem !important; }
