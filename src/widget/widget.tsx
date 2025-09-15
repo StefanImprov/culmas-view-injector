@@ -104,6 +104,9 @@ function injectCriticalCSS() {
     .culmas-widget-container .grid-cols-7 {
       grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
     }
+    .culmas-widget-container .grid-cols-8 {
+      grid-template-columns: repeat(8, minmax(0, 1fr)) !important;
+    }
     
     /* Responsive Grid */
     @media (min-width: 640px) {
@@ -150,6 +153,18 @@ function injectCriticalCSS() {
     .culmas-widget-container .flex {
       display: flex !important;
     }
+    .culmas-widget-container .flex-col {
+      flex-direction: column !important;
+    }
+    .culmas-widget-container .flex-row {
+      flex-direction: row !important;
+    }
+    .culmas-widget-container .flex-1 {
+      flex: 1 1 0% !important;
+    }
+    .culmas-widget-container .flex-shrink-0 {
+      flex-shrink: 0 !important;
+    }
     .culmas-widget-container .items-center {
       align-items: center !important;
     }
@@ -161,6 +176,24 @@ function injectCriticalCSS() {
     }
     .culmas-widget-container .justify-center {
       justify-content: center !important;
+    }
+    .culmas-widget-container .justify-between {
+      justify-content: space-between !important;
+    }
+    .culmas-widget-container .justify-start {
+      justify-content: flex-start !important;
+    }
+    .culmas-widget-container .justify-end {
+      justify-content: flex-end !important;
+    }
+    .culmas-widget-container .items-center {
+      align-items: center !important;
+    }
+    .culmas-widget-container .items-start {
+      align-items: flex-start !important;
+    }
+    .culmas-widget-container .items-end {
+      align-items: flex-end !important;
     }
     .culmas-widget-container .flex-col {
       flex-direction: column !important;
@@ -200,6 +233,18 @@ function injectCriticalCSS() {
     .culmas-widget-container .min-w-\\[44px\\] {
       min-width: 44px !important;
     }
+    .culmas-widget-container .min-w-\\[800px\\] {
+      min-width: 800px !important;
+    }
+    .culmas-widget-container .min-w-0 {
+      min-width: 0px !important;
+    }
+    .culmas-widget-container .w-auto {
+      width: auto !important;
+    }
+    .culmas-widget-container .w-full {
+      width: 100% !important;
+    }
     .culmas-widget-container .min-w-\\[120px\\] {
       min-width: 120px !important;
     }
@@ -231,6 +276,21 @@ function injectCriticalCSS() {
     }
     .culmas-widget-container .space-x-3 > :not([hidden]) ~ :not([hidden]) {
       margin-left: 0.75rem !important;
+    }
+    .culmas-widget-container .space-x-4 > :not([hidden]) ~ :not([hidden]) {
+      margin-left: 1rem !important;
+    }
+    .culmas-widget-container .space-x-6 > :not([hidden]) ~ :not([hidden]) {
+      margin-left: 1.5rem !important;
+    }
+    .culmas-widget-container .space-x-1\\.5 > :not([hidden]) ~ :not([hidden]) {
+      margin-left: 0.375rem !important;
+    }
+    .culmas-widget-container .space-y-3 > :not([hidden]) ~ :not([hidden]) {
+      margin-top: 0.75rem !important;
+    }
+    .culmas-widget-container .space-y-4 > :not([hidden]) ~ :not([hidden]) {
+      margin-top: 1rem !important;
     }
     .culmas-widget-container .gap-2 {
       gap: 0.5rem !important;
@@ -344,8 +404,22 @@ function injectCriticalCSS() {
     .culmas-widget-container .last\\:border-r-0:last-child {
       border-right-width: 0 !important;
     }
+    .culmas-widget-container .last\\:mb-0:last-child {
+      margin-bottom: 0 !important;
+    }
+    .culmas-widget-container .last\\:border-b-0:last-child {
+      border-bottom-width: 0 !important;
+    }
+    .culmas-widget-container .border-t {
+      border-top-width: 1px !important;
+      border-style: solid !important;
+      border-color: hsl(var(--border)) !important;
+    }
     .culmas-widget-container .overflow-hidden {
       overflow: hidden !important;
+    }
+    .culmas-widget-container .overflow-x-auto {
+      overflow-x: auto !important;
     }
     
     /* Backgrounds and Colors */
@@ -417,9 +491,29 @@ function injectCriticalCSS() {
       font-size: 0.75rem !important;
       line-height: 1rem !important;
     }
+    .culmas-widget-container .text-xs {
+      font-size: 0.75rem !important;
+      line-height: 1rem !important;
+    }
     .culmas-widget-container .text-sm {
       font-size: 0.875rem !important;
       line-height: 1.25rem !important;
+    }
+    .culmas-widget-container .text-base {
+      font-size: 1rem !important;
+      line-height: 1.5rem !important;
+    }
+    .culmas-widget-container .text-lg {
+      font-size: 1.125rem !important;
+      line-height: 1.75rem !important;
+    }
+    .culmas-widget-container .text-xl {
+      font-size: 1.25rem !important;
+      line-height: 1.75rem !important;
+    }
+    .culmas-widget-container .text-2xl {
+      font-size: 1.5rem !important;
+      line-height: 2rem !important;
     }
     .culmas-widget-container .text-base {
       font-size: 1rem !important;
@@ -466,6 +560,18 @@ function injectCriticalCSS() {
       overflow: hidden !important;
       text-overflow: ellipsis !important;
       white-space: nowrap !important;
+    }
+    .culmas-widget-container .line-clamp-2 {
+      overflow: hidden !important;
+      display: -webkit-box !important;
+      -webkit-box-orient: vertical !important;
+      -webkit-line-clamp: 2 !important;
+    }
+    .culmas-widget-container .line-clamp-none {
+      overflow: visible !important;
+      display: block !important;
+      -webkit-box-orient: horizontal !important;
+      -webkit-line-clamp: none !important;
     }
     
     /* Line Clamp */
@@ -573,6 +679,12 @@ function injectCriticalCSS() {
     }
     
     /* Position */
+    .culmas-widget-container .relative {
+      position: relative !important;
+    }
+    .culmas-widget-container .absolute {
+      position: absolute !important;
+    }
     .culmas-widget-container .relative {
       position: relative !important;
     }
