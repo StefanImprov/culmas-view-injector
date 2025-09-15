@@ -164,10 +164,12 @@ The widget is designed to work alongside Webflow interactions and animations wit
 ### CMS Integration
 You can dynamically set widget parameters using Webflow CMS:
 ```html
+{% raw %}
 <script data-culmas-widget 
         data-container="#products"
         data-venue-ids="{{wf {&quot;path&quot;:&quot;venue-id&quot;,&quot;type&quot;:&quot;PlainText&quot;\} }}">
 </script>
+{% endraw %}
 ```
 
 ## Support
