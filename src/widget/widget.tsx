@@ -17,8 +17,8 @@ div[data-culmas-widget-instance="true"].culmas-widget-container,
   box-sizing: border-box !important;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif !important;
   line-height: 1.5 !important;
-  color: rgb(14, 17, 47) !important;
-  background-color: rgb(255, 255, 255) !important;
+  color: hsl(var(--foreground)) !important;
+  background-color: hsl(var(--background)) !important;
   position: relative !important;
   z-index: 999999 !important;
   contain: layout style !important;
@@ -77,7 +77,7 @@ div[data-culmas-widget-instance="true"].culmas-widget-container *::after {
 /* Essential borders and radius */
 .culmas-widget-container .rounded-lg { border-radius: 0.5rem !important; }
 .culmas-widget-container .rounded-xl { border-radius: 0.75rem !important; }
-.culmas-widget-container .border { border: 1px solid rgb(229, 231, 235) !important; }
+.culmas-widget-container .border { border: 1px solid hsl(var(--border)) !important; }
 
 /* Essential effects */
 .culmas-widget-container .shadow-md { 
