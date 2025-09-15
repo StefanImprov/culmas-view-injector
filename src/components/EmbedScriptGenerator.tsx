@@ -138,7 +138,6 @@ export const EmbedScriptGenerator = ({ theme }: EmbedScriptGeneratorProps) => {
   data-culmas-widget="true"
   data-container="#${containerId || 'culmas-widget'}"
   data-api-url="https://api.dev.culmas.io/"
-  data-api-key="YOUR_API_KEY_HERE"
   ${selectedTemplateIds.length > 0 ? `data-template-ids="${selectedTemplateIds.join(',')}"` : ''}
   ${selectedVenueIds.length > 0 ? `data-venue-ids="${selectedVenueIds.join(',')}"` : ''}
   ${theme ? `data-theme='${JSON.stringify(theme)}'` : ''}
