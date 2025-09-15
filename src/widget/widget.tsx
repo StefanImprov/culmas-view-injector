@@ -73,6 +73,14 @@ interface WidgetConfig {
   theme?: any;
 }
 
+// Global initialization state
+const initializationState = {
+  initializedContainers: new Set<string>(),
+  isInitializing: false,
+  timeouts: new Set<number>(),
+  observer: null as MutationObserver | null
+};
+
 // Global widget class
 class CulmasWidget {
   private queryClient: QueryClient;
@@ -166,6 +174,12 @@ class CulmasWidget {
   // Initialize widget in a container with error boundaries
   async init(config: WidgetConfig) {
     try {
+      // Check if container already has a widget
+      if (initializationState.initializedContainers.has(config.container)) {
+        console.log('🚫 Container already has widget, skipping:', config.container);
+        return;
+      }
+
       console.log('🔧 Initializing Culmas Widget with config:', config);
       
       // Ensure CSS is loaded before proceeding
@@ -226,6 +240,11 @@ class CulmasWidget {
       root.render(<WidgetApp />);
       this.mountedInstances.set(config.container, root);
       
+      // Mark container as initialized and clear timeouts
+      initializationState.initializedContainers.add(config.container);
+      this.clearAllTimeouts();
+      this.disconnectObserver();
+      
       console.log('✅ Widget initialized successfully');
     } catch (error) {
       console.error('❌ Failed to initialize Culmas Widget:', error);
@@ -254,12 +273,27 @@ class CulmasWidget {
     console.log('🔧 Applied inline style fallbacks');
   }
 
+  // Clear all pending timeouts
+  private clearAllTimeouts() {
+    initializationState.timeouts.forEach(timeoutId => clearTimeout(timeoutId));
+    initializationState.timeouts.clear();
+  }
+
+  // Disconnect MutationObserver
+  private disconnectObserver() {
+    if (initializationState.observer) {
+      initializationState.observer.disconnect();
+      initializationState.observer = null;
+    }
+  }
+
   // Destroy widget instance
   destroy(container: string) {
     const root = this.mountedInstances.get(container);
     if (root) {
       root.unmount();
       this.mountedInstances.delete(container);
+      initializationState.initializedContainers.delete(container);
     }
   }
 }
@@ -267,6 +301,14 @@ class CulmasWidget {
 // Enhanced auto-initialization with comprehensive Webflow support
 function autoInit() {
   try {
+    // Prevent concurrent initialization
+    if (initializationState.isInitializing) {
+      console.log('🚫 Initialization already in progress, skipping');
+      return;
+    }
+    
+    initializationState.isInitializing = true;
+
     // Enhanced environment detection
     const isWebflow = !!document.querySelector('[data-wf-site]') || 
                      !!document.querySelector('.w-webflow-badge') ||
@@ -286,6 +328,7 @@ function autoInit() {
     // Don't initialize in Webflow Designer
     if (isWebflowDesigner) {
       console.log('🚫 Webflow Designer detected - skipping initialization');
+      initializationState.isInitializing = false;
       return;
     }
     
@@ -336,6 +379,12 @@ function autoInit() {
         }
 
         if (container) {
+          // Skip if container already initialized
+          if (initializationState.initializedContainers.has(container)) {
+            console.log('🚫 Container already initialized, skipping:', container);
+            return;
+          }
+          
           console.log(`🚀 Initializing widget for container: ${container}`);
           const widget = new CulmasWidget();
           widget.init({
@@ -354,6 +403,8 @@ function autoInit() {
     });
   } catch (error) {
     console.error('❌ Critical error in autoInit:', error);
+  } finally {
+    initializationState.isInitializing = false;
   }
 }
 
@@ -408,44 +459,50 @@ function safeInit() {
   
   autoInit();
   
-  // Enhanced fallback timing for Webflow environments
-  const fallbackDelays = isWebflow ? [1000, 2000, 5000] : [500, 1500];
-  
-  fallbackDelays.forEach((delay, index) => {
-    setTimeout(() => {
-      console.log(`⏰ Fallback initialization ${index + 1} after ${delay}ms...`);
-      autoInit();
-    }, delay);
-  });
-  
-  // Additional Webflow-specific fallbacks
-  if (isWebflow) {
-    // Listen for Webflow interactions completion
-    if ((window as any).Webflow) {
-      setTimeout(() => {
-        console.log('🌊 Webflow interactions loaded fallback...');
-        autoInit();
-      }, 8000);
+  // Only add fallbacks if no widgets initialized yet
+  if (initializationState.initializedContainers.size === 0) {
+    // Reduced fallback timing for Webflow environments
+    const fallbackDelays = isWebflow ? [2000] : [1000];
+    
+    fallbackDelays.forEach((delay, index) => {
+      const timeoutId = setTimeout(() => {
+        // Only initialize if no widgets exist yet
+        if (initializationState.initializedContainers.size === 0) {
+          console.log(`⏰ Fallback initialization ${index + 1} after ${delay}ms...`);
+          autoInit();
+        }
+        initializationState.timeouts.delete(timeoutId);
+      }, delay) as unknown as number;
+      initializationState.timeouts.add(timeoutId);
+    });
+    
+    // Single MutationObserver for DOM changes (only if no widgets exist)
+    if (!initializationState.observer) {
+      initializationState.observer = new MutationObserver(() => {
+        // Only trigger if we have scripts but no initialized widgets
+        const widgets = document.querySelectorAll('script[data-culmas-widget]');
+        if (widgets.length > 0 && initializationState.initializedContainers.size === 0) {
+          console.log('🔄 DOM changes detected, checking for widgets...');
+          autoInit();
+        }
+      });
+      
+      initializationState.observer.observe(document.body, { 
+        childList: true, 
+        subtree: true,
+        attributes: false 
+      });
+      
+      // Auto-disconnect observer after 15 seconds
+      const timeoutId = setTimeout(() => {
+        if (initializationState.observer) {
+          initializationState.observer.disconnect();
+          initializationState.observer = null;
+        }
+        initializationState.timeouts.delete(timeoutId);
+      }, 15000) as unknown as number;
+      initializationState.timeouts.add(timeoutId);
     }
-    
-    // Listen for any dynamic content changes
-    const observer = new MutationObserver(() => {
-      const widgets = document.querySelectorAll('script[data-culmas-widget]');
-      if (widgets.length > 0) {
-        console.log('🔄 DOM changes detected, re-initializing...');
-        autoInit();
-        observer.disconnect();
-      }
-    });
-    
-    observer.observe(document.body, { 
-      childList: true, 
-      subtree: true,
-      attributes: false 
-    });
-    
-    // Disconnect observer after 10 seconds
-    setTimeout(() => observer.disconnect(), 10000);
   }
 }
 
@@ -461,8 +518,11 @@ if (document.readyState === 'loading') {
 if ((window as any).Webflow) {
   console.log('🌊 Webflow detected, adding Webflow-specific initialization...');
   (window as any).Webflow.push(() => {
-    console.log('🌊 Webflow ready callback triggered');
-    autoInit();
+    // Only initialize if no widgets exist yet
+    if (initializationState.initializedContainers.size === 0) {
+      console.log('🌊 Webflow ready callback triggered');
+      autoInit();
+    }
   });
 }
 
