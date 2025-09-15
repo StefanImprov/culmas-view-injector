@@ -159,7 +159,7 @@
     }
   }
 
-  async function fetchProducts(apiUrl, templateIds, venueIds) {
+  async function fetchProducts(apiUrl, templateIds, venueIds, apiKey) {
     try {
       const query = `
         query GetProducts($templateIds: [String!], $venueIds: [String!]) {
@@ -177,11 +177,21 @@
         }
       `;
 
+      const headers = {
+        'Content-Type': 'application/json',
+      };
+
+      // Add authentication header
+      if (apiKey) {
+        headers['Authorization'] = `Bearer ${apiKey}`;
+      } else {
+        // Fallback to domain header if no API key provided
+        headers['domain'] = window.location.hostname;
+      }
+
       const response = await fetch(apiUrl, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers,
         body: JSON.stringify({
           query,
           variables: {
@@ -271,7 +281,7 @@
     showLoading(container);
 
     try {
-      const products = await fetchProducts(config.apiUrl, config.templateIds, config.venueIds);
+      const products = await fetchProducts(config.apiUrl, config.templateIds, config.venueIds, config.apiKey);
       
       if (products.length === 0) {
         showError(container, 'No products found');
@@ -306,7 +316,8 @@
       apiUrl: script.getAttribute('data-api-url') || 'https://api.dev.culmas.io/',
       templateIds: (script.getAttribute('data-template-ids') || '').split(',').filter(id => id.trim()),
       venueIds: (script.getAttribute('data-venue-ids') || '').split(',').filter(id => id.trim()),
-      theme: script.getAttribute('data-theme') ? JSON.parse(script.getAttribute('data-theme')) : null
+      theme: script.getAttribute('data-theme') ? JSON.parse(script.getAttribute('data-theme')) : null,
+      apiKey: script.getAttribute('data-api-key') || null
     };
   }
 
