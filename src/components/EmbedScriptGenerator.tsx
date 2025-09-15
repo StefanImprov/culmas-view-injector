@@ -138,9 +138,9 @@ export const EmbedScriptGenerator = ({ theme }: EmbedScriptGeneratorProps) => {
       widgetJsUrl = `${currentUrl}/widget/culmas-widget.js`;
       widgetCssUrl = `${currentUrl}/widget/culmas-widget.css`;
     } else {
-      // GitHub Pages URL for production
-      widgetJsUrl = "https://stefanimprov.github.io/culmas-view-injector/widget/culmas-widget.js";
-      widgetCssUrl = "https://stefanimprov.github.io/culmas-view-injector/widget/culmas-widget.css";
+      // GitHub Pages URL for production - Update this with your actual repository name
+      widgetJsUrl = "https://YOUR_USERNAME.github.io/YOUR_REPO_NAME/widget/culmas-widget.js";
+      widgetCssUrl = "https://YOUR_USERNAME.github.io/YOUR_REPO_NAME/widget/culmas-widget.css";
     }
 
     return `<!-- Culmas Product Widget -->
