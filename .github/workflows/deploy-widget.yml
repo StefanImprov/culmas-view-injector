@@ -37,7 +37,11 @@ jobs:
         run: npm run build
 
       - name: Build widget
-        run: npx vite build --config vite.widget.config.ts
+        run: |
+          echo "Building widget..."
+          npx vite build --config vite.widget.config.ts
+          echo "Widget build complete!"
+          ls -la dist/widget/ || echo "Widget dist directory not found"
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
