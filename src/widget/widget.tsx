@@ -101,6 +101,9 @@ function injectCriticalCSS() {
     .culmas-widget-container .grid-cols-4 {
       grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
     }
+    .culmas-widget-container .grid-cols-7 {
+      grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+    }
     
     /* Responsive Grid */
     @media (min-width: 640px) {
@@ -188,6 +191,12 @@ function injectCriticalCSS() {
     .culmas-widget-container .min-h-\\[44px\\] {
       min-height: 44px !important;
     }
+    .culmas-widget-container .min-h-\\[80px\\] {
+      min-height: 80px !important;
+    }
+    .culmas-widget-container .min-h-\\[120px\\] {
+      min-height: 120px !important;
+    }
     .culmas-widget-container .min-w-\\[44px\\] {
       min-width: 44px !important;
     }
@@ -208,8 +217,17 @@ function injectCriticalCSS() {
     .culmas-widget-container .space-y-2 > :not([hidden]) ~ :not([hidden]) {
       margin-top: 0.5rem !important;
     }
+    .culmas-widget-container .space-y-1 > :not([hidden]) ~ :not([hidden]) {
+      margin-top: 0.25rem !important;
+    }
+    .culmas-widget-container .space-y-0\\.5 > :not([hidden]) ~ :not([hidden]) {
+      margin-top: 0.125rem !important;
+    }
     .culmas-widget-container .space-x-2 > :not([hidden]) ~ :not([hidden]) {
       margin-left: 0.5rem !important;
+    }
+    .culmas-widget-container .space-x-1 > :not([hidden]) ~ :not([hidden]) {
+      margin-left: 0.25rem !important;
     }
     .culmas-widget-container .space-x-3 > :not([hidden]) ~ :not([hidden]) {
       margin-left: 0.75rem !important;
@@ -225,6 +243,9 @@ function injectCriticalCSS() {
     }
     .culmas-widget-container .p-1 {
       padding: 0.25rem !important;
+    }
+    .culmas-widget-container .p-1\\.5 {
+      padding: 0.375rem !important;
     }
     .culmas-widget-container .p-4 {
       padding: 1rem !important;
@@ -286,6 +307,9 @@ function injectCriticalCSS() {
     .culmas-widget-container .mt-8 {
       margin-top: 2rem !important;
     }
+    .culmas-widget-container .ml-3 {
+      margin-left: 0.75rem !important;
+    }
     
     /* Borders and Radius */
     .culmas-widget-container .rounded-lg {
@@ -306,6 +330,19 @@ function injectCriticalCSS() {
       border-top-width: 1px !important;
       border-style: solid !important;
       border-color: hsl(var(--border)) !important;
+    }
+    .culmas-widget-container .border-b {
+      border-bottom-width: 1px !important;
+      border-style: solid !important;
+      border-color: hsl(var(--border)) !important;
+    }
+    .culmas-widget-container .border-r {
+      border-right-width: 1px !important;
+      border-style: solid !important;
+      border-color: hsl(var(--border)) !important;
+    }
+    .culmas-widget-container .last\\:border-r-0:last-child {
+      border-right-width: 0 !important;
     }
     .culmas-widget-container .overflow-hidden {
       overflow: hidden !important;
@@ -425,6 +462,11 @@ function injectCriticalCSS() {
     .culmas-widget-container .whitespace-nowrap {
       white-space: nowrap !important;
     }
+    .culmas-widget-container .truncate {
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      white-space: nowrap !important;
+    }
     
     /* Line Clamp */
     .culmas-widget-container .line-clamp-2 {
@@ -520,6 +562,14 @@ function injectCriticalCSS() {
     }
     .culmas-widget-container .block {
       display: block !important;
+    }
+    @media (min-width: 640px) {
+      .culmas-widget-container .sm\\:hidden {
+        display: none !important;
+      }
+      .culmas-widget-container .hidden.sm\\:block {
+        display: block !important;
+      }
     }
     
     /* Position */
