@@ -16,44 +16,44 @@ div[data-culmas-widget-instance="true"].culmas-widget-container,
   contain: layout style !important;
   isolation: isolate !important;
   
-  /* CSS Variables scoped to widget - Complete Design System */
-  --cw-background: 0 0% 100%;
-  --cw-foreground: 222.2 84% 4.9%;
-  --cw-card: 0 0% 100%;
-  --cw-card-foreground: 222.2 84% 4.9%;
-  --cw-popover: 0 0% 100%;
-  --cw-popover-foreground: 222.2 84% 4.9%;
-  --cw-primary: 262 83% 58%;
-  --cw-primary-foreground: 210 40% 98%;
-  --cw-primary-glow: 262 83% 70%;
-  --cw-secondary: 210 40% 96%;
-  --cw-secondary-foreground: 222.2 84% 4.9%;
-  --cw-muted: 210 40% 96%;
-  --cw-muted-foreground: 215.4 16.3% 46.9%;
-  --cw-accent: 210 40% 96%;
-  --cw-accent-foreground: 222.2 84% 4.9%;
-  --cw-destructive: 0 84.2% 60.2%;
-  --cw-destructive-foreground: 210 40% 98%;
-  --cw-border: 214.3 31.8% 91.4%;
-  --cw-input: 214.3 31.8% 91.4%;
-  --cw-ring: 262 83% 58%;
-  --cw-radius: 0.75rem;
+  /* CSS Variables scoped to widget - Complete Design System using standard names */
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 84% 4.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222.2 84% 4.9%;
+  --primary: 262 83% 58%;
+  --primary-foreground: 210 40% 98%;
+  --primary-glow: 262 83% 70%;
+  --secondary: 210 40% 96%;
+  --secondary-foreground: 222.2 84% 4.9%;
+  --muted: 210 40% 96%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --accent: 210 40% 96%;
+  --accent-foreground: 222.2 84% 4.9%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 262 83% 58%;
+  --radius: 0.75rem;
   
   /* Beautiful Design Tokens */
-  --cw-gradient-primary: linear-gradient(135deg, hsl(262 83% 58%), hsl(262 83% 70%));
-  --cw-gradient-secondary: linear-gradient(180deg, hsl(0 0% 100%), hsl(210 40% 96%));
-  --cw-gradient-hero: linear-gradient(135deg, hsl(262 83% 58%), hsl(262 83% 70%), hsl(210 40% 96%));
+  --gradient-primary: linear-gradient(135deg, hsl(262 83% 58%), hsl(262 83% 70%));
+  --gradient-secondary: linear-gradient(180deg, hsl(0 0% 100%), hsl(210 40% 96%));
+  --gradient-hero: linear-gradient(135deg, hsl(262 83% 58%), hsl(262 83% 70%), hsl(210 40% 96%));
   
   /* Enhanced Shadow System */
-  --cw-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --cw-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -1px rgb(0 0 0 / 0.06);
-  --cw-shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgb(0 0 0 / 0.04);
-  --cw-shadow-xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
-  --cw-shadow-glow: 0 0 30px hsl(262 83% 70% / 0.3);
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -1px rgb(0 0 0 / 0.06);
+  --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgb(0 0 0 / 0.04);
+  --shadow-xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  --shadow-glow: 0 0 30px hsl(262 83% 70% / 0.3);
   
   /* Smooth Transitions */
-  --cw-transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  --cw-transition-quick: all 0.15s ease;
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-quick: all 0.15s ease;
 }
 
 /* Enhanced child element overrides with maximum specificity */
@@ -80,77 +80,77 @@ div[data-culmas-widget-instance="true"].culmas-widget-container .w-dropdown,
 /* Enhanced scoped utility classes with maximum specificity */
 div[data-culmas-widget-instance="true"].culmas-widget-container .culmas-widget,
 .culmas-widget-container[data-culmas-widget-instance="true"] .culmas-widget {
-  background-color: hsl(var(--cw-background, 0 0% 100%)) !important;
-  color: hsl(var(--cw-foreground, 222.2 84% 4.9%)) !important;
+  background-color: hsl(var(--background, 0 0% 100%)) !important;
+  color: hsl(var(--foreground, 222.2 84% 4.9%)) !important;
 }
 
 div[data-culmas-widget-instance="true"].culmas-widget-container .bg-card,
 .culmas-widget-container[data-culmas-widget-instance="true"] .bg-card {
-  background-color: hsl(var(--cw-card, 0 0% 100%)) !important;
+  background-color: hsl(var(--card, 0 0% 100%)) !important;
 }
 
 .culmas-widget-container .text-card-foreground {
-  color: hsl(var(--cw-card-foreground)) !important;
+  color: hsl(var(--card-foreground)) !important;
 }
 
 .culmas-widget-container .bg-primary {
-  background-color: hsl(var(--cw-primary)) !important;
+  background-color: hsl(var(--primary)) !important;
 }
 
 .culmas-widget-container .text-primary {
-  color: hsl(var(--cw-primary)) !important;
+  color: hsl(var(--primary)) !important;
 }
 
 .culmas-widget-container .text-primary-foreground {
-  color: hsl(var(--cw-primary-foreground)) !important;
+  color: hsl(var(--primary-foreground)) !important;
 }
 
 .culmas-widget-container .bg-secondary {
-  background-color: hsl(var(--cw-secondary)) !important;
+  background-color: hsl(var(--secondary)) !important;
 }
 
 .culmas-widget-container .text-secondary-foreground {
-  color: hsl(var(--cw-secondary-foreground)) !important;
+  color: hsl(var(--secondary-foreground)) !important;
 }
 
 .culmas-widget-container .text-muted-foreground {
-  color: hsl(var(--cw-muted-foreground)) !important;
+  color: hsl(var(--muted-foreground)) !important;
 }
 
 .culmas-widget-container .bg-accent {
-  background-color: hsl(var(--cw-accent)) !important;
+  background-color: hsl(var(--accent)) !important;
 }
 
 .culmas-widget-container .border-border {
-  border-color: hsl(var(--cw-border)) !important;
+  border-color: hsl(var(--border)) !important;
 }
 
 .culmas-widget-container .bg-destructive {
-  background-color: hsl(var(--cw-destructive)) !important;
+  background-color: hsl(var(--destructive)) !important;
 }
 
 .culmas-widget-container .text-destructive-foreground {
-  color: hsl(var(--cw-destructive-foreground)) !important;
+  color: hsl(var(--destructive-foreground)) !important;
 }
 
 .culmas-widget-container .bg-gradient-primary {
-  background-image: var(--cw-gradient-primary) !important;
+  background-image: var(--gradient-primary) !important;
 }
 
 .culmas-widget-container .bg-gradient-secondary {
-  background-image: var(--cw-gradient-secondary) !important;
+  background-image: var(--gradient-secondary) !important;
 }
 
 .culmas-widget-container .bg-gradient-hero {
-  background-image: var(--cw-gradient-hero) !important;
+  background-image: var(--gradient-hero) !important;
 }
 
 .culmas-widget-container .shadow-sm {
-  box-shadow: var(--cw-shadow-sm) !important;
+  box-shadow: var(--shadow-sm) !important;
 }
 
 .culmas-widget-container .shadow-lg {
-  box-shadow: var(--cw-shadow-lg) !important;
+  box-shadow: var(--shadow-lg) !important;
 }
 
 /* Grid and layout */
@@ -390,7 +390,7 @@ div[data-culmas-widget-instance="true"].culmas-widget-container .bg-card,
 }
 
 .culmas-widget-container .group:hover .group-hover\\:text-primary {
-  color: hsl(var(--cw-primary)) !important;
+  color: hsl(var(--primary)) !important;
 }
 
 .culmas-widget-container .group:hover .group-hover\\:opacity-20 {
@@ -487,7 +487,7 @@ div[data-culmas-widget-instance="true"].culmas-widget-container .bg-card,
 
 /* Button hover states */
 .culmas-widget-container .hover\\:bg-accent:hover {
-  background-color: hsl(var(--cw-accent)) !important;
+  background-color: hsl(var(--accent)) !important;
 }
 
 .culmas-widget-container .transition-colors {
@@ -496,7 +496,7 @@ div[data-culmas-widget-instance="true"].culmas-widget-container .bg-card,
 }
 
 .culmas-widget-container .hover\\:border-primary\\/20:hover {
-  border-color: hsl(var(--cw-primary) / 0.2) !important;
+  border-color: hsl(var(--primary) / 0.2) !important;
 }
 
 /* Additional missing utilities for enhanced styling */
@@ -533,11 +533,11 @@ div[data-culmas-widget-instance="true"].culmas-widget-container .bg-card,
 }
 
 .culmas-widget-container .group:hover .group-hover\\:shadow-glow {
-  box-shadow: var(--cw-shadow-glow);
+  box-shadow: var(--shadow-glow);
 }
 
 .culmas-widget-container .group:hover .group-hover\\:border-primary {
-  border-color: hsl(var(--cw-primary));
+  border-color: hsl(var(--primary));
 }
 
 .culmas-widget-container .hover\\:-translate-y-1:hover {
@@ -545,15 +545,15 @@ div[data-culmas-widget-instance="true"].culmas-widget-container .bg-card,
 }
 
 .culmas-widget-container .hover\\:shadow-glow:hover {
-  box-shadow: var(--cw-shadow-glow);
+  box-shadow: var(--shadow-glow);
 }
 
 .culmas-widget-container .hover\\:text-primary:hover {
-  color: hsl(var(--cw-primary));
+  color: hsl(var(--primary));
 }
 
 .culmas-widget-container .hover\\:border-primary:hover {
-  border-color: hsl(var(--cw-primary));
+  border-color: hsl(var(--primary));
 }
 
 /* Flex direction utilities */
@@ -779,20 +779,20 @@ div[data-culmas-widget-instance="true"].culmas-widget-container .bg-card,
 
 /* Beautiful Button and Component Styling */
 .culmas-widget-container .bg-gradient-hero {
-  background-image: var(--cw-gradient-hero) !important;
+  background-image: var(--gradient-hero) !important;
 }
 
 /* Enhanced Shadow System */
 .culmas-widget-container .shadow-sm {
-  box-shadow: var(--cw-shadow-sm) !important;
+  box-shadow: var(--shadow-sm) !important;
 }
 
 .culmas-widget-container .shadow-lg {
-  box-shadow: var(--cw-shadow-lg) !important;
+  box-shadow: var(--shadow-lg) !important;
 }
 
 .culmas-widget-container .shadow-xl {
-  box-shadow: var(--cw-shadow-xl) !important;
+  box-shadow: var(--shadow-xl) !important;
 }
 
 /* Advanced Backdrop Effects */
@@ -806,11 +806,11 @@ div[data-culmas-widget-instance="true"].culmas-widget-container .bg-card,
 
 /* Beautiful Transitions */
 .culmas-widget-container .transition-smooth {
-  transition: var(--cw-transition-smooth) !important;
+  transition: var(--transition-smooth) !important;
 }
 
 .culmas-widget-container .transition-quick {
-  transition: var(--cw-transition-quick) !important;
+  transition: var(--transition-quick) !important;
 }
 
 /* Enhanced Transform Effects */
@@ -824,53 +824,53 @@ div[data-culmas-widget-instance="true"].culmas-widget-container .bg-card,
 
 /* Button Gradient Styling */
 .culmas-widget-container .btn-gradient {
-  background-image: var(--cw-gradient-primary) !important;
-  color: hsl(var(--cw-primary-foreground)) !important;
+  background-image: var(--gradient-primary) !important;
+  color: hsl(var(--primary-foreground)) !important;
   border: 1px solid transparent !important;
-  transition: var(--cw-transition-smooth) !important;
+  transition: var(--transition-smooth) !important;
 }
 
 .culmas-widget-container .btn-gradient:hover {
-  background-image: var(--cw-gradient-hero) !important;
-  box-shadow: var(--cw-shadow-glow) !important;
+  background-image: var(--gradient-hero) !important;
+  box-shadow: var(--shadow-glow) !important;
   transform: translateY(-2px) scale(1.02) !important;
 }
 
 /* Primary Button Beautiful Styling */
 .culmas-widget-container .bg-primary {
-  background: var(--cw-gradient-primary) !important;
+  background: var(--gradient-primary) !important;
 }
 
 .culmas-widget-container .bg-primary:hover {
-  background: var(--cw-gradient-hero) !important;
-  box-shadow: var(--cw-shadow-glow) !important;
+  background: var(--gradient-hero) !important;
+  box-shadow: var(--shadow-glow) !important;
 }
 
 /* Card Enhancement Effects */
 .culmas-widget-container .card-enhanced {
-  background: hsl(var(--cw-card)) !important;
-  border: 1px solid hsl(var(--cw-border)) !important;
-  box-shadow: var(--cw-shadow-md) !important;
-  transition: var(--cw-transition-smooth) !important;
+  background: hsl(var(--card)) !important;
+  border: 1px solid hsl(var(--border)) !important;
+  box-shadow: var(--shadow-md) !important;
+  transition: var(--transition-smooth) !important;
 }
 
 .culmas-widget-container .card-enhanced:hover {
-  box-shadow: var(--cw-shadow-lg) !important;
+  box-shadow: var(--shadow-lg) !important;
   transform: translateY(-4px) scale(1.02) !important;
-  border-color: hsl(var(--cw-primary) / 0.2) !important;
+  border-color: hsl(var(--primary) / 0.2) !important;
 }
 
 /* Filter and Control Styling */
 .culmas-widget-container .filter-backdrop {
   background: rgba(255, 255, 255, 0.95) !important;
   backdrop-filter: blur(12px) !important;
-  border: 1px solid hsl(var(--cw-border)) !important;
-  box-shadow: var(--cw-shadow-lg) !important;
+  border: 1px solid hsl(var(--border)) !important;
+  box-shadow: var(--shadow-lg) !important;
 }
 
 /* Text Effects */
 .culmas-widget-container .text-gradient {
-  background: var(--cw-gradient-primary) !important;
+  background: var(--gradient-primary) !important;
   background-clip: text !important;
   -webkit-background-clip: text !important;
   color: transparent !important;

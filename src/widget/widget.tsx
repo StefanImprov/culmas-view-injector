@@ -250,7 +250,7 @@ class CulmasWidget {
     });
   }
 
-  // Apply theme to widget container
+  // Apply theme to widget container using standard CSS variable names
   private applyWidgetTheme(container: HTMLElement, theme: any) {
     console.log('🎨 Applying widget theme:', theme);
     
@@ -259,30 +259,38 @@ class CulmasWidget {
       return;
     }
 
-    // Apply color variables with widget prefix
+    // Apply color variables with standard names (no prefix) to match ThemeProvider
     Object.entries(theme.colors).forEach(([key, value]) => {
       const cssVarName = key.replace(/([A-Z])/g, '-$1').toLowerCase();
-      const fullVarName = `--cw-${cssVarName}`;
-      console.log(`Setting ${fullVarName}: ${value}`);
-      container.style.setProperty(fullVarName, value as string);
+      console.log(`Setting --${cssVarName}: ${value}`);
+      container.style.setProperty(`--${cssVarName}`, value as string);
     });
     
     // Apply design variables
     if (theme.design) {
       console.log('🔧 Applying design settings:', theme.design);
-      container.style.setProperty('--cw-radius', theme.design.borderRadius || '0.75rem');
+      container.style.setProperty('--radius', theme.design.borderRadius || '0.75rem');
       
       // Apply shadow intensity
       const shadowIntensity = theme.design.shadowIntensity || 'medium';
       switch (shadowIntensity) {
         case 'subtle':
-          container.style.setProperty('--cw-shadow-glow', '0 0 20px hsl(var(--cw-primary-glow) / 0.2)');
+          container.style.setProperty('--shadow-sm', '0 1px 2px 0 rgb(0 0 0 / 0.05)');
+          container.style.setProperty('--shadow-md', '0 4px 6px -1px rgb(0 0 0 / 0.1)');
+          container.style.setProperty('--shadow-lg', '0 10px 15px -3px rgb(0 0 0 / 0.1)');
+          container.style.setProperty('--shadow-glow', '0 0 20px hsl(var(--primary-glow) / 0.2)');
           break;
         case 'medium':
-          container.style.setProperty('--cw-shadow-glow', '0 0 30px hsl(var(--cw-primary-glow) / 0.3)');
+          container.style.setProperty('--shadow-sm', '0 1px 3px 0 rgb(0 0 0 / 0.1)');
+          container.style.setProperty('--shadow-md', '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -1px rgb(0 0 0 / 0.06)');
+          container.style.setProperty('--shadow-lg', '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgb(0 0 0 / 0.04)');
+          container.style.setProperty('--shadow-glow', '0 0 30px hsl(var(--primary-glow) / 0.3)');
           break;
         case 'strong':
-          container.style.setProperty('--cw-shadow-glow', '0 0 40px hsl(var(--cw-primary-glow) / 0.4)');
+          container.style.setProperty('--shadow-sm', '0 2px 4px 0 rgb(0 0 0 / 0.1)');
+          container.style.setProperty('--shadow-md', '0 8px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.05)');
+          container.style.setProperty('--shadow-lg', '0 25px 50px -12px rgb(0 0 0 / 0.25)');
+          container.style.setProperty('--shadow-glow', '0 0 40px hsl(var(--primary-glow) / 0.4)');
           break;
       }
       
@@ -292,25 +300,27 @@ class CulmasWidget {
         const gradientPrimary = theme.colors.gradientPrimary || theme.colors.primaryGlow;
         const gradientValue = `linear-gradient(135deg, hsl(${primary}), hsl(${gradientPrimary}))`;
         console.log('Setting gradient:', gradientValue);
-        container.style.setProperty('--cw-gradient-primary', gradientValue);
+        container.style.setProperty('--gradient-primary', gradientValue);
+        container.style.setProperty('--gradient-hero', `linear-gradient(135deg, hsl(${primary}), hsl(${gradientPrimary}), hsl(${theme.colors.accent}))`);
       } else {
-        container.style.setProperty('--cw-gradient-primary', `hsl(${theme.colors.primary})`);
+        container.style.setProperty('--gradient-primary', `hsl(${theme.colors.primary})`);
+        container.style.setProperty('--gradient-hero', `hsl(${theme.colors.primary})`);
       }
       
       // Apply transitions
       if (theme.design.hoverEffects) {
-        container.style.setProperty('--cw-transition-smooth', 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)');
+        container.style.setProperty('--transition-smooth', 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)');
       } else {
-        container.style.setProperty('--cw-transition-smooth', 'all 0.15s ease');
+        container.style.setProperty('--transition-smooth', 'all 0.15s ease');
       }
     }
 
     // Debug: Show all applied CSS variables
     console.log('🎯 Final computed styles:', {
-      primary: getComputedStyle(container).getPropertyValue('--cw-primary'),
-      secondary: getComputedStyle(container).getPropertyValue('--cw-secondary'),
-      background: getComputedStyle(container).getPropertyValue('--cw-background'),
-      accent: getComputedStyle(container).getPropertyValue('--cw-accent')
+      primary: getComputedStyle(container).getPropertyValue('--primary'),
+      secondary: getComputedStyle(container).getPropertyValue('--secondary'),
+      background: getComputedStyle(container).getPropertyValue('--background'),
+      accent: getComputedStyle(container).getPropertyValue('--accent')
     });
   }
 
