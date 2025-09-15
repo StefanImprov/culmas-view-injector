@@ -20,9 +20,10 @@ export const useTheme = () => {
 interface ThemeProviderProps {
   children: ReactNode;
   initialTheme?: Theme;
+  widgetMode?: boolean;
 }
 
-export const ThemeProvider = ({ children, initialTheme }: ThemeProviderProps) => {
+export const ThemeProvider = ({ children, initialTheme, widgetMode = false }: ThemeProviderProps) => {
   const [theme, setTheme] = useState<Theme>(initialTheme || defaultThemes[0]);
 
   const applyTheme = (selectedTheme: Theme) => {
@@ -82,12 +83,16 @@ export const ThemeProvider = ({ children, initialTheme }: ThemeProviderProps) =>
   };
 
   useEffect(() => {
-    applyTheme(theme);
-  }, [theme]);
+    if (!widgetMode) {
+      applyTheme(theme);
+    }
+  }, [theme, widgetMode]);
 
   const handleSetTheme = (newTheme: Theme) => {
     setTheme(newTheme);
-    applyTheme(newTheme);
+    if (!widgetMode) {
+      applyTheme(newTheme);
+    }
   };
 
   return (

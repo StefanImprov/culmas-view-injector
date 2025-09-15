@@ -447,7 +447,7 @@ export const ProductInjector = ({
   );
 
   return theme ? (
-    <ThemeProvider initialTheme={theme}>
+    <ThemeProvider initialTheme={theme} widgetMode={true}>
       {content}
     </ThemeProvider>
   ) : (
