@@ -377,6 +377,7 @@ class CulmasWidget {
               venueIds={config.venueIds}
               apiUrl={config.apiUrl}
               className="culmas-widget"
+              theme={config.theme}
             />
             <Toaster />
           </TooltipProvider>
