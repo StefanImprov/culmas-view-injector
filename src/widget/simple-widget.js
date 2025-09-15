@@ -162,17 +162,20 @@
   async function fetchProducts(apiUrl, templateIds, venueIds) {
     try {
       const query = `
-        query GetProducts($templateIds: [String!], $venueIds: [String!]) {
-          products(templateIds: $templateIds, venueIds: $venueIds) {
+        query AllProducts($onlyAvailableForSale: Boolean) {
+          allProducts(onlyAvailableForSale: $onlyAvailableForSale) {
             id
             title
-            description
-            price
-            currency
-            images
-            available
-            templateId
-            venueId
+            descriptionImg
+            tickets {
+              tickets {
+                price
+              }
+            }
+            venue {
+              title
+              formatted_address
+            }
           }
         }
       `;
@@ -188,14 +191,13 @@
         body: JSON.stringify({
           query,
           variables: {
-            templateIds: templateIds || [],
-            venueIds: venueIds || []
+            onlyAvailableForSale: true
           }
         })
       });
 
       const data = await response.json();
-      return data.data?.products || [];
+      return data.data?.allProducts || [];
     } catch (error) {
       console.error('Failed to fetch products:', error);
       throw error;
@@ -210,17 +212,23 @@
   }
 
   function createProductCard(product) {
-    const imageUrl = Array.isArray(product.images) && product.images.length > 0 
-      ? product.images[0] 
-      : 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop';
+    const imageUrl = product.descriptionImg || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop';
+    
+    // Extract price from tickets array
+    const tickets = product.tickets?.tickets || [];
+    const prices = tickets.map(t => t.price).filter(p => p > 0);
+    const price = prices.length > 0 ? Math.min(...prices) : 0;
+    
+    // Use venue info for description
+    const description = product.venue?.formatted_address || product.venue?.title || '';
 
     return `
       <div class="culmas-card">
         <img src="${imageUrl}" alt="${product.title}" class="culmas-card-image" loading="lazy">
         <div class="culmas-card-content">
           <h3 class="culmas-card-title">${product.title}</h3>
-          ${product.description ? `<p class="culmas-card-description">${product.description}</p>` : ''}
-          <div class="culmas-card-price">${formatPrice(product.price, product.currency)}</div>
+          ${description ? `<p class="culmas-card-description">${description}</p>` : ''}
+          <div class="culmas-card-price">${formatPrice(price)}</div>
           <button class="culmas-card-button" onclick="window.open('https://culmas.io/book/${product.id}', '_blank')">
             Book Now
           </button>
