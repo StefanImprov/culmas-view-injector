@@ -16,8 +16,7 @@ div[data-culmas-widget-instance="true"].culmas-widget-container,
   contain: layout style !important;
   isolation: isolate !important;
   
-  /* CSS Variables scoped to widget with fallbacks */
-  /* CSS Variables scoped to widget with fallbacks */
+  /* CSS Variables scoped to widget - Complete Design System */
   --cw-background: 0 0% 100%;
   --cw-foreground: 222.2 84% 4.9%;
   --cw-card: 0 0% 100%;
@@ -40,11 +39,21 @@ div[data-culmas-widget-instance="true"].culmas-widget-container,
   --cw-ring: 262 83% 58%;
   --cw-radius: 0.75rem;
   
-  /* Custom design tokens with fallbacks */
+  /* Beautiful Design Tokens */
   --cw-gradient-primary: linear-gradient(135deg, hsl(262 83% 58%), hsl(262 83% 70%));
   --cw-gradient-secondary: linear-gradient(180deg, hsl(0 0% 100%), hsl(210 40% 96%));
+  --cw-gradient-hero: linear-gradient(135deg, hsl(262 83% 58%), hsl(262 83% 70%), hsl(210 40% 96%));
+  
+  /* Enhanced Shadow System */
+  --cw-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --cw-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -1px rgb(0 0 0 / 0.06);
+  --cw-shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgb(0 0 0 / 0.04);
+  --cw-shadow-xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
   --cw-shadow-glow: 0 0 30px hsl(262 83% 70% / 0.3);
+  
+  /* Smooth Transitions */
   --cw-transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --cw-transition-quick: all 0.15s ease;
 }
 
 /* Enhanced child element overrides with maximum specificity */
@@ -132,8 +141,16 @@ div[data-culmas-widget-instance="true"].culmas-widget-container .bg-card,
   background-image: var(--cw-gradient-secondary) !important;
 }
 
-.culmas-widget-container .shadow-glow {
-  box-shadow: var(--cw-shadow-glow) !important;
+.culmas-widget-container .bg-gradient-hero {
+  background-image: var(--cw-gradient-hero) !important;
+}
+
+.culmas-widget-container .shadow-sm {
+  box-shadow: var(--cw-shadow-sm) !important;
+}
+
+.culmas-widget-container .shadow-lg {
+  box-shadow: var(--cw-shadow-lg) !important;
 }
 
 /* Grid and layout */
@@ -758,4 +775,118 @@ div[data-culmas-widget-instance="true"].culmas-widget-container .bg-card,
   .culmas-widget-container .xl\\:grid-cols-6 {
     grid-template-columns: repeat(6, minmax(0, 1fr));
   }
+}
+
+/* Beautiful Button and Component Styling */
+.culmas-widget-container .bg-gradient-hero {
+  background-image: var(--cw-gradient-hero) !important;
+}
+
+/* Enhanced Shadow System */
+.culmas-widget-container .shadow-sm {
+  box-shadow: var(--cw-shadow-sm) !important;
+}
+
+.culmas-widget-container .shadow-lg {
+  box-shadow: var(--cw-shadow-lg) !important;
+}
+
+.culmas-widget-container .shadow-xl {
+  box-shadow: var(--cw-shadow-xl) !important;
+}
+
+/* Advanced Backdrop Effects */
+.culmas-widget-container .backdrop-blur-md {
+  backdrop-filter: blur(12px) !important;
+}
+
+.culmas-widget-container .backdrop-blur-lg {
+  backdrop-filter: blur(16px) !important;
+}
+
+/* Beautiful Transitions */
+.culmas-widget-container .transition-smooth {
+  transition: var(--cw-transition-smooth) !important;
+}
+
+.culmas-widget-container .transition-quick {
+  transition: var(--cw-transition-quick) !important;
+}
+
+/* Enhanced Transform Effects */
+.culmas-widget-container .hover\\:scale-102:hover {
+  transform: scale(1.02) !important;
+}
+
+.culmas-widget-container .hover\\:-translate-y-2:hover {
+  transform: translateY(-0.5rem) !important;
+}
+
+/* Button Gradient Styling */
+.culmas-widget-container .btn-gradient {
+  background-image: var(--cw-gradient-primary) !important;
+  color: hsl(var(--cw-primary-foreground)) !important;
+  border: 1px solid transparent !important;
+  transition: var(--cw-transition-smooth) !important;
+}
+
+.culmas-widget-container .btn-gradient:hover {
+  background-image: var(--cw-gradient-hero) !important;
+  box-shadow: var(--cw-shadow-glow) !important;
+  transform: translateY(-2px) scale(1.02) !important;
+}
+
+/* Primary Button Beautiful Styling */
+.culmas-widget-container .bg-primary {
+  background: var(--cw-gradient-primary) !important;
+}
+
+.culmas-widget-container .bg-primary:hover {
+  background: var(--cw-gradient-hero) !important;
+  box-shadow: var(--cw-shadow-glow) !important;
+}
+
+/* Card Enhancement Effects */
+.culmas-widget-container .card-enhanced {
+  background: hsl(var(--cw-card)) !important;
+  border: 1px solid hsl(var(--cw-border)) !important;
+  box-shadow: var(--cw-shadow-md) !important;
+  transition: var(--cw-transition-smooth) !important;
+}
+
+.culmas-widget-container .card-enhanced:hover {
+  box-shadow: var(--cw-shadow-lg) !important;
+  transform: translateY(-4px) scale(1.02) !important;
+  border-color: hsl(var(--cw-primary) / 0.2) !important;
+}
+
+/* Filter and Control Styling */
+.culmas-widget-container .filter-backdrop {
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(12px) !important;
+  border: 1px solid hsl(var(--cw-border)) !important;
+  box-shadow: var(--cw-shadow-lg) !important;
+}
+
+/* Text Effects */
+.culmas-widget-container .text-gradient {
+  background: var(--cw-gradient-primary) !important;
+  background-clip: text !important;
+  -webkit-background-clip: text !important;
+  color: transparent !important;
+}
+
+/* Enhanced Line Clamp */
+.culmas-widget-container .line-clamp-1 {
+  overflow: hidden !important;
+  display: -webkit-box !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: 1 !important;
+}
+
+.culmas-widget-container .line-clamp-3 {
+  overflow: hidden !important;
+  display: -webkit-box !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: 3 !important;
 }
