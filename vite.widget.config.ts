@@ -8,14 +8,20 @@ export default defineConfig({
     lib: {
       entry: path.resolve(__dirname, 'src/widget/widget.tsx'),
       name: 'CulmasWidget',
-      fileName: 'culmas-widget',
+      fileName: () => 'culmas-widget.js',
       formats: ['umd']
     },
     outDir: 'dist/widget',
     rollupOptions: {
       external: [],
       output: {
-        globals: {}
+        globals: {},
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name === 'style.css') {
+            return 'culmas-widget.css';
+          }
+          return assetInfo.name || 'asset';
+        }
       }
     },
     cssCodeSplit: false,
