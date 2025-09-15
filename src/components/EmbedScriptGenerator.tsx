@@ -116,35 +116,22 @@ export const EmbedScriptGenerator = ({ theme }: EmbedScriptGeneratorProps) => {
     fetchOptions();
   }, []);
 
-  // Widget-based embed code generation
+  // Simple widget embed code generation
   const generateWidgetEmbedCode = () => {
-    const widgetConfig = {
-      container: containerId || '#culmas-widget',
-      apiUrl: 'https://api.dev.culmas.io/',
-      templateIds: selectedTemplateIds,
-      venueIds: selectedVenueIds,
-      theme: theme
-    };
-
-    // Determine the widget URLs based on mode
-    let widgetJsUrl, widgetCssUrl;
+    // Determine the widget URL based on mode
+    let widgetJsUrl;
     if (customWidgetUrl.trim()) {
       widgetJsUrl = customWidgetUrl.trim();
-      // Replace .js with .css for CSS file
-      widgetCssUrl = customWidgetUrl.trim().replace(/\.js$/, '.css');
     } else if (isDevelopmentMode) {
       // Use current Lovable project URL for development
       const currentUrl = window.location.origin;
-      widgetJsUrl = `${currentUrl}/widget/culmas-widget.js`;
-      widgetCssUrl = `${currentUrl}/widget/culmas-widget.css`;
+      widgetJsUrl = `${currentUrl}/simple-widget.js`;
     } else {
-      // GitHub Pages URL for production - Update this with your actual repository name
-      widgetJsUrl = "https://YOUR_USERNAME.github.io/YOUR_REPO_NAME/widget/culmas-widget.js";
-      widgetCssUrl = "https://YOUR_USERNAME.github.io/YOUR_REPO_NAME/widget/culmas-widget.css";
+      // CDN URL for production
+      widgetJsUrl = "https://cdn.culmas.io/simple-widget.js";
     }
 
     return `<!-- Culmas Product Widget -->
-<link rel="stylesheet" href="${widgetCssUrl}">
 <div id="${containerId || 'culmas-widget'}"></div>
 <script 
   src="${widgetJsUrl}"
