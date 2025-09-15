@@ -6,69 +6,214 @@ console.log('🌐 Environment check:', {
   domReady: document.readyState
 });
 
-// Critical CSS for instant loading
+// Comprehensive Critical CSS for Webflow environments
 const CRITICAL_CSS = `
-.culmas-widget-container { 
-  background: hsl(0 0% 100%); 
-  color: hsl(222.2 84% 4.9%); 
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; 
-  line-height: 1.5; 
-  position: relative; 
-  z-index: 1; 
+/* Webflow Override Container with Maximum Specificity */
+div[data-culmas-widget-instance="true"].culmas-widget-container,
+.culmas-widget-container[data-culmas-widget-instance="true"] {
+  /* Aggressive resets to override Webflow styles */
+  all: initial !important;
+  display: block !important;
+  box-sizing: border-box !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif !important;
+  line-height: 1.5 !important;
+  color: rgb(14, 17, 47) !important;
+  background-color: rgb(255, 255, 255) !important;
+  position: relative !important;
+  z-index: 999999 !important;
+  contain: layout style !important;
+  isolation: isolate !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  outline: none !important;
+  text-decoration: none !important;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+  word-spacing: normal !important;
+  text-indent: 0 !important;
+  text-shadow: none !important;
+  text-align: left !important;
 }
-.culmas-widget-container .grid { display: grid; gap: 1rem; }
-.culmas-widget-container .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
-.culmas-widget-container .bg-card { background: hsl(0 0% 100%); }
-.culmas-widget-container .text-card-foreground { color: hsl(222.2 84% 4.9%); }
-.culmas-widget-container .bg-primary { background: hsl(262 83% 58%); }
-.culmas-widget-container .text-primary-foreground { color: hsl(210 40% 98%); }
-.culmas-widget-container .p-4 { padding: 1rem; }
-.culmas-widget-container .rounded-lg { border-radius: 0.5rem; }
-.culmas-widget-container .shadow-md { box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
-@media (min-width: 640px) { .culmas-widget-container .sm\\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (min-width: 1024px) { .culmas-widget-container .lg\\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+/* Child element resets with maximum specificity */
+div[data-culmas-widget-instance="true"].culmas-widget-container *,
+div[data-culmas-widget-instance="true"].culmas-widget-container *::before,
+div[data-culmas-widget-instance="true"].culmas-widget-container *::after {
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  outline: none !important;
+  text-decoration: none !important;
+  background: transparent !important;
+  color: inherit !important;
+  font: inherit !important;
+}
+
+/* Essential layout classes */
+.culmas-widget-container .grid { display: grid !important; gap: 1rem !important; }
+.culmas-widget-container .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)) !important; }
+.culmas-widget-container .flex { display: flex !important; }
+.culmas-widget-container .items-center { align-items: center !important; }
+.culmas-widget-container .justify-between { justify-content: space-between !important; }
+.culmas-widget-container .gap-4 { gap: 1rem !important; }
+
+/* Essential styling classes */
+.culmas-widget-container .bg-card { background-color: rgb(255, 255, 255) !important; }
+.culmas-widget-container .text-card-foreground { color: rgb(14, 17, 47) !important; }
+.culmas-widget-container .bg-primary { background-color: rgb(149, 66, 232) !important; }
+.culmas-widget-container .text-primary-foreground { color: rgb(249, 250, 251) !important; }
+.culmas-widget-container .text-muted-foreground { color: rgb(107, 114, 128) !important; }
+
+/* Essential spacing */
+.culmas-widget-container .p-4 { padding: 1rem !important; }
+.culmas-widget-container .p-5 { padding: 1.25rem !important; }
+.culmas-widget-container .px-4 { padding-left: 1rem !important; padding-right: 1rem !important; }
+.culmas-widget-container .py-2 { padding-top: 0.5rem !important; padding-bottom: 0.5rem !important; }
+.culmas-widget-container .space-y-3 > * + * { margin-top: 0.75rem !important; }
+
+/* Essential borders and radius */
+.culmas-widget-container .rounded-lg { border-radius: 0.5rem !important; }
+.culmas-widget-container .rounded-xl { border-radius: 0.75rem !important; }
+.culmas-widget-container .border { border: 1px solid rgb(229, 231, 235) !important; }
+
+/* Essential effects */
+.culmas-widget-container .shadow-md { 
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important; 
+}
+.culmas-widget-container .cursor-pointer { cursor: pointer !important; }
+.culmas-widget-container .transition-all { 
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important; 
+}
+
+/* Typography */
+.culmas-widget-container .font-bold { font-weight: 700 !important; }
+.culmas-widget-container .font-semibold { font-weight: 600 !important; }
+.culmas-widget-container .text-sm { font-size: 0.875rem !important; line-height: 1.25rem !important; }
+.culmas-widget-container .text-base { font-size: 1rem !important; line-height: 1.5rem !important; }
+.culmas-widget-container .text-lg { font-size: 1.125rem !important; line-height: 1.75rem !important; }
+.culmas-widget-container .text-xl { font-size: 1.25rem !important; line-height: 1.75rem !important; }
+
+/* Responsive grid */
+@media (min-width: 640px) { 
+  .culmas-widget-container .sm\\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+}
+@media (min-width: 1024px) { 
+  .culmas-widget-container .lg\\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+}
+@media (min-width: 1280px) { 
+  .culmas-widget-container .xl\\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
+}
+
+/* Webflow element overrides */
+.culmas-widget-container .w-slide,
+.culmas-widget-container .w-nav,
+.culmas-widget-container .w-dropdown,
+.culmas-widget-container .w-button { all: unset !important; display: block !important; }
 `;
 
-// CSS Loading Detection and Injection
+// Enhanced CSS Loading Detection with Webflow Support
 function ensureCSSLoaded() {
   return new Promise<boolean>((resolve) => {
+    // Detect Webflow environment
+    const isWebflow = !!document.querySelector('[data-wf-site]') || 
+                     !!document.querySelector('.w-webflow-badge') ||
+                     !!(window as any).Webflow;
+    
+    console.log(`🔍 CSS loading check - Webflow detected: ${isWebflow}`);
+    
+    // Create test element with enhanced attributes
     const testElement = document.createElement('div');
     testElement.className = 'culmas-widget-container bg-primary';
+    testElement.setAttribute('data-culmas-widget-instance', 'true');
     testElement.style.position = 'absolute';
+    testElement.style.top = '-9999px';
+    testElement.style.left = '-9999px';
     testElement.style.visibility = 'hidden';
     testElement.style.pointerEvents = 'none';
+    testElement.style.width = '100px';
+    testElement.style.height = '100px';
     document.body.appendChild(testElement);
     
     const checkStyles = () => {
-      const styles = getComputedStyle(testElement);
-      const hasCorrectBackground = styles.backgroundColor.includes('149') || styles.backgroundColor.includes('66'); // purple hsl values
-      
-      document.body.removeChild(testElement);
-      
-      if (hasCorrectBackground) {
-        console.log('✅ CSS loaded successfully');
-        resolve(true);
-      } else {
-        console.warn('⚠️ CSS not loaded, injecting critical styles');
+      try {
+        const styles = getComputedStyle(testElement);
+        const bgColor = styles.backgroundColor;
+        const hasCorrectBackground = bgColor.includes('149') || 
+                                   bgColor.includes('66') || 
+                                   bgColor.includes('rgb(149') ||
+                                   bgColor.includes('hsl(262');
+        
+        // Enhanced check for Webflow environments
+        const hasWidgetStyles = styles.fontFamily.includes('apple-system') ||
+                              styles.position === 'relative' ||
+                              styles.zIndex === '999999';
+        
+        document.body.removeChild(testElement);
+        
+        if (hasCorrectBackground || (isWebflow && hasWidgetStyles)) {
+          console.log('✅ CSS loaded successfully', { bgColor, hasWidgetStyles });
+          resolve(true);
+        } else {
+          console.warn('⚠️ CSS not loaded properly, injecting critical styles', { 
+            bgColor, 
+            hasWidgetStyles, 
+            isWebflow 
+          });
+          injectCriticalCSS();
+          // In Webflow, always inject critical CSS as fallback
+          resolve(isWebflow ? true : false);
+        }
+      } catch (error) {
+        console.error('CSS check failed:', error);
+        document.body.removeChild(testElement);
         injectCriticalCSS();
         resolve(false);
       }
     };
     
-    // Check after a short delay to allow CSS to load
-    setTimeout(checkStyles, 100);
+    // Longer delay for Webflow environments
+    const delay = isWebflow ? 500 : 100;
+    setTimeout(checkStyles, delay);
   });
 }
 
 function injectCriticalCSS() {
   const existingStyle = document.getElementById('culmas-critical-css');
-  if (existingStyle) return;
+  if (existingStyle) {
+    console.log('💉 Critical CSS already injected');
+    return;
+  }
   
   const style = document.createElement('style');
   style.id = 'culmas-critical-css';
+  style.type = 'text/css';
+  
+  // Add high priority attribute for Webflow
+  style.setAttribute('data-culmas-critical', 'true');
+  style.setAttribute('data-priority', 'high');
+  
   style.textContent = CRITICAL_CSS;
-  document.head.insertBefore(style, document.head.firstChild);
-  console.log('💉 Critical CSS injected');
+  
+  // Insert at the very beginning for maximum priority
+  const firstChild = document.head.firstElementChild;
+  if (firstChild) {
+    document.head.insertBefore(style, firstChild);
+  } else {
+    document.head.appendChild(style);
+  }
+  
+  console.log('💉 Critical CSS injected with high priority');
+  
+  // Force style recalculation for Webflow
+  if (document.querySelector('[data-wf-site]')) {
+    setTimeout(() => {
+      document.body.offsetHeight; // Force reflow
+      console.log('🔄 Forced style recalculation for Webflow');
+    }, 50);
+  }
 }
 
 import React from 'react';
@@ -269,16 +414,47 @@ class CulmasWidget {
   }
 }
 
-// Auto-initialize from script tag data attributes with Webflow compatibility
+// Enhanced auto-initialization with comprehensive Webflow support
 function autoInit() {
   try {
-    console.log('🔍 Starting auto-initialization...');
+    // Enhanced environment detection
+    const isWebflow = !!document.querySelector('[data-wf-site]') || 
+                     !!document.querySelector('.w-webflow-badge') ||
+                     !!(window as any).Webflow;
+    
+    const isWebflowDesigner = !!(window as any).Webflow && (window.location.hostname.includes('webflow.io'));
+    
+    console.log('🔍 Enhanced auto-initialization...', {
+      isWebflow,
+      isWebflowDesigner,
+      userAgent: navigator.userAgent.substring(0, 100),
+      domReady: document.readyState,
+      hasWebflowCSS: !!document.querySelector('link[href*="webflow"]'),
+      webflowVersion: (window as any).Webflow?.version
+    });
+    
+    // Don't initialize in Webflow Designer
+    if (isWebflowDesigner) {
+      console.log('🚫 Webflow Designer detected - skipping initialization');
+      return;
+    }
+    
     const scripts = document.querySelectorAll('script[data-culmas-widget]');
     console.log('📜 Found scripts with data-culmas-widget:', scripts.length);
     
     if (scripts.length === 0) {
       console.warn('⚠️ No scripts found with data-culmas-widget attribute');
-      console.log('Available scripts:', document.querySelectorAll('script'));
+      if (isWebflow) {
+        console.log('🌊 Webflow environment - scripts might be loaded differently');
+        // Try alternative detection methods for Webflow
+        const allScripts = Array.from(document.querySelectorAll('script'));
+        const culmasScripts = allScripts.filter(script => 
+          script.src?.includes('culmas') || 
+          script.textContent?.includes('culmas') ||
+          script.textContent?.includes('data-culmas-widget')
+        );
+        console.log('🔍 Alternative Culmas script detection:', culmasScripts.length);
+      }
     }
     
     scripts.forEach((script, index) => {
@@ -373,24 +549,59 @@ function enableDebugMode() {
   observer.observe(document.body, { childList: true, subtree: true });
 }
 
-// Initialize when DOM is ready with multiple fallbacks for Webflow
+// Enhanced initialization with comprehensive Webflow support
 console.log('📄 Document ready state:', document.readyState);
 
 function safeInit() {
-  console.log('🔄 Running safe initialization...');
+  const isWebflow = !!document.querySelector('[data-wf-site]') || !!(window as any).Webflow;
+  console.log('🔄 Running safe initialization...', { isWebflow });
+  
+  // Always inject critical CSS first for Webflow
+  if (isWebflow) {
+    injectCriticalCSS();
+  }
+  
   autoInit();
   
-  // Additional fallback for Webflow environments
-  setTimeout(() => {
-    console.log('⏰ Fallback initialization after 1 second...');
-    autoInit();
-  }, 1000);
+  // Enhanced fallback timing for Webflow environments
+  const fallbackDelays = isWebflow ? [1000, 2000, 5000] : [500, 1500];
   
-  // Final fallback
-  setTimeout(() => {
-    console.log('⏰ Final fallback initialization after 3 seconds...');
-    autoInit();
-  }, 3000);
+  fallbackDelays.forEach((delay, index) => {
+    setTimeout(() => {
+      console.log(`⏰ Fallback initialization ${index + 1} after ${delay}ms...`);
+      autoInit();
+    }, delay);
+  });
+  
+  // Additional Webflow-specific fallbacks
+  if (isWebflow) {
+    // Listen for Webflow interactions completion
+    if ((window as any).Webflow) {
+      setTimeout(() => {
+        console.log('🌊 Webflow interactions loaded fallback...');
+        autoInit();
+      }, 8000);
+    }
+    
+    // Listen for any dynamic content changes
+    const observer = new MutationObserver(() => {
+      const widgets = document.querySelectorAll('script[data-culmas-widget]');
+      if (widgets.length > 0) {
+        console.log('🔄 DOM changes detected, re-initializing...');
+        autoInit();
+        observer.disconnect();
+      }
+    });
+    
+    observer.observe(document.body, { 
+      childList: true, 
+      subtree: true,
+      attributes: false 
+    });
+    
+    // Disconnect observer after 10 seconds
+    setTimeout(() => observer.disconnect(), 10000);
+  }
 }
 
 if (document.readyState === 'loading') {
