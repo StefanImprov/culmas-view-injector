@@ -6,125 +6,13 @@ console.log('🌐 Environment check:', {
   domReady: document.readyState
 });
 
-// Comprehensive Critical CSS for Webflow environments
-const CRITICAL_CSS = `
-/* Webflow Override Container with Maximum Specificity */
-div[data-culmas-widget-instance="true"].culmas-widget-container,
-.culmas-widget-container[data-culmas-widget-instance="true"] {
-  /* Aggressive resets to override Webflow styles */
-  all: initial !important;
-  display: block !important;
-  box-sizing: border-box !important;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif !important;
-  line-height: 1.5 !important;
-  color: hsl(var(--foreground)) !important;
-  background-color: hsl(var(--background)) !important;
-  position: relative !important;
-  z-index: 999999 !important;
-  contain: layout style !important;
-  isolation: isolate !important;
-  width: 100% !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  border: none !important;
-  outline: none !important;
-  text-decoration: none !important;
-  text-transform: none !important;
-  letter-spacing: normal !important;
-  word-spacing: normal !important;
-  text-indent: 0 !important;
-  text-shadow: none !important;
-  text-align: left !important;
-}
-
-/* Child element resets with maximum specificity */
-div[data-culmas-widget-instance="true"].culmas-widget-container *,
-div[data-culmas-widget-instance="true"].culmas-widget-container *::before,
-div[data-culmas-widget-instance="true"].culmas-widget-container *::after {
-  box-sizing: border-box !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  border: none !important;
-  outline: none !important;
-  text-decoration: none !important;
-  background: transparent !important;
-  color: inherit !important;
-  font: inherit !important;
-}
-
-/* Essential layout classes */
-.culmas-widget-container .grid { display: grid !important; gap: 1rem !important; }
-.culmas-widget-container .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)) !important; }
-.culmas-widget-container .flex { display: flex !important; }
-.culmas-widget-container .items-center { align-items: center !important; }
-.culmas-widget-container .justify-between { justify-content: space-between !important; }
-.culmas-widget-container .gap-4 { gap: 1rem !important; }
-
-/* Essential styling classes */
-.culmas-widget-container .bg-card { background-color: hsl(var(--card)) !important; }
-.culmas-widget-container .text-card-foreground { color: hsl(var(--card-foreground)) !important; }
-.culmas-widget-container .bg-primary { background-color: hsl(var(--primary)) !important; }
-.culmas-widget-container .text-primary-foreground { color: hsl(var(--primary-foreground)) !important; }
-.culmas-widget-container .text-muted-foreground { color: hsl(var(--muted-foreground)) !important; }
-
-/* Essential spacing */
-.culmas-widget-container .p-4 { padding: 1rem !important; }
-.culmas-widget-container .p-5 { padding: 1.25rem !important; }
-.culmas-widget-container .px-4 { padding-left: 1rem !important; padding-right: 1rem !important; }
-.culmas-widget-container .py-2 { padding-top: 0.5rem !important; padding-bottom: 0.5rem !important; }
-.culmas-widget-container .space-y-3 > * + * { margin-top: 0.75rem !important; }
-
-/* Essential borders and radius */
-.culmas-widget-container .rounded-lg { border-radius: 0.5rem !important; }
-.culmas-widget-container .rounded-xl { border-radius: 0.75rem !important; }
-.culmas-widget-container .border { border: 1px solid hsl(var(--border)) !important; }
-
-/* Essential effects */
-.culmas-widget-container .shadow-md { 
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important; 
-}
-.culmas-widget-container .cursor-pointer { cursor: pointer !important; }
-.culmas-widget-container .transition-all { 
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important; 
-}
-
-/* Typography */
-.culmas-widget-container .font-bold { font-weight: 700 !important; }
-.culmas-widget-container .font-semibold { font-weight: 600 !important; }
-.culmas-widget-container .text-sm { font-size: 0.875rem !important; line-height: 1.25rem !important; }
-.culmas-widget-container .text-base { font-size: 1rem !important; line-height: 1.5rem !important; }
-.culmas-widget-container .text-lg { font-size: 1.125rem !important; line-height: 1.75rem !important; }
-.culmas-widget-container .text-xl { font-size: 1.25rem !important; line-height: 1.75rem !important; }
-
-/* Responsive grid */
-@media (min-width: 640px) { 
-  .culmas-widget-container .sm\\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
-}
-@media (min-width: 1024px) { 
-  .culmas-widget-container .lg\\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
-}
-@media (min-width: 1280px) { 
-  .culmas-widget-container .xl\\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
-}
-
-/* Webflow element overrides */
-.culmas-widget-container .w-slide,
-.culmas-widget-container .w-nav,
-.culmas-widget-container .w-dropdown,
-.culmas-widget-container .w-button { all: unset !important; display: block !important; }
-`;
 
 // Enhanced CSS Loading Detection with Webflow Support
 function ensureCSSLoaded() {
   return new Promise<boolean>((resolve) => {
-    // Detect Webflow environment
-    const isWebflow = !!document.querySelector('[data-wf-site]') || 
-                     !!document.querySelector('.w-webflow-badge') ||
-                     !!(window as any).Webflow;
+    console.log('🔍 CSS loading check');
     
-    console.log(`🔍 CSS loading check - Webflow detected: ${isWebflow}`);
-    
-    // Create test element with enhanced attributes
+    // Create test element
     const testElement = document.createElement('div');
     testElement.className = 'culmas-widget-container bg-primary';
     testElement.setAttribute('data-culmas-widget-instance', 'true');
@@ -146,75 +34,26 @@ function ensureCSSLoaded() {
                                    bgColor.includes('rgb(149') ||
                                    bgColor.includes('hsl(262');
         
-        // Enhanced check for Webflow environments
-        const hasWidgetStyles = styles.fontFamily.includes('apple-system') ||
-                              styles.position === 'relative' ||
-                              styles.zIndex === '999999';
-        
         document.body.removeChild(testElement);
         
-        if (hasCorrectBackground || (isWebflow && hasWidgetStyles)) {
-          console.log('✅ CSS loaded successfully', { bgColor, hasWidgetStyles });
+        if (hasCorrectBackground) {
+          console.log('✅ CSS loaded successfully', { bgColor });
           resolve(true);
         } else {
-          console.warn('⚠️ CSS not loaded properly, injecting critical styles', { 
-            bgColor, 
-            hasWidgetStyles, 
-            isWebflow 
-          });
-          injectCriticalCSS();
-          // In Webflow, always inject critical CSS as fallback
-          resolve(isWebflow ? true : false);
+          console.warn('⚠️ CSS not loaded properly', { bgColor });
+          resolve(false);
         }
       } catch (error) {
         console.error('CSS check failed:', error);
         document.body.removeChild(testElement);
-        injectCriticalCSS();
         resolve(false);
       }
     };
     
-    // Longer delay for Webflow environments
-    const delay = isWebflow ? 500 : 100;
-    setTimeout(checkStyles, delay);
+    setTimeout(checkStyles, 100);
   });
 }
 
-function injectCriticalCSS() {
-  const existingStyle = document.getElementById('culmas-critical-css');
-  if (existingStyle) {
-    console.log('💉 Critical CSS already injected');
-    return;
-  }
-  
-  const style = document.createElement('style');
-  style.id = 'culmas-critical-css';
-  style.type = 'text/css';
-  
-  // Add high priority attribute for Webflow
-  style.setAttribute('data-culmas-critical', 'true');
-  style.setAttribute('data-priority', 'high');
-  
-  style.textContent = CRITICAL_CSS;
-  
-  // Insert at the very beginning for maximum priority
-  const firstChild = document.head.firstElementChild;
-  if (firstChild) {
-    document.head.insertBefore(style, firstChild);
-  } else {
-    document.head.appendChild(style);
-  }
-  
-  console.log('💉 Critical CSS injected with high priority');
-  
-  // Force style recalculation for Webflow
-  if (document.querySelector('[data-wf-site]')) {
-    setTimeout(() => {
-      document.body.offsetHeight; // Force reflow
-      console.log('🔄 Forced style recalculation for Webflow');
-    }, 50);
-  }
-}
 
 import React from 'react';
 import { createRoot } from 'react-dom/client';
@@ -566,11 +405,6 @@ console.log('📄 Document ready state:', document.readyState);
 function safeInit() {
   const isWebflow = !!document.querySelector('[data-wf-site]') || !!(window as any).Webflow;
   console.log('🔄 Running safe initialization...', { isWebflow });
-  
-  // Always inject critical CSS first for Webflow
-  if (isWebflow) {
-    injectCriticalCSS();
-  }
   
   autoInit();
   
