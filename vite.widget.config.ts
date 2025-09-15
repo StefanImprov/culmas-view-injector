@@ -1,6 +1,8 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
+
+// Ensure no native Node.js modules
 process.env.ROLLUP_SKIP_NODEJS_NATIVE = '1';
 process.env.ROLLUP_DISABLE_NODEJS_NATIVE = '1';
 
@@ -24,18 +26,15 @@ export default defineConfig({
       output: {
         globals: {},
         entryFileNames: 'culmas-widget.js',
-        assetFileNames: 'culmas-widget.css'
+        assetFileNames: 'culmas-widget.css',
+        format: 'umd'
       }
     },
     outDir: 'dist/widget',
     cssCodeSplit: false,
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true,
-      }
-    }
+    minify: false, // Keep readable for debugging
+    sourcemap: true, // Add source maps for debugging
+    target: 'es2015'
   },
   define: {
     'process.env.NODE_ENV': '"production"'
