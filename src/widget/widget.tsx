@@ -6,6 +6,71 @@ console.log('🌐 Environment check:', {
   domReady: document.readyState
 });
 
+// Critical CSS for instant loading
+const CRITICAL_CSS = `
+.culmas-widget-container { 
+  background: hsl(0 0% 100%); 
+  color: hsl(222.2 84% 4.9%); 
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; 
+  line-height: 1.5; 
+  position: relative; 
+  z-index: 1; 
+}
+.culmas-widget-container .grid { display: grid; gap: 1rem; }
+.culmas-widget-container .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+.culmas-widget-container .bg-card { background: hsl(0 0% 100%); }
+.culmas-widget-container .text-card-foreground { color: hsl(222.2 84% 4.9%); }
+.culmas-widget-container .bg-primary { background: hsl(262 83% 58%); }
+.culmas-widget-container .text-primary-foreground { color: hsl(210 40% 98%); }
+.culmas-widget-container .p-4 { padding: 1rem; }
+.culmas-widget-container .rounded-lg { border-radius: 0.5rem; }
+.culmas-widget-container .shadow-md { box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
+@media (min-width: 640px) { .culmas-widget-container .sm\\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1024px) { .culmas-widget-container .lg\\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+`;
+
+// CSS Loading Detection and Injection
+function ensureCSSLoaded() {
+  return new Promise<boolean>((resolve) => {
+    const testElement = document.createElement('div');
+    testElement.className = 'culmas-widget-container bg-primary';
+    testElement.style.position = 'absolute';
+    testElement.style.visibility = 'hidden';
+    testElement.style.pointerEvents = 'none';
+    document.body.appendChild(testElement);
+    
+    const checkStyles = () => {
+      const styles = getComputedStyle(testElement);
+      const hasCorrectBackground = styles.backgroundColor.includes('149') || styles.backgroundColor.includes('66'); // purple hsl values
+      
+      document.body.removeChild(testElement);
+      
+      if (hasCorrectBackground) {
+        console.log('✅ CSS loaded successfully');
+        resolve(true);
+      } else {
+        console.warn('⚠️ CSS not loaded, injecting critical styles');
+        injectCriticalCSS();
+        resolve(false);
+      }
+    };
+    
+    // Check after a short delay to allow CSS to load
+    setTimeout(checkStyles, 100);
+  });
+}
+
+function injectCriticalCSS() {
+  const existingStyle = document.getElementById('culmas-critical-css');
+  if (existingStyle) return;
+  
+  const style = document.createElement('style');
+  style.id = 'culmas-critical-css';
+  style.textContent = CRITICAL_CSS;
+  document.head.insertBefore(style, document.head.firstChild);
+  console.log('💉 Critical CSS injected');
+}
+
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -105,9 +170,15 @@ class CulmasWidget {
   }
 
   // Initialize widget in a container with error boundaries
-  init(config: WidgetConfig) {
+  async init(config: WidgetConfig) {
     try {
       console.log('🔧 Initializing Culmas Widget with config:', config);
+      
+      // Ensure CSS is loaded before proceeding
+      const cssLoaded = await ensureCSSLoaded();
+      if (!cssLoaded) {
+        console.log('📝 Using fallback CSS injection');
+      }
       
       const container = document.querySelector(config.container);
       if (!container) {
@@ -122,10 +193,14 @@ class CulmasWidget {
       const widgetContainer = document.createElement('div');
       widgetContainer.className = 'culmas-widget-container';
       
-      // Add Webflow-safe attributes
+      // Add Webflow-safe attributes and enhanced specificity
       widgetContainer.setAttribute('data-culmas-widget-instance', 'true');
+      widgetContainer.setAttribute('data-widget-version', '1.0.0');
       widgetContainer.style.position = 'relative';
       widgetContainer.style.zIndex = '1';
+      
+      // Apply critical inline styles as fallback
+      this.applyInlineStyleFallbacks(widgetContainer);
       
       container.appendChild(widgetContainer);
 
@@ -165,6 +240,23 @@ class CulmasWidget {
         config
       });
     }
+  }
+
+  // Apply critical inline styles as absolute fallback
+  private applyInlineStyleFallbacks(container: HTMLElement) {
+    const fallbackStyles = {
+      'font-family': '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif',
+      'line-height': '1.5',
+      'color': 'rgb(14, 17, 47)',
+      'background-color': 'rgb(255, 255, 255)',
+      'box-sizing': 'border-box'
+    };
+    
+    Object.entries(fallbackStyles).forEach(([property, value]) => {
+      container.style.setProperty(property, value, 'important');
+    });
+    
+    console.log('🔧 Applied inline style fallbacks');
   }
 
   // Destroy widget instance
@@ -252,6 +344,35 @@ function manualInit(config: WidgetConfig) {
   }
 }
 
+// Enhanced debug mode for troubleshooting
+function enableDebugMode() {
+  console.log('🔍 Debug mode enabled');
+  
+  // Log environment details
+  console.log('Environment:', {
+    userAgent: navigator.userAgent,
+    isWebflow: !!document.querySelector('[data-wf-site]'),
+    domReady: document.readyState,
+    stylesheets: Array.from(document.styleSheets).map(s => s.href),
+    scripts: Array.from(document.scripts).map(s => s.src)
+  });
+  
+  // Monitor CSS loading
+  const observer = new MutationObserver(() => {
+    const widgetContainers = document.querySelectorAll('.culmas-widget-container');
+    widgetContainers.forEach(container => {
+      const styles = getComputedStyle(container);
+      console.log('Widget container styles:', {
+        backgroundColor: styles.backgroundColor,
+        fontFamily: styles.fontFamily,
+        color: styles.color
+      });
+    });
+  });
+  
+  observer.observe(document.body, { childList: true, subtree: true });
+}
+
 // Initialize when DOM is ready with multiple fallbacks for Webflow
 console.log('📄 Document ready state:', document.readyState);
 
@@ -289,8 +410,9 @@ if ((window as any).Webflow) {
   });
 }
 
-// Export for manual initialization
+// Export for manual initialization and debugging
 (window as any).CulmasWidget = CulmasWidget;
 (window as any).initCulmasWidget = manualInit;
+(window as any).debugCulmasWidget = enableDebugMode;
 
 export default CulmasWidget;

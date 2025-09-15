@@ -1,16 +1,20 @@
 /* Scoped Widget Styles - Prefixed to prevent conflicts */
 
-.culmas-widget-container {
-  /* Conservative reset to prevent conflicts with hosting platforms like Webflow */
-  box-sizing: border-box;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  line-height: 1.5;
-  color: inherit;
+/* Enhanced Webflow compatibility with maximum specificity */
+div[data-culmas-widget-instance="true"].culmas-widget-container,
+.culmas-widget-container[data-culmas-widget-instance="true"] {
+  /* Aggressive reset to override Webflow styles */
+  box-sizing: border-box !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  line-height: 1.5 !important;
+  color: rgb(14, 17, 47) !important;
+  background-color: rgb(255, 255, 255) !important;
   
-  /* Webflow compatibility improvements */
-  position: relative;
-  z-index: 1;
-  contain: layout style;
+  /* Webflow compatibility improvements with higher specificity */
+  position: relative !important;
+  z-index: 999 !important;
+  contain: layout style !important;
+  isolation: isolate !important;
   
   /* CSS Variables scoped to widget with fallbacks */
   /* CSS Variables scoped to widget with fallbacks */
@@ -43,21 +47,37 @@
   --cw-transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Override all child elements to use scoped variables */
-.culmas-widget-container *,
-.culmas-widget-container *::before,
-.culmas-widget-container *::after {
-  box-sizing: border-box;
+/* Enhanced child element overrides with maximum specificity */
+div[data-culmas-widget-instance="true"].culmas-widget-container *,
+div[data-culmas-widget-instance="true"].culmas-widget-container *::before,
+div[data-culmas-widget-instance="true"].culmas-widget-container *::after,
+.culmas-widget-container[data-culmas-widget-instance="true"] *,
+.culmas-widget-container[data-culmas-widget-instance="true"] *::before,
+.culmas-widget-container[data-culmas-widget-instance="true"] *::after {
+  box-sizing: border-box !important;
 }
 
-/* Scoped utility classes */
-.culmas-widget-container .culmas-widget {
-  background-color: hsl(var(--cw-background));
-  color: hsl(var(--cw-foreground));
+/* Webflow-specific style resets */
+div[data-culmas-widget-instance="true"].culmas-widget-container .w-slide,
+div[data-culmas-widget-instance="true"].culmas-widget-container .w-nav,
+div[data-culmas-widget-instance="true"].culmas-widget-container .w-dropdown,
+.culmas-widget-container[data-culmas-widget-instance="true"] .w-slide,
+.culmas-widget-container[data-culmas-widget-instance="true"] .w-nav,
+.culmas-widget-container[data-culmas-widget-instance="true"] .w-dropdown {
+  all: unset !important;
+  display: block !important;
 }
 
-.culmas-widget-container .bg-card {
-  background-color: hsl(var(--cw-card)) !important;
+/* Enhanced scoped utility classes with maximum specificity */
+div[data-culmas-widget-instance="true"].culmas-widget-container .culmas-widget,
+.culmas-widget-container[data-culmas-widget-instance="true"] .culmas-widget {
+  background-color: hsl(var(--cw-background, 0 0% 100%)) !important;
+  color: hsl(var(--cw-foreground, 222.2 84% 4.9%)) !important;
+}
+
+div[data-culmas-widget-instance="true"].culmas-widget-container .bg-card,
+.culmas-widget-container[data-culmas-widget-instance="true"] .bg-card {
+  background-color: hsl(var(--cw-card, 0 0% 100%)) !important;
 }
 
 .culmas-widget-container .text-card-foreground {
