@@ -364,7 +364,7 @@ export const ProductInjector = ({
   };
 
   const content = (
-    <div className={cn("w-full space-y-6", className)}>
+    <div className={cn("w-full max-w-[1400px] mx-auto space-y-6", className)}>
       {loading && (
         <div className="flex items-center justify-center py-12">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>

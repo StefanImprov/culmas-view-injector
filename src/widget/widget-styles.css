@@ -2,29 +2,34 @@
 
 /* Enhanced Webflow compatibility with maximum specificity */
 div[data-culmas-widget-instance="true"].culmas-widget-container,
-.culmas-widget-container[data-culmas-widget-instance="true"] {
+.culmas-widget-container[data-culmas-widget-instance="true"],
+[data-culmas-widget-instance="true"],
+div[data-culmas-widget-instance] {
   /* Aggressive reset to override Webflow styles */
-  box-sizing: border-box;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  line-height: 1.5;
-  color: rgb(14, 17, 47);
-  background-color: rgb(255, 255, 255);
+  box-sizing: border-box !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  line-height: 1.5 !important;
+  color: rgb(14, 17, 47) !important;
+  background-color: rgb(255, 255, 255) !important;
   
-  /* Force max-width constraint with !important */
+  /* Force max-width constraint with ultra-high specificity */
   max-width: 1400px !important;
-  margin: 0 auto !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
   width: 100% !important;
-  padding: 1rem;
+  padding: 1rem !important;
   
-  /* Prevent Webflow from overriding our width */
+  /* Prevent any container stretching */
   min-width: 0 !important;
   flex-shrink: 0 !important;
+  flex-grow: 0 !important;
   
-  /* Webflow compatibility improvements with higher specificity */
-  position: relative;
-  z-index: 999;
-  contain: layout style;
-  isolation: isolate;
+  /* Override any Webflow container styles */
+  display: block !important;
+  position: relative !important;
+  z-index: 999 !important;
+  contain: layout style !important;
+  isolation: isolate !important;
   
   /* CSS Variables scoped to widget - Complete Design System using standard names */
   --background: 0 0% 100%;
@@ -66,14 +71,23 @@ div[data-culmas-widget-instance="true"].culmas-widget-container,
   --transition-quick: all 0.15s ease;
 }
 
+/* Additional max-width enforcement with different selectors */
+div[data-culmas-widget-instance="true"] > *,
+[data-culmas-widget-instance="true"] > * {
+  max-width: 100% !important;
+}
+
 /* Enhanced child element overrides with maximum specificity */
 div[data-culmas-widget-instance="true"].culmas-widget-container *,
 div[data-culmas-widget-instance="true"].culmas-widget-container *::before,
 div[data-culmas-widget-instance="true"].culmas-widget-container *::after,
 .culmas-widget-container[data-culmas-widget-instance="true"] *,
 .culmas-widget-container[data-culmas-widget-instance="true"] *::before,
-.culmas-widget-container[data-culmas-widget-instance="true"] *::after {
-  box-sizing: border-box;
+.culmas-widget-container[data-culmas-widget-instance="true"] *::after,
+[data-culmas-widget-instance="true"] *,
+[data-culmas-widget-instance="true"] *::before,
+[data-culmas-widget-instance="true"] *::after {
+  box-sizing: border-box !important;
 }
 
 /* Webflow-specific style resets */

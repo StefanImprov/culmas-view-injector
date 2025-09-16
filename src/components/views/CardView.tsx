@@ -16,8 +16,9 @@ export const CardView = ({ products }: CardViewProps) => {
   };
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
-      {products.map((product) => (
+    <div className="px-4 md:px-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 max-w-[1400px] mx-auto">
+        {products.map((product) => (
         <div
           key={product.id}
           onClick={() => handleCardClick(product)}
@@ -123,8 +124,9 @@ export const CardView = ({ products }: CardViewProps) => {
               ) : null}
             </div>
           </div>
-        </div>
-      ))}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
