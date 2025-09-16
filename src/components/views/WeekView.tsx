@@ -201,7 +201,7 @@ export const WeekView = ({ products }: WeekViewProps) => {
                         key={product.id}
                         onClick={() => setSelectedProduct(product)}
                         className={cn(
-                          "p-2 rounded-lg text-xs cursor-pointer transition-all duration-300 mb-1 last:mb-0",
+                          "w-full p-2 rounded-lg text-xs cursor-pointer transition-all duration-300 mb-1 last:mb-0",
                           product.available
                             ? "bg-primary text-white hover:shadow-md hover:scale-105"
                             : "bg-muted text-muted-foreground"
