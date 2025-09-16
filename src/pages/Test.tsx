@@ -63,7 +63,7 @@ const Test = () => {
         <h2 className="text-lg font-semibold mb-4">Output:</h2>
         <div 
           id="script-output" 
-          className="min-h-[300px] border rounded-lg p-4 bg-background"
+          className="w-full min-h-[300px] border rounded-lg p-4 bg-background"
         >
           <p className="text-muted-foreground text-center py-8">
             Script output will appear here...
