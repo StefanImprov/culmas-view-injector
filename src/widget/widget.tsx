@@ -36,13 +36,17 @@ class CulmasWidget {
       <QueryClientProvider client={this.queryClient}>
         <TooltipProvider>
           <ThemeProvider initialTheme={config.theme} widgetMode={true}>
-            <ProductInjector
-              templateIds={config.templateIds?.map(String)}
-              venueIds={config.venueIds?.map(String)}
-              apiUrl={config.apiUrl}
-              theme={config.theme}
-              className="culmas-widget-container"
-            />
+            <div 
+              className="culmas-widget-container" 
+              data-culmas-widget-instance="true"
+            >
+              <ProductInjector
+                templateIds={config.templateIds?.map(String)}
+                venueIds={config.venueIds?.map(String)}
+                apiUrl={config.apiUrl}
+                theme={config.theme}
+              />
+            </div>
             <Toaster />
             <Sonner />
           </ThemeProvider>

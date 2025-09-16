@@ -373,25 +373,27 @@ export const ProductInjector = ({
       
       {!loading && (
         <>
-          {/* Controls */}
-          <div className="mb-6 flex flex-col lg:flex-row gap-4 items-stretch lg:items-center justify-between">
-            <div className="flex-1 min-w-0">
-              <FilterDropdowns
-                products={products}
-                selectedVenue={selectedVenue}
-                selectedCategory={selectedCategory}
-                selectedTemplate={selectedTemplate}
-                onVenueChange={setSelectedVenue}
-                onCategoryChange={setSelectedCategory}
-                onTemplateChange={setSelectedTemplate}
-              />
-            </div>
-            
-            <div className="flex-shrink-0">
-              <ViewSwitcher 
-                viewMode={viewMode} 
-                onViewModeChange={setViewMode} 
-              />
+          {/* Controls - aligned with card grid spacing */}
+          <div className="mb-6 px-4 md:px-6">
+            <div className="flex flex-col lg:flex-row gap-4 items-stretch lg:items-center justify-between">
+              <div className="flex-1 min-w-0">
+                <FilterDropdowns
+                  products={products}
+                  selectedVenue={selectedVenue}
+                  selectedCategory={selectedCategory}
+                  selectedTemplate={selectedTemplate}
+                  onVenueChange={setSelectedVenue}
+                  onCategoryChange={setSelectedCategory}
+                  onTemplateChange={setSelectedTemplate}
+                />
+              </div>
+              
+              <div className="flex-shrink-0">
+                <ViewSwitcher 
+                  viewMode={viewMode} 
+                  onViewModeChange={setViewMode} 
+                />
+              </div>
             </div>
           </div>
 
