@@ -374,7 +374,7 @@ export const ProductInjector = ({
       {!loading && (
         <>
           {/* Controls */}
-          <div className="flex flex-col lg:flex-row gap-4 items-stretch lg:items-center justify-between">
+          <div className="mb-6 flex flex-col lg:flex-row gap-4 items-stretch lg:items-center justify-between">
             <div className="flex-1 min-w-0">
               <FilterDropdowns
                 products={products}

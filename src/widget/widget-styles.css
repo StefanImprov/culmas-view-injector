@@ -10,8 +10,11 @@ div[data-culmas-widget-instance="true"].culmas-widget-container,
   color: rgb(14, 17, 47);
   background-color: rgb(255, 255, 255);
   
-  /* Default widget container padding */
+  /* Default widget container padding and max-width */
   padding: 1rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
   
   /* Webflow compatibility improvements with higher specificity */
   position: relative;
