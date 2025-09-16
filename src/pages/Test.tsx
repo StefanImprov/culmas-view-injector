@@ -37,10 +37,10 @@ const Test = () => {
   };
 
   return (
-    <div className="container mx-auto p-6 max-w-4xl">
-      <h1 className="text-2xl font-bold mb-6">Script Test Page</h1>
+    <div className="w-full py-6">
+      <h1 className="text-2xl font-bold mb-6 px-6">Script Test Page</h1>
       
-      <div className="space-y-4 mb-8">
+      <div className="space-y-4 mb-8 px-6">
         <div>
           <label htmlFor="script-input" className="block text-sm font-medium mb-2">
             Paste your script here:
@@ -60,7 +60,7 @@ const Test = () => {
       </div>
       
       <div className="border-t pt-8">
-        <h2 className="text-lg font-semibold mb-4">Output:</h2>
+        <h2 className="text-lg font-semibold mb-4 px-6">Output:</h2>
         <div 
           id="script-output" 
           className="w-full min-h-[300px] border rounded-lg p-4 bg-background"
