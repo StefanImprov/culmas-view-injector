@@ -141,6 +141,11 @@
 }
 
 @layer components {
+  /* Week Grid - Fixed time column + flexible day columns */
+  .week-grid {
+    grid-template-columns: 80px repeat(7, 1fr);
+  }
+
   /* Line clamp utilities for text truncation */
   .line-clamp-1 {
     overflow: hidden;
