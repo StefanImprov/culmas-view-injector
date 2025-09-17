@@ -1,11 +1,26 @@
-/* Week View Widget Overrides - High Specificity for External Sites */
-.culmas-widget-container .week-grid {
+/* Week View Widget Overrides - Maximum Specificity for External Sites */
+.culmas-widget-container div.grid.week-grid,
+.culmas-widget-container .grid.week-grid,
+div[data-culmas-widget-instance="true"] .week-grid,
+div[data-culmas-widget-instance="true"] div.grid.week-grid {
+  display: grid !important;
   grid-template-columns: 80px repeat(7, 1fr) !important;
+  grid-auto-rows: auto !important;
+  width: 100% !important;
+  min-width: 800px !important;
 }
 
-.culmas-widget-container .week-grid > * {
+.culmas-widget-container .week-grid > *,
+div[data-culmas-widget-instance="true"] .week-grid > * {
   box-sizing: border-box !important;
   overflow: hidden !important;
+  min-width: 0 !important;
+}
+
+/* Force proper grid display on container */
+.culmas-widget-container .hidden.sm\\:block,
+div[data-culmas-widget-instance="true"] .hidden.sm\\:block {
+  display: block !important;
 }
 
 .culmas-widget-container .min-h-\\[80px\\] {
