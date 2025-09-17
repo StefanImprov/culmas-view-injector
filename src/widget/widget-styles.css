@@ -237,6 +237,53 @@ div[data-culmas-widget-instance="true"].culmas-widget-container .week-grid .text
   border-right: 1px solid hsl(var(--border)) !important;
 }
 
+/* FIX: Grid cell width constraints - allow cells to shrink properly */
+div[data-culmas-widget-instance="true"].culmas-widget-container .week-grid > div,
+.culmas-widget-container[data-culmas-widget-instance="true"] .week-grid > div,
+[data-culmas-widget-instance="true"] .week-grid > div {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+}
+
+/* FIX: Event card containers - prevent overflow */
+div[data-culmas-widget-instance="true"].culmas-widget-container .week-grid .min-h-\\[80px\\],
+.culmas-widget-container[data-culmas-widget-instance="true"] .week-grid .min-h-\\[80px\\],
+[data-culmas-widget-instance="true"] .week-grid .min-h-\\[80px\\] {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+}
+
+/* FIX: Event cards - constrain to cell width */
+div[data-culmas-widget-instance="true"].culmas-widget-container .week-grid .min-h-\\[80px\\] > div,
+.culmas-widget-container[data-culmas-widget-instance="true"] .week-grid .min-h-\\[80px\\] > div,
+[data-culmas-widget-instance="true"] .week-grid .min-h-\\[80px\\] > div {
+  max-width: 100% !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+}
+
+/* FIX: Event title truncation - force single line */
+div[data-culmas-widget-instance="true"].culmas-widget-container .week-grid .font-medium.truncate,
+.culmas-widget-container[data-culmas-widget-instance="true"] .week-grid .font-medium.truncate,
+[data-culmas-widget-instance="true"] .week-grid .font-medium.truncate {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  max-width: 100% !important;
+}
+
+/* FIX: Event details text truncation */
+div[data-culmas-widget-instance="true"].culmas-widget-container .week-grid .truncate,
+.culmas-widget-container[data-culmas-widget-instance="true"] .week-grid .truncate,
+[data-culmas-widget-instance="true"] .week-grid .truncate {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  max-width: 100% !important;
+}
+
 /* Responsive Classes */
 .culmas-widget-container .hidden {
   display: none !important;
