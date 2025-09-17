@@ -26,7 +26,7 @@ export default defineConfig({
       }
     },
     cssCodeSplit: false,
-    minify: false
+    minify: 'terser'
   },
   resolve: {
     alias: {
