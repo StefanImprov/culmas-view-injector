@@ -204,8 +204,69 @@ div[data-culmas-widget-instance="true"].culmas-widget-container .bg-card,
   }
 }
 
+.culmas-widget-container .grid-cols-7 {
+  grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+}
+
 .culmas-widget-container .grid-cols-8 {
   grid-template-columns: repeat(8, minmax(0, 1fr)) !important;
+}
+
+/* Responsive Classes */
+.culmas-widget-container .hidden {
+  display: none !important;
+}
+
+@media (min-width: 640px) {
+  .culmas-widget-container .sm\:block {
+    display: block !important;
+  }
+  
+  .culmas-widget-container .sm\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .culmas-widget-container .lg\:block {
+    display: block !important;
+  }
+  
+  .culmas-widget-container .lg\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (min-width: 1280px) {
+  .culmas-widget-container .xl\:block {
+    display: block !important;
+  }
+  
+  .culmas-widget-container .xl\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+}
+
+/* Overflow Classes */
+.culmas-widget-container .overflow-x-auto {
+  overflow-x: auto !important;
+}
+
+.culmas-widget-container .overflow-hidden {
+  overflow: hidden !important;
+}
+
+/* Flex Utilities */
+.culmas-widget-container .flex-1 {
+  flex: 1 1 0% !important;
+}
+
+.culmas-widget-container .flex-shrink-0 {
+  flex-shrink: 0 !important;
+}
+
+.culmas-widget-container .min-w-0 {
+  min-width: 0px !important;
 }
 
 .culmas-widget-container .gap-4 {
@@ -378,8 +439,29 @@ div[data-culmas-widget-instance="true"].culmas-widget-container .bg-card,
   min-height: 80px !important;
 }
 
+.culmas-widget-container .min-h-\[120px\] {
+  min-height: 120px !important;
+}
+
+.culmas-widget-container .min-w-\[44px\] {
+  min-width: 44px !important;
+}
+
 .culmas-widget-container .min-w-\[800px\] {
   min-width: 800px !important;
+}
+
+.culmas-widget-container .max-w-\[1400px\] {
+  max-width: 1400px !important;
+}
+
+/* Spacing Utilities */
+.culmas-widget-container .space-y-0\.5 > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 0.125rem !important;
+}
+
+.culmas-widget-container .space-y-1 > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 0.25rem !important;
 }
 
 /* Display */
