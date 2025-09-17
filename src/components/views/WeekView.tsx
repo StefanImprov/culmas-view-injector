@@ -194,20 +194,20 @@ export const WeekView = ({ products }: WeekViewProps) => {
                 return (
                   <div
                     key={dayIndex}
-                    className="w-full min-h-[80px] p-2 border-l border-border relative"
+                    className="w-full min-h-[80px] p-2 border-l border-border relative overflow-hidden"
                   >
                     {timeProducts.map((product) => (
                       <div
                         key={product.id}
                         onClick={() => setSelectedProduct(product)}
                         className={cn(
-                          "w-full p-2 rounded-lg text-xs cursor-pointer transition-all duration-300 mb-1 last:mb-0",
+                          "w-full max-w-full p-2 rounded-lg text-xs cursor-pointer transition-all duration-300 mb-1 last:mb-0 overflow-hidden",
                           product.available
                             ? "bg-primary text-white hover:shadow-md hover:scale-105"
                             : "bg-muted text-muted-foreground"
                         )}
                       >
-                        <div className="font-medium mb-1 truncate">
+                        <div className="font-medium mb-1 truncate text-ellipsis whitespace-nowrap overflow-hidden">
                           {product.title}
                         </div>
                         <div className="space-y-1 opacity-90">
@@ -216,9 +216,9 @@ export const WeekView = ({ products }: WeekViewProps) => {
                             <span>{product.duration}</span>
                           </div>
                           {product.instructor && (
-                            <div className="flex items-center space-x-1">
-                              <User className="w-3 h-3" />
-                              <span className="truncate">{product.instructor}</span>
+                            <div className="flex items-center space-x-1 min-w-0">
+                              <User className="w-3 h-3 flex-shrink-0" />
+                              <span className="truncate text-ellipsis whitespace-nowrap overflow-hidden">{product.instructor}</span>
                             </div>
                           )}
                           <div className="flex items-center space-x-1 font-semibold">
