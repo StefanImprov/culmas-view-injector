@@ -208,9 +208,33 @@ div[data-culmas-widget-instance="true"].culmas-widget-container .bg-card,
   grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
 }
 
-/* Week Grid - Fixed time column + flexible day columns */
-.culmas-widget-container .week-grid {
+/* Week Grid - HIGH SPECIFICITY TO OVERRIDE WEBFLOW */
+div[data-culmas-widget-instance="true"].culmas-widget-container .week-grid,
+.culmas-widget-container[data-culmas-widget-instance="true"] .week-grid,
+[data-culmas-widget-instance="true"] .week-grid {
+  display: grid !important;
   grid-template-columns: 80px repeat(7, 1fr) !important;
+  gap: 0 !important;
+  width: 100% !important;
+  align-items: center !important;
+}
+
+/* Ensure header row uses same grid */
+div[data-culmas-widget-instance="true"].culmas-widget-container .week-grid .font-semibold,
+.culmas-widget-container[data-culmas-widget-instance="true"] .week-grid .font-semibold,
+[data-culmas-widget-instance="true"] .week-grid .font-semibold {
+  grid-column: span 1 !important;
+  text-align: center !important;
+  padding: 0.5rem !important;
+}
+
+/* Time slot styling with high specificity */
+div[data-culmas-widget-instance="true"].culmas-widget-container .week-grid .text-xs,
+.culmas-widget-container[data-culmas-widget-instance="true"] .week-grid .text-xs,
+[data-culmas-widget-instance="true"] .week-grid .text-xs {
+  text-align: center !important;
+  padding: 0.5rem !important;
+  border-right: 1px solid hsl(var(--border)) !important;
 }
 
 /* Responsive Classes */
