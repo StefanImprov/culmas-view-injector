@@ -8,7 +8,7 @@ export default defineConfig({
     lib: {
       entry: path.resolve(__dirname, 'src/widget/widget.tsx'),
       name: 'CulmasWidget',
-      fileName: () => 'culmas-widget.js',
+      fileName: (format) => `culmas-widget.${format === 'umd' ? 'js' : 'js'}`,
       formats: ['umd']
     },
     outDir: 'dist/widget',

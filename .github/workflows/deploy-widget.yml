@@ -41,7 +41,11 @@ jobs:
           echo "Building widget..."
           npx vite build --config vite.widget.config.ts
           echo "Widget build complete!"
+          echo "Contents of dist/widget/:"
           ls -la dist/widget/ || echo "Widget dist directory not found"
+          echo "Verifying widget files exist:"
+          test -f dist/widget/culmas-widget.js && echo "✓ culmas-widget.js found" || echo "✗ culmas-widget.js missing"
+          test -f dist/widget/culmas-widget.css && echo "✓ culmas-widget.css found" || echo "✗ culmas-widget.css missing"
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
