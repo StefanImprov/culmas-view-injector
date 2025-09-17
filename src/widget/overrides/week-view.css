@@ -46,3 +46,78 @@ div[data-culmas-widget-instance="true"] .hidden.sm\\:block {
   word-wrap: break-word !important;
   overflow-wrap: break-word !important;
 }
+
+/* Event Card Overrides - Fix readability and layout */
+.culmas-widget-container .week-grid .cursor-pointer,
+div[data-culmas-widget-instance="true"] .week-grid .cursor-pointer {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 8px !important;
+  margin-bottom: 4px !important;
+  border-radius: 8px !important;
+  font-size: 12px !important;
+  line-height: 1.3 !important;
+  text-orientation: mixed !important;
+  writing-mode: horizontal-tb !important;
+  transform: none !important;
+  overflow: visible !important;
+  box-sizing: border-box !important;
+}
+
+/* Event text elements */
+.culmas-widget-container .week-grid .cursor-pointer div,
+div[data-culmas-widget-instance="true"] .week-grid .cursor-pointer div {
+  text-orientation: mixed !important;
+  writing-mode: horizontal-tb !important;
+  transform: none !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+
+/* Event title */
+.culmas-widget-container .week-grid .cursor-pointer .font-medium,
+div[data-culmas-widget-instance="true"] .week-grid .cursor-pointer .font-medium {
+  font-weight: 600 !important;
+  margin-bottom: 4px !important;
+  font-size: 12px !important;
+  line-height: 1.2 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* Event details container */
+.culmas-widget-container .week-grid .cursor-pointer .space-y-1,
+div[data-culmas-widget-instance="true"] .week-grid .cursor-pointer .space-y-1 {
+  display: block !important;
+  opacity: 0.9 !important;
+}
+
+/* Event detail items */
+.culmas-widget-container .week-grid .cursor-pointer .space-y-1 > div,
+div[data-culmas-widget-instance="true"] .week-grid .cursor-pointer .space-y-1 > div {
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  margin-bottom: 2px !important;
+  font-size: 11px !important;
+}
+
+/* Icons in events */
+.culmas-widget-container .week-grid .cursor-pointer svg,
+div[data-culmas-widget-instance="true"] .week-grid .cursor-pointer svg {
+  width: 12px !important;
+  height: 12px !important;
+  flex-shrink: 0 !important;
+}
+
+/* Sold out text */
+.culmas-widget-container .week-grid .cursor-pointer .text-center,
+div[data-culmas-widget-instance="true"] .week-grid .cursor-pointer .text-center {
+  text-align: center !important;
+  margin-top: 4px !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+}
