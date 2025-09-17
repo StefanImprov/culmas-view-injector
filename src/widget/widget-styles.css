@@ -204,6 +204,10 @@ div[data-culmas-widget-instance="true"].culmas-widget-container .bg-card,
   }
 }
 
+.culmas-widget-container .grid-cols-8 {
+  grid-template-columns: repeat(8, minmax(0, 1fr)) !important;
+}
+
 .culmas-widget-container .gap-4 {
   gap: 1rem;
 }
@@ -368,6 +372,14 @@ div[data-culmas-widget-instance="true"].culmas-widget-container .bg-card,
 
 .culmas-widget-container .min-h-[44px] {
   min-height: 44px;
+}
+
+.culmas-widget-container .min-h-\[80px\] {
+  min-height: 80px !important;
+}
+
+.culmas-widget-container .min-w-\[800px\] {
+  min-width: 800px !important;
 }
 
 /* Display */
