@@ -208,8 +208,13 @@ div[data-culmas-widget-instance="true"].culmas-widget-container .bg-card,
   grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
 }
 
-/* Week Grid - Fixed time column + flexible day columns */
+/* Week Grid - Fixed time column + flexible day columns - WIDGET MODE ONLY */
 .culmas-widget-container .week-grid {
+  grid-template-columns: 80px repeat(7, 1fr) !important;
+}
+
+/* Override grid-cols-8 in widget mode to use proper week grid layout */
+.culmas-widget-container .grid-cols-8 {
   grid-template-columns: 80px repeat(7, 1fr) !important;
 }
 
