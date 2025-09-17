@@ -6,7 +6,6 @@ import { ProductInjector } from '@/components/ProductInjector';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { Toaster } from '@/components/ui/toaster';
 import { Toaster as Sonner } from '@/components/ui/sonner';
-import '../index.css';
 import './widget-styles.css';
 
 interface WidgetConfig {
