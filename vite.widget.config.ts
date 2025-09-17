@@ -8,7 +8,7 @@ export default defineConfig({
     lib: {
       entry: path.resolve(__dirname, 'src/widget/widget.tsx'),
       name: 'CulmasWidget',
-      fileName: (format) => `culmas-widget.${format === 'umd' ? 'js' : 'js'}`,
+      fileName: () => 'culmas-widget',
       formats: ['umd']
     },
     outDir: 'dist/widget',
@@ -16,6 +16,7 @@ export default defineConfig({
       external: [],
       output: {
         globals: {},
+        entryFileNames: 'culmas-widget.js',
         assetFileNames: (assetInfo) => {
           if (assetInfo.name === 'style.css') {
             return 'culmas-widget.css';
@@ -25,7 +26,7 @@ export default defineConfig({
       }
     },
     cssCodeSplit: false,
-    minify: 'terser'
+    minify: false
   },
   resolve: {
     alias: {
