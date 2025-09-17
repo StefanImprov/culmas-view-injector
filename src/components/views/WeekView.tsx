@@ -194,7 +194,7 @@ export const WeekView = ({ products }: WeekViewProps) => {
                 return (
                   <div
                     key={dayIndex}
-                    className="min-h-[80px] p-2 border-l border-border relative"
+                    className="w-full min-h-[80px] p-2 border-l border-border relative"
                   >
                     {timeProducts.map((product) => (
                       <div
