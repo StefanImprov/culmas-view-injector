@@ -1,0 +1,20 @@
+/* Week View Widget Overrides - High Specificity for External Sites */
+.culmas-widget-container .week-grid {
+  grid-template-columns: 80px repeat(7, 1fr) !important;
+}
+
+.culmas-widget-container .week-grid > * {
+  box-sizing: border-box !important;
+}
+
+.culmas-widget-container .min-h-\\[80px\\] {
+  min-height: 80px !important;
+}
+
+.culmas-widget-container .min-h-\\[44px\\] {
+  min-height: 44px !important;
+}
+
+.culmas-widget-container .min-w-\\[44px\\] {
+  min-width: 44px !important;
+}

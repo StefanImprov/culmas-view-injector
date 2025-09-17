@@ -1,0 +1,18 @@
+/* List View Widget Overrides - High Specificity for External Sites */
+.culmas-widget-container .line-clamp-2 {
+  overflow: hidden !important;
+  display: -webkit-box !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: 2 !important;
+}
+
+.culmas-widget-container .line-clamp-none {
+  overflow: visible !important;
+  display: block !important;
+  -webkit-box-orient: initial !important;
+  -webkit-line-clamp: none !important;
+}
+
+.culmas-widget-container .min-h-\\[44px\\] {
+  min-height: 44px !important;
+}
