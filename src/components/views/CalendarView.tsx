@@ -118,7 +118,7 @@ export const CalendarView = ({ products }: CalendarViewProps) => {
               </div>
               
               <div className="space-y-0.5 sm:space-y-1">
-                {dayProducts.slice(0, 2).map((product) => (
+                {dayProducts.map((product) => (
                    <div
                     key={product.id}
                     onClick={() => setSelectedProduct(product)}
@@ -136,11 +136,6 @@ export const CalendarView = ({ products }: CalendarViewProps) => {
                     </div>
                   </div>
                 ))}
-                {dayProducts.length > 2 && (
-                  <div className="text-xs text-muted-foreground p-1">
-                    +{dayProducts.length - 2} more
-                  </div>
-                )}
               </div>
             </div>
           );
