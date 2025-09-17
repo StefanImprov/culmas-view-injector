@@ -1,5 +1,4 @@
-/* Week View Widget Overrides - COMMENTED OUT FOR TESTING */
-/* 
+/* Week View Widget Overrides - High Specificity for External Sites */
 .culmas-widget-container .week-grid {
   grid-template-columns: 80px repeat(7, 1fr) !important;
 }
@@ -32,4 +31,3 @@
   word-wrap: break-word !important;
   overflow-wrap: break-word !important;
 }
-*/
