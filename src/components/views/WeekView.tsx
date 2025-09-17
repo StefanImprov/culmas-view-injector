@@ -150,7 +150,7 @@ export const WeekView = ({ products }: WeekViewProps) => {
       <div className="hidden sm:block overflow-x-auto">
         <div className="min-w-[800px]">
           {/* Day Headers */}
-          <div className="grid week-grid border-b border-border">
+          <div className="grid grid-cols-8 week-grid border-b border-border">
             <div className="p-4 bg-secondary/30"></div>
             {weekDays.map((date, index) => {
               const isToday = date.toDateString() === new Date().toDateString();
@@ -178,7 +178,7 @@ export const WeekView = ({ products }: WeekViewProps) => {
 
           {/* Time Grid */}
           {timeSlots.map((timeSlot) => (
-            <div key={timeSlot} className="grid week-grid border-b border-border last:border-b-0">
+            <div key={timeSlot} className="grid grid-cols-8 week-grid border-b border-border last:border-b-0">
               {/* Time Label */}
               <div className="p-3 bg-secondary/30 border-r border-border text-center text-sm font-medium text-muted-foreground">
                 {timeSlot}
