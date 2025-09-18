@@ -58,6 +58,11 @@ div[data-culmas-widget-instance="true"] .week-grid .text-center,
 /* Calendar View Widget Overrides */
 .culmas-widget-container .grid-cols-7 {
   grid-template-columns: repeat(7, 1fr) !important;
+  grid-column-gap: 0 !important;
+  gap: 1rem !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding: 0 !important;
 }
 
 .culmas-widget-container .min-h-\\[80px\\] {
