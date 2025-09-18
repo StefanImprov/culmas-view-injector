@@ -117,8 +117,8 @@ div[data-culmas-widget-instance="true"] .week-grid .text-center,
 /* Dialog/Modal Widget Overrides - Fix Webflow Grid Interference */
 .culmas-widget-container [data-radix-dialog-content],
 div[data-culmas-widget-instance="true"] [data-radix-dialog-content],
-.culmas-widget-container .grid.gap-4,
-div[data-culmas-widget-instance="true"] .grid.gap-4,
+.culmas-widget-container [data-radix-dialog-content] .grid.gap-4,
+div[data-culmas-widget-instance="true"] [data-radix-dialog-content] .grid.gap-4,
 .culmas-widget-container .max-w-2xl.grid,
 div[data-culmas-widget-instance="true"] .max-w-2xl.grid {
   display: block !important;
