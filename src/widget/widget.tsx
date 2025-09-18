@@ -11,6 +11,7 @@ import './overrides/week-view.css';
 import './overrides/calendar-view.css';
 import './overrides/card-view.css';
 import './overrides/list-view.css';
+import './overrides/dialog-view.css';
 
 interface WidgetConfig {
   container: string;
