@@ -81,9 +81,12 @@ div[data-culmas-widget-instance="true"] .week-grid .text-center,
   min-width: 44px !important;
 }
 
-/* Card View Widget Overrides */
-.culmas-widget-container .grid-cols-1 {
-  grid-template-columns: repeat(1, 1fr) !important;
+/* Card View Widget Overrides - Fix Webflow Grid Interference */
+.culmas-widget-container .grid {
+  grid-column-gap: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding: 0 !important;
 }
 
 @media (min-width: 640px) {
