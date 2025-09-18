@@ -89,6 +89,10 @@ div[data-culmas-widget-instance="true"] .week-grid .text-center,
   grid-template-columns: repeat(3, 1fr) !important;
 }
 
+.culmas-widget-container .xl\\:grid-cols-4 {
+  grid-template-columns: repeat(4, 1fr) !important;
+}
+
 /* List View Widget Overrides */
 .culmas-widget-container .line-clamp-2 {
   overflow: hidden !important;
