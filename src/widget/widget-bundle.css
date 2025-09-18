@@ -1,0 +1,192 @@
+/* Widget Bundle CSS - All styles bundled together for deployment */
+
+/* Import main application styles */
+@import '../index.css';
+
+/* Week View Widget Overrides - High Specificity for External Sites */
+.culmas-widget-container[data-culmas-widget-instance="true"] .week-grid,
+div[data-culmas-widget-instance="true"] .week-grid,
+.culmas-widget-container .week-grid {
+  display: grid !important;
+  grid-template-columns: 80px repeat(7, 1fr) !important;
+  grid-column-gap: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.culmas-widget-container[data-culmas-widget-instance="true"] .week-grid > *,
+div[data-culmas-widget-instance="true"] .week-grid > *,
+.culmas-widget-container .week-grid > * {
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+  display: block !important;
+  min-height: 120px !important;
+  min-width: 44px !important;
+}
+
+.culmas-widget-container[data-culmas-widget-instance="true"] .week-grid .text-xs,
+div[data-culmas-widget-instance="true"] .week-grid .text-xs,
+.culmas-widget-container .week-grid .text-xs {
+  font-size: 0.75rem !important;
+  line-height: 1rem !important;
+  margin: 0.25rem 0 !important;
+  padding: 0.125rem 0.25rem !important;
+  border-radius: 0.25rem !important;
+  text-overflow: ellipsis !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+}
+
+.culmas-widget-container[data-culmas-widget-instance="true"] .week-grid .lucide,
+div[data-culmas-widget-instance="true"] .week-grid .lucide,
+.culmas-widget-container .week-grid .lucide {
+  width: 12px !important;
+  height: 12px !important;
+  display: inline-block !important;
+}
+
+.culmas-widget-container[data-culmas-widget-instance="true"] .week-grid .text-center,
+div[data-culmas-widget-instance="true"] .week-grid .text-center,
+.culmas-widget-container .week-grid .text-center {
+  text-align: center !important;
+  font-weight: 600 !important;
+  margin-top: 0.5rem !important;
+}
+
+/* Calendar View Widget Overrides */
+.culmas-widget-container .grid-cols-7 {
+  grid-template-columns: repeat(7, 1fr) !important;
+}
+
+.culmas-widget-container .min-h-\\[80px\\] {
+  min-height: 80px !important;
+}
+
+.culmas-widget-container .min-h-\\[120px\\] {
+  min-height: 120px !important;
+}
+
+.culmas-widget-container .min-h-\\[44px\\] {
+  min-height: 44px !important;
+}
+
+.culmas-widget-container .min-w-\\[44px\\] {
+  min-width: 44px !important;
+}
+
+/* Card View Widget Overrides */
+.culmas-widget-container .grid-cols-1 {
+  grid-template-columns: repeat(1, 1fr) !important;
+}
+
+.culmas-widget-container .sm\\:grid-cols-2 {
+  grid-template-columns: repeat(2, 1fr) !important;
+}
+
+.culmas-widget-container .lg\\:grid-cols-3 {
+  grid-template-columns: repeat(3, 1fr) !important;
+}
+
+/* List View Widget Overrides */
+.culmas-widget-container .line-clamp-2 {
+  overflow: hidden !important;
+  display: -webkit-box !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: 2 !important;
+}
+
+.culmas-widget-container .line-clamp-none {
+  overflow: visible !important;
+  display: block !important;
+  -webkit-box-orient: initial !important;
+  -webkit-line-clamp: none !important;
+}
+
+/* Dialog/Modal Widget Overrides - Fix Webflow Grid Interference */
+.culmas-widget-container [data-radix-dialog-content],
+div[data-culmas-widget-instance="true"] [data-radix-dialog-content],
+.culmas-widget-container .grid.gap-4,
+div[data-culmas-widget-instance="true"] .grid.gap-4,
+.culmas-widget-container .max-w-2xl.grid,
+div[data-culmas-widget-instance="true"] .max-w-2xl.grid {
+  display: block !important;
+  grid-template-columns: none !important;
+  grid-column-gap: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding: 1.5rem !important;
+  gap: 1rem !important;
+}
+
+.culmas-widget-container [data-radix-dialog-content] > *,
+div[data-culmas-widget-instance="true"] [data-radix-dialog-content] > *,
+.culmas-widget-container .max-w-2xl > *,
+div[data-culmas-widget-instance="true"] .max-w-2xl > * {
+  margin-bottom: 1rem !important;
+}
+
+.culmas-widget-container [data-radix-dialog-content] > *:last-child,
+div[data-culmas-widget-instance="true"] [data-radix-dialog-content] > *:last-child,
+.culmas-widget-container .max-w-2xl > *:last-child,
+div[data-culmas-widget-instance="true"] .max-w-2xl > *:last-child {
+  margin-bottom: 0 !important;
+}
+
+.culmas-widget-container [data-radix-dialog-content] .grid.grid-cols-1,
+div[data-culmas-widget-instance="true"] [data-radix-dialog-content] .grid.grid-cols-1,
+.culmas-widget-container .max-w-2xl .grid.grid-cols-1,
+div[data-culmas-widget-instance="true"] .max-w-2xl .grid.grid-cols-1 {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  grid-column-gap: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.culmas-widget-container [data-radix-dialog-content] .grid.grid-cols-2,
+div[data-culmas-widget-instance="true"] [data-radix-dialog-content] .grid.grid-cols-2,
+.culmas-widget-container .max-w-2xl .grid.grid-cols-2,
+div[data-culmas-widget-instance="true"] .max-w-2xl .grid.grid-cols-2 {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  grid-column-gap: 1.5rem !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+@media (min-width: 768px) {
+  .culmas-widget-container [data-radix-dialog-content] .md\\:grid-cols-2,
+  div[data-culmas-widget-instance="true"] [data-radix-dialog-content] .md\\:grid-cols-2,
+  .culmas-widget-container .max-w-2xl .md\\:grid-cols-2,
+  div[data-culmas-widget-instance="true"] .max-w-2xl .md\\:grid-cols-2 {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 1.5rem !important;
+  }
+}
+
+.culmas-widget-container [data-radix-dialog-content] .space-y-6 > * + *,
+div[data-culmas-widget-instance="true"] [data-radix-dialog-content] .space-y-6 > * + *,
+.culmas-widget-container .max-w-2xl .space-y-6 > * + *,
+div[data-culmas-widget-instance="true"] .max-w-2xl .space-y-6 > * + * {
+  margin-top: 1.5rem !important;
+}
+
+.culmas-widget-container [data-radix-dialog-content] .space-y-4 > * + *,
+div[data-culmas-widget-instance="true"] [data-radix-dialog-content] .space-y-4 > * + *,
+.culmas-widget-container .max-w-2xl .space-y-4 > * + *,
+div[data-culmas-widget-instance="true"] .max-w-2xl .space-y-4 > * + * {
+  margin-top: 1rem !important;
+}
+
+.culmas-widget-container [data-radix-dialog-content] .flex.justify-end,
+div[data-culmas-widget-instance="true"] [data-radix-dialog-content] .flex.justify-end,
+.culmas-widget-container .max-w-2xl .flex.justify-end,
+div[data-culmas-widget-instance="true"] .max-w-2xl .flex.justify-end {
+  display: flex !important;
+  justify-content: flex-end !important;
+  margin-top: 1rem !important;
+  padding-top: 1rem !important;
+  border-top: 1px solid hsl(var(--border)) !important;
+}
