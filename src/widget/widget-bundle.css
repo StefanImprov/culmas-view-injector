@@ -65,6 +65,11 @@ div[data-culmas-widget-instance="true"] .week-grid .text-center,
   padding: 0 !important;
 }
 
+/* Allow text wrapping in calendar event cards */
+.culmas-widget-container .truncate {
+  white-space: normal !important;
+}
+
 .culmas-widget-container .min-h-\\[80px\\] {
   min-height: 80px !important;
 }
