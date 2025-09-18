@@ -81,16 +81,22 @@ div[data-culmas-widget-instance="true"] .week-grid .text-center,
   grid-template-columns: repeat(1, 1fr) !important;
 }
 
-.culmas-widget-container .sm\\:grid-cols-2 {
-  grid-template-columns: repeat(2, 1fr) !important;
+@media (min-width: 640px) {
+  .culmas-widget-container .sm\\:grid-cols-2 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
 }
 
-.culmas-widget-container .lg\\:grid-cols-3 {
-  grid-template-columns: repeat(3, 1fr) !important;
+@media (min-width: 1024px) {
+  .culmas-widget-container .lg\\:grid-cols-3 {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
 }
 
-.culmas-widget-container .xl\\:grid-cols-4 {
-  grid-template-columns: repeat(4, 1fr) !important;
+@media (min-width: 1280px) {
+  .culmas-widget-container .xl\\:grid-cols-4 {
+    grid-template-columns: repeat(4, 1fr) !important;
+  }
 }
 
 /* List View Widget Overrides */
