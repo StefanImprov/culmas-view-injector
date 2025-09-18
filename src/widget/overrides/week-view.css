@@ -9,7 +9,7 @@ div[data-culmas-widget-instance="true"] .grid.week-grid {
   grid-auto-rows: auto !important;
   width: 100% !important;
   min-width: 800px !important;
-  /* Override Webflow's .grid class properties */
+  /* Override Webflow's problematic .grid class properties */
   grid-column-gap: 0 !important;
   margin-left: 0 !important;
   margin-right: 0 !important;
@@ -17,11 +17,15 @@ div[data-culmas-widget-instance="true"] .grid.week-grid {
   grid-template-rows: auto !important;
 }
 
-/* Additional high-specificity override for Webflow's .grid class */
+/* Ultra-high specificity override for stubborn Webflow .grid styles */
 .culmas-widget-container .grid.week-grid.grid,
-div[data-culmas-widget-instance="true"] .grid.week-grid.grid {
+div[data-culmas-widget-instance="true"] .grid.week-grid.grid,
+.culmas-widget-container div.grid.week-grid.grid,
+div[data-culmas-widget-instance="true"] div.grid.week-grid.grid {
   grid-template-columns: 80px repeat(7, 1fr) !important;
   grid-column-gap: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
   margin: 0 !important;
   padding: 0 !important;
 }
