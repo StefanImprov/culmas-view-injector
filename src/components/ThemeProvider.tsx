@@ -11,9 +11,7 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const useTheme = () => {
   const context = useContext(ThemeContext);
-  if (context === undefined) {
-    throw new Error('useTheme must be used within a ThemeProvider');
-  }
+  if (context === undefined) throw new Error('useTheme must be used within a ThemeProvider');
   return context;
 };
 
@@ -21,85 +19,80 @@ interface ThemeProviderProps {
   children: ReactNode;
   initialTheme?: Theme;
   widgetMode?: boolean;
-  rootEl?: HTMLElement;
+  /** NEW: when in widget mode, apply vars/classes here (e.g. shadow mount) */
+  rootEl?: HTMLElement | null;
 }
 
 export const ThemeProvider = ({ children, initialTheme, widgetMode = false, rootEl }: ThemeProviderProps) => {
   const [theme, setTheme] = useState<Theme>(initialTheme || defaultThemes[0]);
 
-  const applyTheme = (selectedTheme: Theme) => {
-    const root = widgetMode && rootEl ? rootEl : document.documentElement;
-    
-    // Apply color variables
+  const applyThemeTo = (target: HTMLElement | null, selectedTheme: Theme) => {
+    if (!target) return;
+
+    // colors → CSS vars
     Object.entries(selectedTheme.colors).forEach(([key, value]) => {
       const cssVarName = key.replace(/([A-Z])/g, '-$1').toLowerCase();
-      root.style.setProperty(`--${cssVarName}`, value);
+      target.style.setProperty(`--${cssVarName}`, String(value));
     });
-    
-    // Apply design variables
-    root.style.setProperty('--radius', selectedTheme.design.borderRadius);
-    
-    // Apply style-specific CSS classes
-    root.className = root.className.replace(/theme-\w+/g, '');
-    root.classList.add(`theme-${selectedTheme.style}`);
-    
-    // Apply shadow intensity
-    const shadowIntensity = selectedTheme.design.shadowIntensity;
-    switch (shadowIntensity) {
-      case 'subtle':
-        root.style.setProperty('--shadow-sm', '0 1px 2px 0 rgb(0 0 0 / 0.05)');
-        root.style.setProperty('--shadow-md', '0 4px 6px -1px rgb(0 0 0 / 0.1)');
-        root.style.setProperty('--shadow-lg', '0 10px 15px -3px rgb(0 0 0 / 0.1)');
-        root.style.setProperty('--shadow-glow', '0 0 20px hsl(var(--primary-glow) / 0.2)');
-        break;
-      case 'medium':
-        root.style.setProperty('--shadow-sm', '0 1px 3px 0 rgb(0 0 0 / 0.1)');
-        root.style.setProperty('--shadow-md', '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -1px rgb(0 0 0 / 0.06)');
-        root.style.setProperty('--shadow-lg', '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgb(0 0 0 / 0.04)');
-        root.style.setProperty('--shadow-glow', '0 0 30px hsl(var(--primary-glow) / 0.3)');
-        break;
-      case 'strong':
-        root.style.setProperty('--shadow-sm', '0 2px 4px 0 rgb(0 0 0 / 0.1)');
-        root.style.setProperty('--shadow-md', '0 8px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.05)');
-        root.style.setProperty('--shadow-lg', '0 25px 50px -12px rgb(0 0 0 / 0.25)');
-        root.style.setProperty('--shadow-glow', '0 0 40px hsl(var(--primary-glow) / 0.4)');
-        break;
+
+    // design tokens
+    target.style.setProperty('--radius', selectedTheme.design.borderRadius);
+
+    // style class (theme-modern / theme-classic / etc.)
+    target.className = target.className.replace(/theme-\w+/g, '').trim();
+    target.classList.add(`theme-${selectedTheme.style}`);
+
+    // shadow intensity
+    const s = selectedTheme.design.shadowIntensity;
+    if (s === 'subtle') {
+      target.style.setProperty('--shadow-sm', '0 1px 2px 0 rgb(0 0 0 / 0.05)');
+      target.style.setProperty('--shadow-md', '0 4px 6px -1px rgb(0 0 0 / 0.1)');
+      target.style.setProperty('--shadow-lg', '0 10px 15px -3px rgb(0 0 0 / 0.1)');
+      target.style.setProperty('--shadow-glow', '0 0 20px hsl(var(--primary-glow) / 0.2)');
+    } else if (s === 'medium') {
+      target.style.setProperty('--shadow-sm', '0 1px 3px 0 rgb(0 0 0 / 0.1)');
+      target.style.setProperty('--shadow-md', '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -1px rgb(0 0 0 / 0.06)');
+      target.style.setProperty('--shadow-lg', '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgb(0 0 0 / 0.04)');
+      target.style.setProperty('--shadow-glow', '0 0 30px hsl(var(--primary-glow) / 0.3)');
+    } else if (s === 'strong') {
+      target.style.setProperty('--shadow-sm', '0 2px 4px 0 rgb(0 0 0 / 0.1)');
+      target.style.setProperty('--shadow-md', '0 8px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.05)');
+      target.style.setProperty('--shadow-lg', '0 25px 50px -12px rgb(0 0 0 / 0.25)');
+      target.style.setProperty('--shadow-glow', '0 0 40px hsl(var(--primary-glow) / 0.4)');
     }
-    
-    // Apply gradients based on design settings
+
+    // gradients / transitions
     if (selectedTheme.design.gradients) {
-      root.style.setProperty('--gradient-primary', `linear-gradient(135deg, hsl(${selectedTheme.colors.primary}), hsl(${selectedTheme.colors.gradientPrimary}))`);
-      root.style.setProperty('--gradient-hero', `linear-gradient(135deg, hsl(${selectedTheme.colors.primary}), hsl(${selectedTheme.colors.gradientPrimary}), hsl(${selectedTheme.colors.accent}))`);
+      target.style.setProperty('--gradient-primary', `linear-gradient(135deg, hsl(${selectedTheme.colors.primary}), hsl(${selectedTheme.colors.gradientPrimary}))`);
+      target.style.setProperty('--gradient-hero', `linear-gradient(135deg, hsl(${selectedTheme.colors.primary}), hsl(${selectedTheme.colors.gradientPrimary}), hsl(${selectedTheme.colors.accent}))`);
     } else {
-      root.style.setProperty('--gradient-primary', `hsl(${selectedTheme.colors.primary})`);
-      root.style.setProperty('--gradient-hero', `hsl(${selectedTheme.colors.primary})`);
+      target.style.setProperty('--gradient-primary', `hsl(${selectedTheme.colors.primary})`);
+      target.style.setProperty('--gradient-hero', `hsl(${selectedTheme.colors.primary})`);
     }
-    
-    // Apply hover effects
-    if (selectedTheme.design.hoverEffects) {
-      root.style.setProperty('--transition-smooth', 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)');
-    } else {
-      root.style.setProperty('--transition-smooth', 'all 0.15s ease');
-    }
+    target.style.setProperty('--transition-smooth', selectedTheme.design.hoverEffects ? 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)' : 'all 0.15s ease');
   };
 
   useEffect(() => {
-    applyTheme(theme);
-  }, [theme]);
+    const globalRoot = document.documentElement;
+    if (widgetMode) {
+      applyThemeTo(rootEl || null, theme);
+    } else {
+      applyThemeTo(globalRoot, theme);
+    }
+  }, [theme, widgetMode, rootEl]);
 
   const handleSetTheme = (newTheme: Theme) => {
     setTheme(newTheme);
-    applyTheme(newTheme);
+    const globalRoot = document.documentElement;
+    if (widgetMode) {
+      applyThemeTo(rootEl || null, newTheme);
+    } else {
+      applyThemeTo(globalRoot, newTheme);
+    }
   };
 
   return (
-    <ThemeContext.Provider
-      value={{
-        theme,
-        setTheme: handleSetTheme,
-        availableThemes: defaultThemes,
-      }}
-    >
+    <ThemeContext.Provider value={{ theme, setTheme: handleSetTheme, availableThemes: defaultThemes }}>
       {children}
     </ThemeContext.Provider>
   );
