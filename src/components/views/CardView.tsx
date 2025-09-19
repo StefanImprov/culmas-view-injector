@@ -17,7 +17,7 @@ export const CardView = ({ products }: CardViewProps) => {
 
   return (
     <div className="px-4 md:px-6">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 max-w-[1400px] mx-auto">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 max-w-[1400px] mx-auto auto-rows-fr">
         {products.map((product) => (
         <div
           key={product.id}
@@ -25,7 +25,7 @@ export const CardView = ({ products }: CardViewProps) => {
           className={cn(
             "bg-card border border-border rounded-xl overflow-hidden shadow-md transition-all duration-300",
             "hover:shadow-xl hover:border-primary/20 hover:scale-105 transform",
-            "group cursor-pointer",
+            "group cursor-pointer flex flex-col h-full",
             !product.available && "opacity-60 grayscale"
           )}
         >
@@ -52,9 +52,9 @@ export const CardView = ({ products }: CardViewProps) => {
             )}
           </div>
 
-          <div className="p-4 sm:p-5 space-y-3 sm:space-y-4">
+          <div className="p-4 sm:p-5 flex flex-col flex-grow">
             {/* Header */}
-            <div className="space-y-2">
+            <div className="space-y-2 mb-3 sm:mb-4">
               <h3 className="font-bold text-base sm:text-lg text-card-foreground group-hover:text-primary transition-colors line-clamp-2">
                 {product.title}
               </h3>
@@ -65,7 +65,7 @@ export const CardView = ({ products }: CardViewProps) => {
             </div>
 
             {/* Details */}
-            <div className="space-y-2.5 text-sm text-muted-foreground">
+            <div className="space-y-2.5 text-sm text-muted-foreground flex-grow mb-3 sm:mb-4">
               <div className="flex items-center space-x-2">
                 <Calendar className="w-4 h-4 text-primary" />
                 <span>{product.date.toLocaleDateString()}</span>
@@ -97,7 +97,7 @@ export const CardView = ({ products }: CardViewProps) => {
             </div>
 
             {/* Footer */}
-            <div className="space-y-3 pt-3 border-t border-border">
+            <div className="space-y-3 pt-3 border-t border-border mt-auto">
               <div className="flex items-center justify-between">
                  <span className="text-xl sm:text-2xl font-bold text-primary">
                    {product.price} Kr.
