@@ -115,22 +115,21 @@ function mountOne(scriptEl: HTMLScriptElement) {
   const initialTheme = parseTheme(cfg.themeJson);
   console.log('🎨 Widget initializing with theme:', initialTheme?.id || 'default');
 
-  // Apply theme CSS variables to shadow root for modal inheritance
+  // Apply theme CSS variables to theme container for modal inheritance
   if (initialTheme) {
-    const shadowRoot = shadow as unknown as HTMLElement;
-    shadowRoot.style.setProperty('--background', initialTheme.colors.background);
-    shadowRoot.style.setProperty('--foreground', initialTheme.colors.foreground);
-    shadowRoot.style.setProperty('--card', initialTheme.colors.card);
-    shadowRoot.style.setProperty('--card-foreground', initialTheme.colors.cardForeground);
-    shadowRoot.style.setProperty('--border', initialTheme.colors.border);
-    shadowRoot.style.setProperty('--primary', initialTheme.colors.primary);
-    shadowRoot.style.setProperty('--primary-foreground', initialTheme.colors.primaryForeground);
-    shadowRoot.style.setProperty('--secondary', initialTheme.colors.secondary);
-    shadowRoot.style.setProperty('--secondary-foreground', initialTheme.colors.secondaryForeground);
-    shadowRoot.style.setProperty('--accent', initialTheme.colors.accent);
-    shadowRoot.style.setProperty('--accent-foreground', initialTheme.colors.accentForeground);
-    shadowRoot.style.setProperty('--muted', initialTheme.colors.muted);
-    shadowRoot.style.setProperty('--muted-foreground', initialTheme.colors.mutedForeground);
+    themeContainer.style.setProperty('--background', initialTheme.colors.background);
+    themeContainer.style.setProperty('--foreground', initialTheme.colors.foreground);
+    themeContainer.style.setProperty('--card', initialTheme.colors.card);
+    themeContainer.style.setProperty('--card-foreground', initialTheme.colors.cardForeground);
+    themeContainer.style.setProperty('--border', initialTheme.colors.border);
+    themeContainer.style.setProperty('--primary', initialTheme.colors.primary);
+    themeContainer.style.setProperty('--primary-foreground', initialTheme.colors.primaryForeground);
+    themeContainer.style.setProperty('--secondary', initialTheme.colors.secondary);
+    themeContainer.style.setProperty('--secondary-foreground', initialTheme.colors.secondaryForeground);
+    themeContainer.style.setProperty('--accent', initialTheme.colors.accent);
+    themeContainer.style.setProperty('--accent-foreground', initialTheme.colors.accentForeground);
+    themeContainer.style.setProperty('--muted', initialTheme.colors.muted);
+    themeContainer.style.setProperty('--muted-foreground', initialTheme.colors.mutedForeground);
   }
 
   // Render the widget (no routers/toasters/globals)
