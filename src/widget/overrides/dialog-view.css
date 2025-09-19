@@ -1,19 +1,31 @@
 /* Dialog/Modal Widget Overrides - Fix Webflow Grid Interference */
 
-/* Override Webflow's .grid class on dialog content */
+/* Complete override of Webflow's grid interference on dialog content */
 .culmas-widget-container [data-radix-dialog-content],
 div[data-culmas-widget-instance="true"] [data-radix-dialog-content],
-.culmas-widget-container .grid.gap-4,
-div[data-culmas-widget-instance="true"] .grid.gap-4,
-.culmas-widget-container .max-w-2xl.grid,
-div[data-culmas-widget-instance="true"] .max-w-2xl.grid {
+.culmas-widget-container .max-w-2xl,
+div[data-culmas-widget-instance="true"] .max-w-2xl {
   display: block !important;
   grid-template-columns: none !important;
+  grid-template-rows: none !important;
   grid-column-gap: 0 !important;
+  grid-row-gap: 0 !important;
   margin-left: 0 !important;
   margin-right: 0 !important;
   padding: 1.5rem !important;
-  gap: 1rem !important;
+  gap: 0 !important;
+  max-width: 42rem !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* Reset any grid-specific properties that Webflow might apply */
+.culmas-widget-container [data-radix-dialog-content] *,
+div[data-culmas-widget-instance="true"] [data-radix-dialog-content] *,
+.culmas-widget-container .max-w-2xl *,
+div[data-culmas-widget-instance="true"] .max-w-2xl * {
+  grid-column: unset !important;
+  grid-row: unset !important;
 }
 
 /* Ensure dialog content flows naturally */
