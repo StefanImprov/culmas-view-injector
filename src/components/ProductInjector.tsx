@@ -229,6 +229,41 @@ export const ProductInjector = ({
   }
 }`;
 
+        // First try with onlyAvailableForSale=false to debug missing product
+        console.log("🔍 DEBUG: Calling Culmas DEV API with onlyAvailableForSale=false to find product P7ZSijyPxxBc4XyQbRyq");
+        const debugResp = await fetch(graphqlEndpoint, {
+          method: "POST",
+          headers: sharedHeaders,
+          body: JSON.stringify({
+            query: CULMAS_QUERY,
+            variables: { onlyAvailableForSale: false },
+          }),
+        });
+
+        const debugText = await debugResp.text();
+        let debugJson: any;
+        try {
+          debugJson = JSON.parse(debugText);
+        } catch {
+          debugJson = { raw: debugText };
+        }
+        
+        const debugProducts = debugJson?.data?.allProducts || [];
+        const targetProduct = debugProducts.find((p: any) => p.id === "P7ZSijyPxxBc4XyQbRyq");
+        
+        if (targetProduct) {
+          console.log("🎯 FOUND target product P7ZSijyPxxBc4XyQbRyq:", targetProduct);
+          console.log("📅 Target product events count:", targetProduct.events?.length || 0);
+          console.log("📋 Target product events:", targetProduct.events);
+          console.log("✅ Target product status:", targetProduct.status);
+          console.log("🎫 Target product tickets:", targetProduct.tickets);
+          console.log("💰 Target product totalTicketsLeft:", targetProduct.tickets?.totalTicketsLeft);
+        } else {
+          console.log("❌ Product P7ZSijyPxxBc4XyQbRyq NOT FOUND in API response");
+          console.log("📦 Available product IDs:", debugProducts.map((p: any) => p.id));
+        }
+
+        // Now call with onlyAvailableForSale=true for normal operation
         console.log("Calling Culmas DEV API allProducts with onlyAvailableForSale=true");
         const resp = await fetch(graphqlEndpoint, {
           method: "POST",
