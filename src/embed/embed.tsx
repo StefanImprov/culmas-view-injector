@@ -74,6 +74,45 @@ function ensureCssInShadow(shadow: ShadowRoot, href: string) {
   return link;
 }
 
+function injectModalStyles(shadow: ShadowRoot) {
+  const id = "culmas-modal-styles";
+  const existing = shadow.querySelector(`style#${id}`);
+  if (existing) return;
+  
+  const style = document.createElement("style");
+  style.id = id;
+  style.textContent = `
+    /* Modal-specific styling within Shadow DOM */
+    [data-radix-dialog-overlay] {
+      background-color: rgba(0, 0, 0, 0.8) !important;
+    }
+    
+    [data-radix-dialog-content] {
+      background: hsl(var(--background)) !important;
+      border: 1px solid hsl(var(--border)) !important;
+      color: hsl(var(--foreground)) !important;
+      box-shadow: var(--shadow-lg) !important;
+    }
+    
+    /* Button styling within modals */
+    .culmas-widget-container button {
+      background: hsl(var(--primary)) !important;
+      color: hsl(var(--primary-foreground)) !important;
+      border: 1px solid hsl(var(--border)) !important;
+    }
+    
+    .culmas-widget-container button:hover {
+      background: hsl(var(--primary) / 0.9) !important;
+    }
+    
+    /* Ensure text colors are correct */
+    .culmas-widget-container .text-muted-foreground {
+      color: hsl(var(--muted-foreground)) !important;
+    }
+  `;
+  shadow.appendChild(style);
+}
+
 function mountOne(scriptEl: HTMLScriptElement) {
   const cfg: WidgetConfig = {
     container: scriptEl.getAttribute("data-container") || "#culmas-products",
@@ -93,6 +132,8 @@ function mountOne(scriptEl: HTMLScriptElement) {
   const shadow = host.shadowRoot || host.attachShadow({ mode: "open" });
   // inject our stylesheet INTO the shadow
   ensureCssInShadow(shadow, "https://stefanimprov.github.io/culmas-view-injector/embed/culmas-embed.css?v=1");
+  // inject modal-specific styles
+  injectModalStyles(shadow);
 
   // Create a theme container that wraps all widget content
   let themeContainer = shadow.getElementById("culmas-theme-container");
