@@ -52,7 +52,6 @@ div[data-culmas-widget-instance="true"] .week-grid .text-center,
 .culmas-widget-container .week-grid .text-center {
   text-align: center !important;
   font-weight: 600 !important;
-  margin-top: 0.5rem !important;
 }
 
 /* Calendar View Widget Overrides */
