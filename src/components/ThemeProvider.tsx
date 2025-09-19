@@ -38,14 +38,6 @@ export const ThemeProvider = ({ children, initialTheme, widgetMode = false, root
     // design tokens
     target.style.setProperty('--radius', selectedTheme.design.borderRadius);
 
-    // Essential base CSS variables for modal components
-    target.style.setProperty('--background', String(selectedTheme.colors.background));
-    target.style.setProperty('--foreground', String(selectedTheme.colors.foreground));
-    target.style.setProperty('--card', String(selectedTheme.colors.card));
-    target.style.setProperty('--card-foreground', String(selectedTheme.colors.cardForeground));
-    target.style.setProperty('--border', String(selectedTheme.colors.border));
-    target.style.setProperty('--ring', String(selectedTheme.colors.primary));
-
     // style class (theme-modern / theme-classic / etc.)
     target.className = target.className.replace(/theme-\w+/g, '').trim();
     target.classList.add(`theme-${selectedTheme.style}`);
@@ -84,10 +76,6 @@ export const ThemeProvider = ({ children, initialTheme, widgetMode = false, root
     const globalRoot = document.documentElement;
     if (widgetMode) {
       applyThemeTo(rootEl || null, theme);
-      // Also apply to the shadow root if it exists
-      if (rootEl?.parentElement?.shadowRoot) {
-        applyThemeTo(rootEl.parentElement.shadowRoot as unknown as HTMLElement, theme);
-      }
     } else {
       applyThemeTo(globalRoot, theme);
     }
@@ -98,10 +86,6 @@ export const ThemeProvider = ({ children, initialTheme, widgetMode = false, root
     const globalRoot = document.documentElement;
     if (widgetMode) {
       applyThemeTo(rootEl || null, newTheme);
-      // Also apply to the shadow root if it exists
-      if (rootEl?.parentElement?.shadowRoot) {
-        applyThemeTo(rootEl.parentElement.shadowRoot as unknown as HTMLElement, newTheme);
-      }
     } else {
       applyThemeTo(globalRoot, newTheme);
     }
