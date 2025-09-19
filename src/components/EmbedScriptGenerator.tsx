@@ -132,7 +132,7 @@ export const EmbedScriptGenerator = ({ theme }: EmbedScriptGeneratorProps) => {
     } else {
       // GitHub Pages URL for production
       widgetJsUrl = "https://stefanimprov.github.io/culmas-view-injector/widget/culmas-widget.js";
-      widgetCssUrl = "https://stefanimprov.github.io/culmas-view-injector/widget/culmas-widget.css";
+      widgetCssUrl = "https://stefanimprov.github.io/culmas-view-injector/index.css";
     }
 
     return `<!-- Culmas Product Widget -->
