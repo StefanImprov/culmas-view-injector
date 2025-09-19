@@ -20,14 +20,15 @@ export const useTheme = () => {
 interface ThemeProviderProps {
   children: ReactNode;
   initialTheme?: Theme;
+  rootEl?: HTMLElement;
   widgetMode?: boolean;
 }
 
-export const ThemeProvider = ({ children, initialTheme, widgetMode = false }: ThemeProviderProps) => {
+export const ThemeProvider = ({ children, initialTheme, rootEl, widgetMode = false }: ThemeProviderProps) => {
   const [theme, setTheme] = useState<Theme>(initialTheme || defaultThemes[0]);
 
-  const applyTheme = (selectedTheme: Theme) => {
-    const root = document.documentElement;
+  const applyTheme = (selectedTheme: Theme, targetEl?: HTMLElement) => {
+    const root = targetEl || rootEl || document.querySelector('#culmas-products') || document.documentElement;
     
     // Apply color variables
     Object.entries(selectedTheme.colors).forEach(([key, value]) => {
@@ -83,16 +84,15 @@ export const ThemeProvider = ({ children, initialTheme, widgetMode = false }: Th
   };
 
   useEffect(() => {
-    if (!widgetMode) {
-      applyTheme(theme);
-    }
-  }, [theme, widgetMode]);
+    // Always apply theme, but to the scoped root in widget mode
+    const targetEl = widgetMode ? (rootEl || document.querySelector('#culmas-products')) : undefined;
+    applyTheme(theme, targetEl);
+  }, [theme, rootEl, widgetMode]);
 
   const handleSetTheme = (newTheme: Theme) => {
     setTheme(newTheme);
-    if (!widgetMode) {
-      applyTheme(newTheme);
-    }
+    const targetEl = widgetMode ? (rootEl || document.querySelector('#culmas-products')) : undefined;
+    applyTheme(newTheme, targetEl);
   };
 
   return (

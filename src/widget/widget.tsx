@@ -82,7 +82,7 @@ class CulmasWidget {
     const WidgetApp = () => (
       <QueryClientProvider client={this.queryClient}>
         <TooltipProvider>
-          <ThemeProvider initialTheme={config.theme} widgetMode={true}>
+          <ThemeProvider initialTheme={config.theme} rootEl={container as HTMLElement} widgetMode={true}>
             <div 
               id={config.container.replace('#', '')}
               className="culmas-widget-container" 
