@@ -51,12 +51,21 @@ function mountOne(scriptEl: HTMLScriptElement) {
   // inject our stylesheet INTO the shadow
   ensureCssInShadow(shadow, "https://stefanimprov.github.io/culmas-view-injector/embed/culmas-embed.css?v=1");
 
-  // Create a mount point inside the shadow root
-  let mount = shadow.getElementById("culmas-mount");
+  // Create a theme container that wraps all widget content
+  let themeContainer = shadow.getElementById("culmas-theme-container");
+  if (!themeContainer) {
+    themeContainer = document.createElement("div");
+    themeContainer.id = "culmas-theme-container";
+    themeContainer.className = "culmas-widget-container";
+    shadow.appendChild(themeContainer);
+  }
+
+  // Create a mount point inside the theme container
+  let mount = themeContainer.querySelector("#culmas-mount");
   if (!mount) {
     mount = document.createElement("div");
     mount.id = "culmas-mount";
-    shadow.appendChild(mount);
+    themeContainer.appendChild(mount);
   }
 
   // Parse theme if provided
@@ -66,7 +75,7 @@ function mountOne(scriptEl: HTMLScriptElement) {
   const root = createRoot(mount);
   root.render(
     <PortalProvider container={shadow as unknown as HTMLElement}>
-      <ThemeProvider widgetMode={true} rootEl={mount as HTMLElement} initialTheme={initialTheme}>
+      <ThemeProvider widgetMode={true} rootEl={themeContainer as HTMLElement} initialTheme={initialTheme}>
         <ProductInjector
           apiUrl={cfg.apiUrl}
           templateIds={cfg.templateIds ? cfg.templateIds.split(',') : undefined}
