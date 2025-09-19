@@ -12,14 +12,16 @@ export default defineConfig({
       formats: ['umd']
     },
     outDir: 'dist/embed',
+    cssCodeSplit: true,         // so Vite writes a separate CSS file
     rollupOptions: {
       external: [],           // bundle React inside to avoid host deps
       output: {
         globals: {},
         entryFileNames: 'culmas-embed.js',
+        assetFileNames: (info) =>
+          info.name === 'style.css' ? 'culmas-embed.css' : info.name
       }
     },
-    cssCodeSplit: false,
     minify: 'terser'
   },
   resolve: {

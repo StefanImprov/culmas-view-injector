@@ -1,3 +1,4 @@
+import "@/index.css";
 import * as React from "react";
 import { createRoot } from "react-dom/client";
 import { ThemeProvider } from "@/components/ThemeProvider";
@@ -48,7 +49,7 @@ function mountOne(scriptEl: HTMLScriptElement) {
   // Shadow DOM isolation
   const shadow = host.shadowRoot || host.attachShadow({ mode: "open" });
   // inject our stylesheet INTO the shadow
-  ensureCssInShadow(shadow, "https://stefanimprov.github.io/culmas-view-injector/index.css?v=1");
+  ensureCssInShadow(shadow, "https://stefanimprov.github.io/culmas-view-injector/dist/embed/culmas-embed.css?v=1");
 
   // Create a mount point inside the shadow root
   let mount = shadow.getElementById("culmas-mount");
