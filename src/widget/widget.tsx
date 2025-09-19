@@ -6,7 +6,25 @@ import { ProductInjector } from '@/components/ProductInjector';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { Toaster } from '@/components/ui/toaster';
 import { Toaster as Sonner } from '@/components/ui/sonner';
-import './widget-bundle.css';
+
+// Dynamic CSS injection to ensure load order after Webflow
+function injectWidgetStyles() {
+  const existingLink = document.querySelector('link[data-culmas-widget-css]');
+  if (existingLink) return; // Already injected
+
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = 'https://stefanimprov.github.io/culmas-view-injector/widget/culmas-widget.css';
+  link.setAttribute('data-culmas-widget-css', 'true');
+  
+  // Add error handling
+  link.onerror = () => {
+    console.warn('Failed to load Culmas widget CSS from CDN');
+  };
+  
+  // Append to head to ensure it loads after existing CSS
+  document.head.appendChild(link);
+}
 
 interface WidgetConfig {
   container: string;
@@ -21,6 +39,9 @@ class CulmasWidget {
   private static queryClient = new QueryClient();
 
   static init(config: WidgetConfig) {
+    // Inject CSS dynamically to ensure proper load order
+    injectWidgetStyles();
+    
     const container = document.querySelector(config.container);
     if (!container) {
       console.error(`Container ${config.container} not found`);
