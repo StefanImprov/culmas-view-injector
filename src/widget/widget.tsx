@@ -14,8 +14,13 @@ function injectWidgetStyles() {
 
   const link = document.createElement('link');
   link.rel = 'stylesheet';
-  link.href = new URL('./widget-bundle.css', import.meta.url).href;
+  link.href = 'https://stefanimprov.github.io/culmas-view-injector/widget/culmas-widget.css';
   link.setAttribute('data-culmas-widget-css', 'true');
+  
+  // Add error handling
+  link.onerror = () => {
+    console.warn('Failed to load Culmas widget CSS from CDN');
+  };
   
   // Append to head to ensure it loads after existing CSS
   document.head.appendChild(link);
