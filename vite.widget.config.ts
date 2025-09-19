@@ -11,7 +11,7 @@ export default defineConfig({
       fileName: () => 'culmas-embed',
       formats: ['umd']
     },
-    outDir: 'dist/embed',
+    outDir: 'embed',
     rollupOptions: {
       external: [],           // bundle React inside to avoid host deps
       output: {
