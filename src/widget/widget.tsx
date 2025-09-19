@@ -7,22 +7,41 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import { Toaster } from '@/components/ui/toaster';
 import { Toaster as Sonner } from '@/components/ui/sonner';
 
-// Dynamic CSS injection to ensure load order after Webflow
+// Scoped reset to neutralize global styles
+function injectScopedReset(containerId: string) {
+  const resetId = `culmas-scoped-reset-${containerId.replace('#', '')}`;
+  const existingStyle = document.getElementById(resetId);
+  if (existingStyle) return; // Already injected
+
+  const style = document.createElement('style');
+  style.id = resetId;
+  style.textContent = `
+    ${containerId}, ${containerId} * { 
+      box-sizing: border-box; 
+    }
+    ${containerId} :is(h1,h2,h3,h4,h5,h6,p,ul,ol,li,figure,blockquote,a,button,small,strong,em) {
+      all: revert; /* MDN-backed scoped reset */
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+// Guaranteed CSS injection to load after external stylesheets
 function injectWidgetStyles() {
-  const existingLink = document.querySelector('link[data-culmas-widget-css]');
-  if (existingLink) return; // Already injected
+  const id = 'culmas-widget-css';
+  if (document.getElementById(id)) return; // Already injected
 
   const link = document.createElement('link');
+  link.id = id;
   link.rel = 'stylesheet';
-  link.href = 'https://stefanimprov.github.io/culmas-view-injector/index.css';
-  link.setAttribute('data-culmas-widget-css', 'true');
+  link.href = 'https://stefanimprov.github.io/culmas-view-injector/index.css?v=3';
   
   // Add error handling
   link.onerror = () => {
     console.warn('Failed to load Culmas widget CSS from CDN');
   };
   
-  // Append to head to ensure it loads after existing CSS
+  // Append to head to ensure it loads after existing CSS (last one wins)
   document.head.appendChild(link);
 }
 
@@ -39,7 +58,8 @@ class CulmasWidget {
   private static queryClient = new QueryClient();
 
   static init(config: WidgetConfig) {
-    // Inject CSS dynamically to ensure proper load order
+    // Inject scoped reset and CSS dynamically to ensure proper load order
+    injectScopedReset(config.container);
     injectWidgetStyles();
     
     const container = document.querySelector(config.container);
