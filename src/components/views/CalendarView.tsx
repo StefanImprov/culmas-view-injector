@@ -215,7 +215,7 @@ export const CalendarView = ({ products }: CalendarViewProps) => {
                   <div className="text-right flex-shrink-0 ml-3">
                     <div className="flex items-center space-x-1 text-primary font-semibold">
                       <DollarSign className="w-3 sm:w-4 h-3 sm:h-4" />
-                      <span className="text-sm sm:text-base">{event.price}</span>
+                      <span className="text-sm sm:text-base">{event.price} Kr.</span>
                     </div>
                     {!event.available && (
                       <div className="text-xs text-destructive mt-1">

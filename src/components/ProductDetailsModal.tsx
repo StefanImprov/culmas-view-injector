@@ -119,7 +119,7 @@ export const ProductDetailsModal = ({ product, open, onOpenChange }: ProductDeta
                 <DollarSign className="w-5 h-5 text-primary" />
                 <div>
                   <div className="font-semibold">Price</div>
-                  <div className="text-2xl font-bold text-primary">${product.price}</div>
+                  <div className="text-2xl font-bold text-primary">{product.price} Kr.</div>
                 </div>
               </div>
 

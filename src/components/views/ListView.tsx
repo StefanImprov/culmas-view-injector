@@ -114,7 +114,7 @@ export const ListView = ({ products }: ListViewProps) => {
               <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-start sm:text-right">
                 <div className="flex items-center space-x-1 text-primary">
                   <DollarSign className="w-4 sm:w-5 h-4 sm:h-5" />
-                  <span className="text-xl sm:text-2xl font-bold">{product.price}</span>
+                  <span className="text-xl sm:text-2xl font-bold">{product.price} Kr.</span>
                 </div>
                 <div className="text-xs text-muted-foreground">per session</div>
               </div>

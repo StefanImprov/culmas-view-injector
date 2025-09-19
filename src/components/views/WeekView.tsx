@@ -146,7 +146,7 @@ export const WeekView = ({ products }: WeekViewProps) => {
                           )}
                           <div className="flex items-center space-x-2 font-semibold">
                             <DollarSign className="w-3 h-3" />
-                            <span>${event.price}</span>
+                            <span>{event.price} Kr.</span>
                           </div>
                         </div>
                       </div>
@@ -324,7 +324,7 @@ export const WeekView = ({ products }: WeekViewProps) => {
                       <DollarSign className="w-5 h-5 text-primary" />
                       <div>
                         <div className="font-semibold">Price</div>
-                        <div className="text-2xl font-bold text-primary">${selectedProduct.price}</div>
+                        <div className="text-2xl font-bold text-primary">{selectedProduct.price} Kr.</div>
                       </div>
                     </div>
 

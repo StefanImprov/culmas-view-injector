@@ -99,9 +99,9 @@ export const CardView = ({ products }: CardViewProps) => {
             {/* Footer */}
             <div className="space-y-3 pt-3 border-t border-border">
               <div className="flex items-center justify-between">
-                <span className="text-xl sm:text-2xl font-bold text-primary">
-                  ${product.price}
-                </span>
+                 <span className="text-xl sm:text-2xl font-bold text-primary">
+                   {product.price} Kr.
+                 </span>
                 <span className="text-xs text-muted-foreground bg-accent/50 px-2 py-1 rounded-full">
                   {product.category}
                 </span>
