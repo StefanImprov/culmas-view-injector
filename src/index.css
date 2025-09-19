@@ -141,6 +141,10 @@
 }
 
 @layer components {
+  /* Week grid layout used in WeekView component */
+  .week-grid {
+    grid-template-columns: 80px repeat(7, 1fr);
+  }
 
   /* Line clamp utilities for text truncation */
   .line-clamp-1 {
