@@ -13,6 +13,7 @@ export const CalendarView = ({ products }: CalendarViewProps) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [selectedEvent, setSelectedEvent] = useState<ProcessedEvent | null>(null);
+  const [hoveredProductId, setHoveredProductId] = useState<string | null>(null);
   
   // Generate calendar grid
   const year = currentDate.getFullYear();
@@ -128,6 +129,8 @@ export const CalendarView = ({ products }: CalendarViewProps) => {
                 {dayEvents.slice(0, 3).map((event) => (
                    <div
                     key={event.id}
+                    onMouseEnter={() => setHoveredProductId(event.productId)}
+                    onMouseLeave={() => setHoveredProductId(null)}
                     onClick={() => {
                       // Find the original product for the modal
                       const originalProduct = products.find(p => p.id === event.productId);
@@ -137,10 +140,11 @@ export const CalendarView = ({ products }: CalendarViewProps) => {
                       }
                     }}
                     className={cn(
-                      "p-1 sm:p-1.5 rounded-md text-xs cursor-pointer transition-colors relative",
+                      "p-1 sm:p-1.5 rounded-md text-xs cursor-pointer transition-all duration-200 relative",
                       event.available 
                         ? "bg-primary text-white hover:shadow-sm" 
-                        : "bg-muted text-muted-foreground"
+                        : "bg-muted text-muted-foreground",
+                      hoveredProductId === event.productId && "ring-2 ring-primary/50 shadow-lg scale-105"
                     )}
                   >
                     {event.isRecurring && (
@@ -172,6 +176,8 @@ export const CalendarView = ({ products }: CalendarViewProps) => {
             {monthEvents.map((event) => (
               <div
                 key={event.id}
+                onMouseEnter={() => setHoveredProductId(event.productId)}
+                onMouseLeave={() => setHoveredProductId(null)}
                 onClick={() => {
                   const originalProduct = products.find(p => p.id === event.productId);
                   if (originalProduct) {
@@ -180,8 +186,9 @@ export const CalendarView = ({ products }: CalendarViewProps) => {
                   }
                 }}
                 className={cn(
-                  "p-3 sm:p-4 rounded-lg border border-border bg-card hover:bg-accent/5 transition-colors cursor-pointer relative",
-                  !event.available && "opacity-60"
+                  "p-3 sm:p-4 rounded-lg border border-border bg-card hover:bg-accent/5 transition-all duration-200 cursor-pointer relative",
+                  !event.available && "opacity-60",
+                  hoveredProductId === event.productId && "ring-2 ring-primary/50 shadow-lg scale-[1.02] bg-primary/5"
                 )}
               >
                 {event.isRecurring && (
