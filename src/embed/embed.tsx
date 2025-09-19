@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { ProductInjector } from "@/components/ProductInjector";
 import { Theme } from "@/types/theme";
+import { PortalProvider } from "@/embed/portal-provider";
 
 type WidgetConfig = {
   container: string;                   // CSS selector
@@ -63,13 +64,15 @@ function mountOne(scriptEl: HTMLScriptElement) {
   // Render the widget (no routers/toasters/globals)
   const root = createRoot(mount);
   root.render(
-    <ThemeProvider widgetMode={true} rootEl={mount as HTMLElement} initialTheme={initialTheme}>
-      <ProductInjector
-        apiUrl={cfg.apiUrl}
-        templateIds={cfg.templateIds ? cfg.templateIds.split(',') : undefined}
-        venueIds={cfg.venueIds ? cfg.venueIds.split(',') : undefined}
-      />
-    </ThemeProvider>
+    <PortalProvider container={shadow as unknown as HTMLElement}>
+      <ThemeProvider widgetMode={true} rootEl={mount as HTMLElement} initialTheme={initialTheme}>
+        <ProductInjector
+          apiUrl={cfg.apiUrl}
+          templateIds={cfg.templateIds ? cfg.templateIds.split(',') : undefined}
+          venueIds={cfg.venueIds ? cfg.venueIds.split(',') : undefined}
+        />
+      </ThemeProvider>
+    </PortalProvider>
   );
 }
 
