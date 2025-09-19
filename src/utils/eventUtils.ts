@@ -62,7 +62,7 @@ export const getAllEventsFromProducts = (products: Product[]): ProcessedEvent[] 
     // Add events from events array
     if (product.events && product.events.length > 0) {
       product.events.forEach((event, index) => {
-        const eventDate = new Date(event.start * 1000); // Convert Unix timestamp to Date
+        const eventDate = new Date(event.start); // Timestamps are already in milliseconds
         
         allEvents.push({
           id: `${product.id}-event-${index}`,

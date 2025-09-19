@@ -259,11 +259,29 @@ export const ProductInjector = ({
           console.log("🎫 Target product tickets:", targetProduct.tickets);
           console.log("💰 Target product totalTicketsLeft:", targetProduct.tickets?.totalTicketsLeft);
           
-          // Parse and display the actual event dates
+          // Debug raw timestamp values and test parsing approaches
           if (targetProduct.events && Array.isArray(targetProduct.events)) {
-            console.log("📅 EVENT DATES FOR P7ZSijyPxxBc4XyQbRyq:");
+            console.log("🔍 RAW TIMESTAMP DEBUG FOR P7ZSijyPxxBc4XyQbRyq:");
+            console.log("Sample event raw data:", targetProduct.events[0]);
+            
+            const firstEvent = targetProduct.events[0];
+            if (firstEvent) {
+              console.log("Raw event.start:", firstEvent.start);
+              console.log("Raw event.end:", firstEvent.end);
+              console.log("Raw event.date:", firstEvent.date);
+              
+              // Test both parsing approaches
+              const withMultiply = new Date(firstEvent.start * 1000);
+              const directParse = new Date(firstEvent.start);
+              
+              console.log("With * 1000:", withMultiply.toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }));
+              console.log("Direct parse:", directParse.toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }));
+            }
+            
+            console.log("📅 CORRECTED EVENT DATES FOR P7ZSijyPxxBc4XyQbRyq:");
             targetProduct.events.forEach((event: any, index: number) => {
-              const eventDate = new Date(event.start * 1000);
+              // Fix: Use direct parsing instead of multiplying by 1000
+              const eventDate = new Date(event.start);
               const dateStr = eventDate.toLocaleDateString('en-GB', { 
                 weekday: 'long', 
                 year: 'numeric', 
