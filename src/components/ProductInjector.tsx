@@ -258,6 +258,30 @@ export const ProductInjector = ({
           console.log("✅ Target product status:", targetProduct.status);
           console.log("🎫 Target product tickets:", targetProduct.tickets);
           console.log("💰 Target product totalTicketsLeft:", targetProduct.tickets?.totalTicketsLeft);
+          
+          // Parse and display the actual event dates
+          if (targetProduct.events && Array.isArray(targetProduct.events)) {
+            console.log("📅 EVENT DATES FOR P7ZSijyPxxBc4XyQbRyq:");
+            targetProduct.events.forEach((event: any, index: number) => {
+              const eventDate = new Date(event.start * 1000);
+              const dateStr = eventDate.toLocaleDateString('en-GB', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+              });
+              console.log(`  Event ${index + 1}: ${dateStr} at ${event.startTime}-${event.endTime}`);
+            });
+          }
+          
+          // Also show main product date
+          const mainDate = new Date(targetProduct.nextEventStart);
+          console.log(`🗓️ Main product next event: ${mainDate.toLocaleDateString('en-GB', { 
+            weekday: 'long', 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+          })} at ${targetProduct.startTime}-${targetProduct.endTime}`);
         } else {
           console.log("❌ Product P7ZSijyPxxBc4XyQbRyq NOT FOUND in API response");
           console.log("📦 Available product IDs:", debugProducts.map((p: any) => p.id));
