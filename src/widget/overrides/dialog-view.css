@@ -19,6 +19,22 @@ div[data-culmas-widget-instance="true"] .max-w-2xl {
   box-sizing: border-box !important;
 }
 
+/* Specifically target .grid elements inside dialog content */
+.culmas-widget-container [data-radix-dialog-content] .grid,
+div[data-culmas-widget-instance="true"] [data-radix-dialog-content] .grid,
+.culmas-widget-container .max-w-2xl .grid,
+div[data-culmas-widget-instance="true"] .max-w-2xl .grid {
+  display: flex !important;
+  flex-direction: column !important;
+  grid-template-columns: none !important;
+  grid-template-rows: none !important;
+  grid-column-gap: 0 !important;
+  grid-row-gap: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding: 0 !important;
+}
+
 /* Reset any grid-specific properties that Webflow might apply */
 .culmas-widget-container [data-radix-dialog-content] *,
 div[data-culmas-widget-instance="true"] [data-radix-dialog-content] *,
