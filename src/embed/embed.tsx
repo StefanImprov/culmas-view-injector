@@ -3,7 +3,7 @@ import * as React from "react";
 import { createRoot } from "react-dom/client";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { ProductInjector } from "@/components/ProductInjector";
-import { Theme } from "@/types/theme";
+import { Theme, defaultThemes } from "@/types/theme";
 import { PortalProvider } from "@/embed/portal-provider";
 
 type WidgetConfig = {
@@ -16,7 +16,50 @@ type WidgetConfig = {
 
 function parseTheme(themeJson?: string): Theme | undefined {
   if (!themeJson) return undefined;
-  try { return JSON.parse(themeJson); } catch { return undefined; }
+  try {
+    const customTheme = JSON.parse(themeJson);
+    console.log('🎨 Custom theme parsed:', customTheme);
+    
+    // Find the matching default theme as base
+    const defaultTheme = defaultThemes.find(t => t.id === customTheme.id) || defaultThemes[0];
+    console.log('🎨 Using default base theme:', defaultTheme.id);
+    
+    // Merge custom theme with default theme, ensuring all properties exist
+    const mergedTheme: Theme = {
+      id: customTheme.id || defaultTheme.id,
+      name: customTheme.name || defaultTheme.name,
+      style: customTheme.style || defaultTheme.style,
+      colors: {
+        primary: customTheme.colors?.primary || defaultTheme.colors.primary,
+        primaryForeground: customTheme.colors?.primaryForeground || defaultTheme.colors.primaryForeground,
+        primaryGlow: customTheme.colors?.primaryGlow || defaultTheme.colors.primaryGlow,
+        gradientPrimary: customTheme.colors?.gradientPrimary || defaultTheme.colors.gradientPrimary,
+        secondary: customTheme.colors?.secondary || defaultTheme.colors.secondary,
+        secondaryForeground: customTheme.colors?.secondaryForeground || defaultTheme.colors.secondaryForeground,
+        background: customTheme.colors?.background || defaultTheme.colors.background,
+        foreground: customTheme.colors?.foreground || defaultTheme.colors.foreground,
+        card: customTheme.colors?.card || defaultTheme.colors.card,
+        cardForeground: customTheme.colors?.cardForeground || defaultTheme.colors.cardForeground,
+        border: customTheme.colors?.border || defaultTheme.colors.border,
+        accent: customTheme.colors?.accent || defaultTheme.colors.accent,
+        accentForeground: customTheme.colors?.accentForeground || defaultTheme.colors.accentForeground,
+        muted: customTheme.colors?.muted || defaultTheme.colors.muted,
+        mutedForeground: customTheme.colors?.mutedForeground || defaultTheme.colors.mutedForeground,
+      },
+      design: {
+        borderRadius: customTheme.design?.borderRadius || defaultTheme.design.borderRadius,
+        shadowIntensity: customTheme.design?.shadowIntensity || defaultTheme.design.shadowIntensity,
+        hoverEffects: customTheme.design?.hoverEffects !== undefined ? customTheme.design.hoverEffects : defaultTheme.design.hoverEffects,
+        gradients: customTheme.design?.gradients !== undefined ? customTheme.design.gradients : defaultTheme.design.gradients,
+      }
+    };
+    
+    console.log('🎨 Final merged theme:', mergedTheme);
+    return mergedTheme;
+  } catch (error) {
+    console.error('🎨 Theme parsing failed:', error);
+    return undefined;
+  }
 }
 
 function ensureCssInShadow(shadow: ShadowRoot, href: string) {
@@ -70,6 +113,7 @@ function mountOne(scriptEl: HTMLScriptElement) {
 
   // Parse theme if provided
   const initialTheme = parseTheme(cfg.themeJson);
+  console.log('🎨 Widget initializing with theme:', initialTheme?.id || 'default');
 
   // Render the widget (no routers/toasters/globals)
   const root = createRoot(mount);
