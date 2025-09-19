@@ -20,13 +20,15 @@ export const useTheme = () => {
 interface ThemeProviderProps {
   children: ReactNode;
   initialTheme?: Theme;
+  widgetMode?: boolean;
+  rootEl?: HTMLElement;
 }
 
-export const ThemeProvider = ({ children, initialTheme }: ThemeProviderProps) => {
+export const ThemeProvider = ({ children, initialTheme, widgetMode = false, rootEl }: ThemeProviderProps) => {
   const [theme, setTheme] = useState<Theme>(initialTheme || defaultThemes[0]);
 
   const applyTheme = (selectedTheme: Theme) => {
-    const root = document.documentElement;
+    const root = widgetMode && rootEl ? rootEl : document.documentElement;
     
     // Apply color variables
     Object.entries(selectedTheme.colors).forEach(([key, value]) => {

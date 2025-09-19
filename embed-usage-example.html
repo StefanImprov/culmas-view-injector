@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Culmas Embed Usage Example</title>
+    <style>
+        /* Host site styles - these won't affect the widget */
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        #culmas-products {
+            margin: 20px 0;
+            min-height: 400px;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            position: relative;
+        }
+        #culmas-products:empty::before {
+            content: "Widget will load here...";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Host Website with Embedded Culmas Widget</h1>
+        <p>This is the host website. The widget below is isolated in a Shadow DOM and won't be affected by our styles.</p>
+        
+        <!-- Widget container -->
+        <div id="culmas-products"></div>
+        
+        <p>This content is after the widget and should remain unaffected.</p>
+        
+        <!-- Embed script with configuration -->
+        <script 
+            data-culmas-widget="true"
+            data-container="#culmas-products"
+            data-api-url="https://api.dev.culmas.io/"
+            data-template-ids="template1,template2"
+            data-venue-ids="venue1,venue2"
+            data-theme='{"name":"modern-purple","style":"modern","colors":{"primary":"262 80% 50%","primaryGlow":"262 80% 60%"}}'
+            src="./dist/embed/culmas-embed.umd.js">
+        </script>
+    </div>
+</body>
+</html>
