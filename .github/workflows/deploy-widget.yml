@@ -50,6 +50,9 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
+      - name: Copy index.css to dist root
+        run: cp src/index.css dist/
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

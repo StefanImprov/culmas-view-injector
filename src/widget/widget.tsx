@@ -14,7 +14,7 @@ function injectWidgetStyles() {
 
   const link = document.createElement('link');
   link.rel = 'stylesheet';
-  link.href = 'https://stefanimprov.github.io/culmas-view-injector/widget/culmas-widget.css';
+  link.href = 'https://stefanimprov.github.io/culmas-view-injector/index.css';
   link.setAttribute('data-culmas-widget-css', 'true');
   
   // Add error handling
