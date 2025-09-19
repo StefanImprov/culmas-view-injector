@@ -213,7 +213,7 @@ export const WeekView = ({ products }: WeekViewProps) => {
                         <div className="space-y-1 opacity-90">
                           <div className="flex items-center space-x-1">
                             <Clock className="w-3 h-3" />
-                            <span>{product.duration}</span>
+                            <span>{product.startTime} - {product.endTime}</span>
                           </div>
                           {product.instructor && (
                             <div className="flex items-center space-x-1 min-w-0">
