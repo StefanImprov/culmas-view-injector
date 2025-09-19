@@ -173,7 +173,15 @@ export const ProductInjector = ({
 
         const CULMAS_QUERY = `query AllProducts($category: String, $onlyAvailableForSale: Boolean) {
   allProducts(category: $category, onlyAvailableForSale: $onlyAvailableForSale) {
+  
     id
+    events {
+          endTime
+          end
+          date
+          startTime
+          start
+        }
     title
     template {
       id
