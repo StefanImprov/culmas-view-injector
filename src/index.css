@@ -5,7 +5,7 @@
 /* Modern Product Injector Design System */
 
 @layer base {
-  /* Global fallback variables for non-widget context */
+  /* Light mode variables */
   :root {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
@@ -56,63 +56,12 @@
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
-  /* Widget-scoped variables - these take precedence in widget context */
-  #culmas-products {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 262 83% 58%;
-    --primary-foreground: 210 40% 98%;
-    --primary-glow: 262 83% 70%;
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222.2 84% 4.9%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96%;
-    --accent-foreground: 222.2 84% 4.9%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 262 83% 58%;
-    --radius: 0.75rem;
-    
-    /* Custom design tokens */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
-    --gradient-secondary: linear-gradient(180deg, hsl(var(--background)), hsl(var(--accent)));
-    --gradient-hero: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)), hsl(var(--accent)));
-    
-    /* Shadows */
-    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -1px rgb(0 0 0 / 0.06);
-    --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgb(0 0 0 / 0.04);
-    --shadow-xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
-    --shadow-glow: 0 0 30px hsl(var(--primary-glow) / 0.3);
-    
-    /* Transitions */
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-quick: all 0.15s ease;
-
-    /* Sidebar variables for consistency */
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-
-  /* Widget-scoped theme styles */
-  #culmas-products.theme-modern {
+  /* Theme-specific styles */
+  .theme-modern {
     /* Enhanced hover and gradient effects for modern style */
   }
   
-  #culmas-products.theme-classic {
+  .theme-classic {
     /* Reduced effects and traditional styling for classic style */
     --gradient-primary: hsl(var(--primary));
     --gradient-hero: hsl(var(--primary));
@@ -121,74 +70,49 @@
     --primary-foreground: 210 40% 98%;
   }
   
-  #culmas-products.theme-vibrant {
+  .theme-vibrant {
     /* Enhanced effects and bold styling for vibrant style */
     --shadow-glow: 0 0 40px hsl(var(--primary-glow) / 0.4);
     --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  /* Global dark mode fallback */
   .dark {
     --background: 224 71% 4%;
     --foreground: 213 31% 91%;
+    
     --card: 224 71% 4%;
     --card-foreground: 213 31% 91%;
+    
     --popover: 224 71% 4%;
     --popover-foreground: 213 31% 91%;
+    
     --primary: 263 70% 50%;
     --primary-foreground: 213 31% 91%;
     --primary-glow: 272 91% 78%;
+    
     --secondary: 215 27.9% 16.9%;
     --secondary-foreground: 213 31% 91%;
+    
     --muted: 215 27.9% 16.9%;
     --muted-foreground: 217.9 10.6% 64.9%;
+    
     --accent: 215 27.9% 16.9%;
     --accent-foreground: 213 31% 91%;
+    
     --border: 215 27.9% 16.9%;
     --input: 215 27.9% 16.9%;
     --ring: 263 70% 50%;
+    
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 213 31% 91%;
+    
+    /* Dark mode gradients */
     --gradient-primary: linear-gradient(135deg, hsl(263 70% 50%), hsl(272 91% 68%));
     --gradient-secondary: linear-gradient(135deg, hsl(215 27.9% 16.9%), hsl(215 27.9% 12%));
     --gradient-hero: linear-gradient(135deg, hsl(263 70% 50%), hsl(272 91% 68%), hsl(282 100% 78%));
+    
     --shadow-glow: 0 0 30px hsl(263 70% 50% / 0.3);
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-
-  /* Widget-scoped dark mode */
-  #culmas-products.dark {
-    --background: 224 71% 4%;
-    --foreground: 213 31% 91%;
-    --card: 224 71% 4%;
-    --card-foreground: 213 31% 91%;
-    --popover: 224 71% 4%;
-    --popover-foreground: 213 31% 91%;
-    --primary: 263 70% 50%;
-    --primary-foreground: 213 31% 91%;
-    --primary-glow: 272 91% 78%;
-    --secondary: 215 27.9% 16.9%;
-    --secondary-foreground: 213 31% 91%;
-    --muted: 215 27.9% 16.9%;
-    --muted-foreground: 217.9 10.6% 64.9%;
-    --accent: 215 27.9% 16.9%;
-    --accent-foreground: 213 31% 91%;
-    --border: 215 27.9% 16.9%;
-    --input: 215 27.9% 16.9%;
-    --ring: 263 70% 50%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 213 31% 91%;
-    --gradient-primary: linear-gradient(135deg, hsl(263 70% 50%), hsl(272 91% 68%));
-    --gradient-secondary: linear-gradient(135deg, hsl(215 27.9% 16.9%), hsl(215 27.9% 12%));
-    --gradient-hero: linear-gradient(135deg, hsl(263 70% 50%), hsl(272 91% 68%), hsl(282 100% 78%));
-    --shadow-glow: 0 0 30px hsl(263 70% 50% / 0.3);
+    
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -217,25 +141,6 @@
 }
 
 @layer components {
-  /* Widget scoped reset - neutralizes Webflow styles */
-  #culmas-products, #culmas-products * { 
-    box-sizing: border-box; 
-  }
-  
-  #culmas-products :is(h1,h2,h3,h4,h5,h6,p,ul,ol,li,figure,blockquote,a,button,small,strong,em) {
-    all: revert; /* MDN-backed scoped reset */
-  }
-  
-  /* Media guard for card images */
-  #culmas-products .culmas-card__media {
-    background-size: cover;
-    background-position: center;
-  }
-
-  /* Week Grid - Scoped to widget container */
-  #culmas-products .week-grid {
-    grid-template-columns: 80px repeat(7, 1fr);
-  }
 
   /* Line clamp utilities for text truncation */
   .line-clamp-1 {

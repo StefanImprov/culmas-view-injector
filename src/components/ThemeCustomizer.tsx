@@ -6,7 +6,7 @@ import { Palette, RefreshCw } from 'lucide-react';
 import { useTheme } from '@/components/ThemeProvider';
 import { Theme, DesignStyle } from '@/types/theme';
 import { ColorPicker } from '@/components/ColorPicker';
-import { EmbedScriptGenerator } from '@/components/EmbedScriptGenerator';
+
 import { cn } from '@/lib/utils';
 
 export const ThemeCustomizer = () => {
@@ -210,8 +210,6 @@ export const ThemeCustomizer = () => {
         </div>
       </Card>
 
-      {/* Embed Script Generator */}
-      <EmbedScriptGenerator theme={theme} />
     </div>
   );
 };

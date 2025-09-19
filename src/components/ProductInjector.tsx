@@ -453,7 +453,7 @@ export const ProductInjector = ({
   );
 
   return theme ? (
-    <ThemeProvider initialTheme={theme} widgetMode={true}>
+    <ThemeProvider initialTheme={theme}>
       {content}
     </ThemeProvider>
   ) : (
