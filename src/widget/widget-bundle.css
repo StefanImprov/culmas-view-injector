@@ -86,10 +86,20 @@ div[data-culmas-widget-instance="true"] .week-grid .text-center,
 
 /* Card View Widget Overrides - Fix Webflow Grid Interference */
 .culmas-widget-container .grid {
-  grid-column-gap: 0 !important;
   margin-left: 0 !important;
   margin-right: 0 !important;
   padding: 0 !important;
+}
+
+/* Preserve gap classes for card view */
+.culmas-widget-container .gap-4 {
+  gap: 1rem !important;
+}
+
+@media (min-width: 768px) {
+  .culmas-widget-container .md\\:gap-6 {
+    gap: 1.5rem !important;
+  }
 }
 
 @media (min-width: 640px) {
