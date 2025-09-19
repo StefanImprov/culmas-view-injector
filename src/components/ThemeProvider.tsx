@@ -38,8 +38,8 @@ export const ThemeProvider = ({ children, initialTheme, widgetMode = false, root
     // design tokens
     target.style.setProperty('--radius', selectedTheme.design.borderRadius);
 
-    // style class (theme-modern / theme-classic / etc.)
-    target.className = target.className.replace(/theme-\w+/g, '').trim();
+    // style class (theme-modern / theme-classic / etc.) - only strip theme-* classes
+    target.className = target.className.replace(/\btheme-\w+\b/g, '').trim();
     target.classList.add(`theme-${selectedTheme.style}`);
 
     // shadow intensity
@@ -72,23 +72,22 @@ export const ThemeProvider = ({ children, initialTheme, widgetMode = false, root
     target.style.setProperty('--transition-smooth', selectedTheme.design.hoverEffects ? 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)' : 'all 0.15s ease');
   };
 
-  useEffect(() => {
-    const globalRoot = document.documentElement;
+  const apply = (t: Theme) => {
     if (widgetMode) {
-      applyThemeTo(rootEl || null, theme);
+      const rn = rootEl?.getRootNode?.();
+      const host = rn instanceof ShadowRoot ? (rn.host as HTMLElement) : null;
+      // Apply to host first (so portals get vars), then to mount
+      [host, rootEl].forEach(el => applyThemeTo(el, t));
     } else {
-      applyThemeTo(globalRoot, theme);
+      applyThemeTo(document.documentElement, t);
     }
-  }, [theme, widgetMode, rootEl]);
+  };
 
-  const handleSetTheme = (newTheme: Theme) => {
-    setTheme(newTheme);
-    const globalRoot = document.documentElement;
-    if (widgetMode) {
-      applyThemeTo(rootEl || null, newTheme);
-    } else {
-      applyThemeTo(globalRoot, newTheme);
-    }
+  useEffect(() => { apply(theme); }, [theme, widgetMode, rootEl]);
+
+  const handleSetTheme = (newTheme: Theme) => { 
+    setTheme(newTheme); 
+    apply(newTheme); 
   };
 
   return (

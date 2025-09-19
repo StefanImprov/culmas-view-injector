@@ -115,23 +115,6 @@ function mountOne(scriptEl: HTMLScriptElement) {
   const initialTheme = parseTheme(cfg.themeJson);
   console.log('🎨 Widget initializing with theme:', initialTheme?.id || 'default');
 
-  // Apply theme CSS variables to theme container for modal inheritance
-  if (initialTheme) {
-    themeContainer.style.setProperty('--background', initialTheme.colors.background);
-    themeContainer.style.setProperty('--foreground', initialTheme.colors.foreground);
-    themeContainer.style.setProperty('--card', initialTheme.colors.card);
-    themeContainer.style.setProperty('--card-foreground', initialTheme.colors.cardForeground);
-    themeContainer.style.setProperty('--border', initialTheme.colors.border);
-    themeContainer.style.setProperty('--primary', initialTheme.colors.primary);
-    themeContainer.style.setProperty('--primary-foreground', initialTheme.colors.primaryForeground);
-    themeContainer.style.setProperty('--secondary', initialTheme.colors.secondary);
-    themeContainer.style.setProperty('--secondary-foreground', initialTheme.colors.secondaryForeground);
-    themeContainer.style.setProperty('--accent', initialTheme.colors.accent);
-    themeContainer.style.setProperty('--accent-foreground', initialTheme.colors.accentForeground);
-    themeContainer.style.setProperty('--muted', initialTheme.colors.muted);
-    themeContainer.style.setProperty('--muted-foreground', initialTheme.colors.mutedForeground);
-  }
-
   // Render the widget (no routers/toasters/globals)
   const root = createRoot(mount);
   root.render(
