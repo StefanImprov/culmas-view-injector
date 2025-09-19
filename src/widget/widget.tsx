@@ -26,23 +26,29 @@ function injectScopedReset(containerId: string) {
   document.head.appendChild(style);
 }
 
-// Guaranteed CSS injection to load after external stylesheets
-function injectWidgetStyles() {
-  const id = 'culmas-widget-css';
-  if (document.getElementById(id)) return; // Already injected
-
-  const link = document.createElement('link');
-  link.id = id;
-  link.rel = 'stylesheet';
-  link.href = 'https://stefanimprov.github.io/culmas-view-injector/index.css?v=3';
+// Ensure our CSS is always last in head (wins over Webflow)
+function ensureCulmasCSSLast() {
+  const id = 'culmas-css';
+  const head = document.head;
+  let el = document.getElementById(id) as HTMLLinkElement;
   
-  // Add error handling
-  link.onerror = () => {
-    console.warn('Failed to load Culmas widget CSS from CDN');
-  };
-  
-  // Append to head to ensure it loads after existing CSS (last one wins)
-  document.head.appendChild(link);
+  if (el) {
+    // Move existing link to end of head (last wins in cascade)
+    head.appendChild(el);
+  } else {
+    // Inject CSS if missing
+    el = document.createElement('link');
+    el.id = id;
+    el.rel = 'stylesheet';
+    el.href = 'https://stefanimprov.github.io/culmas-view-injector/index.css?v=1';
+    
+    // Error handling
+    el.onerror = () => {
+      console.warn('Failed to load Culmas widget CSS from CDN');
+    };
+    
+    head.appendChild(el);
+  }
 }
 
 interface WidgetConfig {
@@ -58,9 +64,9 @@ class CulmasWidget {
   private static queryClient = new QueryClient();
 
   static init(config: WidgetConfig) {
-    // Inject scoped reset and CSS dynamically to ensure proper load order
+    // Ensure CSS loads last and inject scoped reset
+    ensureCulmasCSSLast();
     injectScopedReset(config.container);
-    injectWidgetStyles();
     
     const container = document.querySelector(config.container);
     if (!container) {

@@ -141,8 +141,23 @@
 }
 
 @layer components {
-  /* Week Grid - Fixed time column + flexible day columns */
-  .week-grid {
+  /* Widget scoped reset - neutralizes Webflow styles */
+  #culmas-products, #culmas-products * { 
+    box-sizing: border-box; 
+  }
+  
+  #culmas-products :is(h1,h2,h3,h4,h5,h6,p,ul,ol,li,figure,blockquote,a,button,small,strong,em) {
+    all: revert; /* MDN-backed scoped reset */
+  }
+  
+  /* Media guard for card images */
+  #culmas-products .culmas-card__media {
+    background-size: cover;
+    background-position: center;
+  }
+
+  /* Week Grid - Scoped to widget container */
+  #culmas-products .week-grid {
     grid-template-columns: 80px repeat(7, 1fr);
   }
 

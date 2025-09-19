@@ -119,33 +119,50 @@ export const EmbedScriptGenerator = ({ theme }: EmbedScriptGeneratorProps) => {
   // React widget embed code generation
   const generateWidgetEmbedCode = () => {
     // Determine the widget URL based on mode
-    let widgetJsUrl, widgetCssUrl;
+    let widgetJsUrl;
     if (customWidgetUrl.trim()) {
-      const baseUrl = customWidgetUrl.trim().replace(/\.js$/, '');
-      widgetJsUrl = `${baseUrl}.js`;
-      widgetCssUrl = `${baseUrl}.css`;
+      widgetJsUrl = customWidgetUrl.trim();
     } else if (isDevelopmentMode) {
       // Use current Lovable project URL for development - build the React widget
       const currentUrl = window.location.origin;
       widgetJsUrl = `${currentUrl}/dist/widget/culmas-widget.js`;
-      widgetCssUrl = `${currentUrl}/dist/widget/culmas-widget.css`;
     } else {
       // GitHub Pages URL for production
-      widgetJsUrl = "https://stefanimprov.github.io/culmas-view-injector/widget/culmas-widget.js";
-      widgetCssUrl = "https://stefanimprov.github.io/culmas-view-injector/index.css";
+      widgetJsUrl = "https://stefanimprov.github.io/culmas-view-injector/widget/culmas-widget.js?v=4";
     }
 
-    return `<!-- Culmas Product Widget -->
-<link rel="stylesheet" href="${widgetCssUrl}">
+    const baseUrl = 'https://stefanimprov.github.io/culmas-view-injector';
+    const themeJson = JSON.stringify(theme);
+
+    return `<!-- Container -->
 <div id="${containerId || 'culmas-widget'}"></div>
-<script 
+
+<!-- Ensure our CSS is last in <head> so it wins ties in the cascade -->
+<script>
+  (function ensureCulmasCSSLast(){
+    var head = document.head;
+    var el = document.getElementById('culmas-css');
+    if (el) head.appendChild(el);          // moves it to the end if it already exists
+    else {
+      el = document.createElement('link'); // inject if missing
+      el.id = 'culmas-css';
+      el.rel = 'stylesheet';
+      el.href = '${baseUrl}/index.css?v=1';
+      head.appendChild(el);
+    }
+  })();
+</script>
+
+<!-- Widget script -->
+<script
+  defer
   src="${widgetJsUrl}"
   data-culmas-widget="true"
   data-container="#${containerId || 'culmas-widget'}"
-  data-api-url="https://api.dev.culmas.io/"
-  ${selectedTemplateIds.length > 0 ? `data-template-ids="${selectedTemplateIds.join(',')}"` : ''}
-  ${selectedVenueIds.length > 0 ? `data-venue-ids="${selectedVenueIds.join(',')}"` : ''}
-  ${theme ? `data-theme='${JSON.stringify(theme)}'` : ''}
+  data-api-url="https://api.dev.culmas.io/"${selectedTemplateIds.length > 0 ? `
+  data-template-ids="${selectedTemplateIds.join(',')}"` : ''}${selectedVenueIds.length > 0 ? `
+  data-venue-ids="${selectedVenueIds.join(',')}"` : ''}${theme ? `
+  data-theme='${themeJson}'` : ''}
 ></script>`;
   };
 
