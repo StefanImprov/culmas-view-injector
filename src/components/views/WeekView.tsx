@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight, Clock, User, DollarSign, Calendar, MapPin, T
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { getEventsForDay, formatEventTitle, ProcessedEvent } from "@/utils/eventUtils";
 
 interface WeekViewProps {
   products: Product[];
@@ -17,6 +18,7 @@ export const WeekView = ({ products }: WeekViewProps) => {
   });
 
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [selectedEvent, setSelectedEvent] = useState<ProcessedEvent | null>(null);
 
   const generateWeekDays = (startDate: Date) => {
     return Array.from({ length: 7 }, (_, i) => {
@@ -35,10 +37,8 @@ export const WeekView = ({ products }: WeekViewProps) => {
     setCurrentWeek(newWeek);
   };
 
-  const getProductsForDay = (date: Date) => {
-    return products.filter(product => 
-      product.date.toDateString() === date.toDateString()
-    ).sort((a, b) => a.time.localeCompare(b.time));
+  const getEventsForWeekDay = (date: Date) => {
+    return getEventsForDay(products, date);
   };
 
   const formatWeekRange = () => {
@@ -93,46 +93,60 @@ export const WeekView = ({ products }: WeekViewProps) => {
         {/* Mobile: List view of events */}
         <div className="p-4 space-y-3">
           {weekDays.map((date, dayIndex) => {
-            const dayProducts = getProductsForDay(date);
+            const dayEvents = getEventsForWeekDay(date);
             const isToday = date.toDateString() === new Date().toDateString();
             
             return (
               <div key={dayIndex} className="space-y-2">
                 <div className={cn(
-                  "font-semibold text-sm p-2 rounded-lg",
+                  "font-semibold text-sm p-2 rounded-lg flex items-center justify-between",
                   isToday ? "bg-accent text-primary" : "text-muted-foreground"
                 )}>
-                  {dayNames[dayIndex]}, {date.getDate()}
+                  <span>{dayNames[dayIndex]}, {date.getDate()}</span>
+                  {dayEvents.length > 0 && (
+                    <span className="text-xs bg-primary/20 text-primary px-2 py-0.5 rounded-full">
+                      {dayEvents.length} session{dayEvents.length !== 1 ? 's' : ''}
+                    </span>
+                  )}
                 </div>
                 
-                {dayProducts.length > 0 ? (
+                {dayEvents.length > 0 ? (
                   <div className="space-y-2 pl-4">
-                    {dayProducts.map((product) => (
+                    {dayEvents.map((event) => (
                       <div
-                        key={product.id}
-                        onClick={() => setSelectedProduct(product)}
+                        key={event.id}
+                        onClick={() => {
+                          const originalProduct = products.find(p => p.id === event.productId);
+                          if (originalProduct) {
+                            setSelectedProduct(originalProduct);
+                            setSelectedEvent(event);
+                          }
+                        }}
                         className={cn(
-                          "p-3 rounded-lg text-sm cursor-pointer transition-all duration-300",
-                          product.available
+                          "p-3 rounded-lg text-sm cursor-pointer transition-all duration-300 relative",
+                          event.available
                             ? "bg-primary text-white hover:shadow-md"
                             : "bg-muted text-muted-foreground"
                         )}
                       >
-                        <div className="font-medium mb-2">{product.title}</div>
+                        {event.isRecurring && (
+                          <div className="absolute top-1 right-1 w-2 h-2 bg-accent rounded-full"></div>
+                        )}
+                        <div className="font-medium mb-2">{formatEventTitle(event)}</div>
                         <div className="space-y-1 opacity-90 text-xs">
                           <div className="flex items-center space-x-2">
                             <Clock className="w-3 h-3" />
-                            <span>{product.time} • {product.duration}</span>
+                            <span>{event.startTime} - {event.endTime} • {event.duration}</span>
                           </div>
-                          {product.instructor && (
+                          {event.instructor && (
                             <div className="flex items-center space-x-2">
                               <User className="w-3 h-3" />
-                              <span>{product.instructor}</span>
+                              <span>{event.instructor}</span>
                             </div>
                           )}
                           <div className="flex items-center space-x-2 font-semibold">
                             <DollarSign className="w-3 h-3" />
-                            <span>${product.price}</span>
+                            <span>${event.price}</span>
                           </div>
                         </div>
                       </div>
@@ -186,9 +200,9 @@ export const WeekView = ({ products }: WeekViewProps) => {
 
               {/* Day Columns */}
               {weekDays.map((date, dayIndex) => {
-                const dayProducts = getProductsForDay(date);
-                const timeProducts = dayProducts.filter(product => 
-                  product.time === timeSlot
+                const dayEvents = getEventsForWeekDay(date);
+                const timeEvents = dayEvents.filter(event => 
+                  event.startTime <= timeSlot && event.endTime > timeSlot
                 );
 
                 return (
@@ -196,37 +210,46 @@ export const WeekView = ({ products }: WeekViewProps) => {
                     key={dayIndex}
                     className="w-full min-h-[80px] p-2 border-l border-border relative overflow-hidden"
                   >
-                    {timeProducts.map((product) => (
+                    {timeEvents.map((event) => (
                       <div
-                        key={product.id}
-                        onClick={() => setSelectedProduct(product)}
+                        key={event.id}
+                        onClick={() => {
+                          const originalProduct = products.find(p => p.id === event.productId);
+                          if (originalProduct) {
+                            setSelectedProduct(originalProduct);
+                            setSelectedEvent(event);
+                          }
+                        }}
                         className={cn(
-                          "w-full max-w-full p-2 rounded-lg text-xs cursor-pointer transition-all duration-300 mb-1 last:mb-0 overflow-hidden",
-                          product.available
+                          "w-full max-w-full p-2 rounded-lg text-xs cursor-pointer transition-all duration-300 mb-1 last:mb-0 overflow-hidden relative",
+                          event.available
                             ? "bg-primary text-white hover:shadow-md hover:scale-105"
                             : "bg-muted text-muted-foreground"
                         )}
                       >
+                        {event.isRecurring && (
+                          <div className="absolute top-0 right-0 w-2 h-2 bg-accent rounded-full -mt-0.5 -mr-0.5"></div>
+                        )}
                         <div className="font-medium mb-1 truncate text-ellipsis whitespace-nowrap overflow-hidden">
-                          {product.title}
+                          {formatEventTitle(event)}
                         </div>
                         <div className="space-y-1 opacity-90">
                           <div className="flex items-center space-x-1">
                             <Clock className="w-3 h-3" />
-                            <span>{product.startTime} - {product.endTime}</span>
+                            <span>{event.startTime} - {event.endTime}</span>
                           </div>
-                          {product.instructor && (
+                          {event.instructor && (
                             <div className="flex items-center space-x-1 min-w-0">
                               <User className="w-3 h-3 flex-shrink-0" />
-                              <span className="truncate text-ellipsis whitespace-nowrap overflow-hidden">{product.instructor}</span>
+                              <span className="truncate text-ellipsis whitespace-nowrap overflow-hidden">{event.instructor}</span>
                             </div>
                           )}
                           <div className="flex items-center space-x-1 font-semibold">
                             <DollarSign className="w-3 h-3" />
-                            <span>{product.price}</span>
+                            <span>{event.price}</span>
                           </div>
                         </div>
-                        {!product.available && (
+                        {!event.available && (
                           <div className="text-center mt-1 text-xs font-semibold">
                             Sold Out
                           </div>

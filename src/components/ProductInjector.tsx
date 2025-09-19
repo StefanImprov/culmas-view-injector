@@ -14,6 +14,14 @@ import { Button } from "./ui/button";
 
 export type ViewMode = "card" | "list" | "calendar" | "week";
 
+export interface ProductEvent {
+  date: number; // Unix timestamp
+  start: number; // Unix timestamp  
+  end: number; // Unix timestamp
+  startTime: string; // Time string
+  endTime: string; // Time string
+}
+
 export interface Product {
   id: string;
   title: string;
@@ -33,6 +41,7 @@ export interface Product {
   status?: string;
   waitlistStatus?: string;
   templateTitle?: string;
+  events?: ProductEvent[]; // Array of event occurrences
   responsiblesShown?: {
     profileImg?: string;
     firstName?: string;
@@ -285,6 +294,17 @@ export const ProductInjector = ({
 
             console.log(`Mapped product: ${title}`);
 
+            // Process events array
+            const events: ProductEvent[] = Array.isArray(p?.events) 
+              ? p.events.map((event: any) => ({
+                  date: event.date || 0,
+                  start: event.start || 0,
+                  end: event.end || 0,
+                  startTime: event.startTime || "00:00",
+                  endTime: event.endTime || "00:00"
+                }))
+              : [];
+
             return {
               id: String(p?.id ?? Math.random().toString(36).slice(2)),
               title,
@@ -304,6 +324,7 @@ export const ProductInjector = ({
               status: p?.status,
               waitlistStatus: p?.waitlistStatus,
               templateTitle: p?.template?.title,
+              events,
               responsiblesShown: responsibleShown,
             } as Product;
           });

@@ -1,8 +1,9 @@
 import { Product } from "../ProductInjector";
-import { ChevronLeft, ChevronRight, Clock, User, DollarSign } from "lucide-react";
+import { ChevronLeft, ChevronRight, Clock, User, DollarSign, Calendar as CalendarIcon } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { ProductDetailsModal } from "../ProductDetailsModal";
+import { getEventsForDay, getEventsForMonth, formatEventTitle, ProcessedEvent } from "@/utils/eventUtils";
 
 interface CalendarViewProps {
   products: Product[];
@@ -11,6 +12,7 @@ interface CalendarViewProps {
 export const CalendarView = ({ products }: CalendarViewProps) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [selectedEvent, setSelectedEvent] = useState<ProcessedEvent | null>(null);
   
   // Generate calendar grid
   const year = currentDate.getFullYear();
@@ -46,11 +48,11 @@ export const CalendarView = ({ products }: CalendarViewProps) => {
     setCurrentDate(new Date(year, month + (direction === 'next' ? 1 : -1), 1));
   };
 
-  const getProductsForDay = (date: Date) => {
-    return products.filter(product => 
-      product.date.toDateString() === date.toDateString()
-    );
+  const getEventsForCalendarDay = (date: Date) => {
+    return getEventsForDay(products, date);
   };
+
+  const monthEvents = getEventsForMonth(products, year, month);
 
   const monthNames = [
     'January', 'February', 'March', 'April', 'May', 'June',
@@ -97,7 +99,7 @@ export const CalendarView = ({ products }: CalendarViewProps) => {
       {/* Calendar Grid */}
       <div className="grid grid-cols-7">
         {calendarDays.map(({ date, isCurrentMonth }, index) => {
-          const dayProducts = getProductsForDay(date);
+          const dayEvents = getEventsForCalendarDay(date);
           const isToday = date.toDateString() === new Date().toDateString();
           
           return (
@@ -110,29 +112,46 @@ export const CalendarView = ({ products }: CalendarViewProps) => {
               )}
             >
               <div className={cn(
-                "text-xs sm:text-sm font-medium mb-1 sm:mb-2",
+                "text-xs sm:text-sm font-medium mb-1 sm:mb-2 flex items-center justify-between",
                 isCurrentMonth ? "text-card-foreground" : "text-muted-foreground",
                 isToday && "text-primary font-bold"
               )}>
-                {date.getDate()}
+                <span>{date.getDate()}</span>
+                {dayEvents.length > 3 && (
+                  <span className="text-xs bg-accent text-accent-foreground px-1 rounded">
+                    +{dayEvents.length - 3}
+                  </span>
+                )}
               </div>
               
               <div className="space-y-0.5 sm:space-y-1">
-                {dayProducts.map((product) => (
+                {dayEvents.slice(0, 3).map((event) => (
                    <div
-                    key={product.id}
-                    onClick={() => setSelectedProduct(product)}
+                    key={event.id}
+                    onClick={() => {
+                      // Find the original product for the modal
+                      const originalProduct = products.find(p => p.id === event.productId);
+                      if (originalProduct) {
+                        setSelectedProduct(originalProduct);
+                        setSelectedEvent(event);
+                      }
+                    }}
                     className={cn(
-                      "p-1 sm:p-1.5 rounded-md text-xs cursor-pointer transition-colors",
-                      product.available 
+                      "p-1 sm:p-1.5 rounded-md text-xs cursor-pointer transition-colors relative",
+                      event.available 
                         ? "bg-primary text-white hover:shadow-sm" 
                         : "bg-muted text-muted-foreground"
                     )}
                   >
-                    <div className="font-medium truncate text-xs sm:text-xs">{product.title}</div>
+                    {event.isRecurring && (
+                      <div className="absolute top-0 right-0 w-2 h-2 bg-accent rounded-full -mt-0.5 -mr-0.5"></div>
+                    )}
+                    <div className="font-medium truncate text-xs sm:text-xs">
+                      {formatEventTitle(event)}
+                    </div>
                     <div className="hidden sm:flex items-center space-x-1 opacity-90">
                       <Clock className="w-3 h-3" />
-                      <span>{product.time}</span>
+                      <span>{event.startTime}</span>
                     </div>
                   </div>
                 ))}
@@ -142,47 +161,63 @@ export const CalendarView = ({ products }: CalendarViewProps) => {
         })}
       </div>
 
-      {/* Products List for Selected Month */}
-      {products.length > 0 && (
+      {/* Events List for Selected Month */}
+      {monthEvents.length > 0 && (
         <div className="p-4 sm:p-6 border-t border-border bg-secondary/20">
-          <h3 className="font-semibold text-base sm:text-lg mb-4 text-card-foreground">
-            Classes This Month
+          <h3 className="font-semibold text-base sm:text-lg mb-4 text-card-foreground flex items-center space-x-2">
+            <CalendarIcon className="w-5 h-5" />
+            <span>All Sessions This Month ({monthEvents.length})</span>
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-            {products.map((product) => (
+            {monthEvents.map((event) => (
               <div
-                key={product.id}
-                onClick={() => setSelectedProduct(product)}
+                key={event.id}
+                onClick={() => {
+                  const originalProduct = products.find(p => p.id === event.productId);
+                  if (originalProduct) {
+                    setSelectedProduct(originalProduct);
+                    setSelectedEvent(event);
+                  }
+                }}
                 className={cn(
-                  "p-3 sm:p-4 rounded-lg border border-border bg-card hover:bg-accent/5 transition-colors cursor-pointer",
-                  !product.available && "opacity-60"
+                  "p-3 sm:p-4 rounded-lg border border-border bg-card hover:bg-accent/5 transition-colors cursor-pointer relative",
+                  !event.available && "opacity-60"
                 )}
               >
+                {event.isRecurring && (
+                  <div className="absolute top-2 right-2 flex items-center space-x-1">
+                    <div className="w-2 h-2 bg-primary rounded-full"></div>
+                    <span className="text-xs text-primary font-medium">Series</span>
+                  </div>
+                )}
                 <div className="flex items-start justify-between">
-                  <div className="flex-1 min-w-0">
+                  <div className="flex-1 min-w-0 pr-8">
                     <h4 className="font-medium text-card-foreground mb-1 text-sm sm:text-base truncate">
-                      {product.title}
+                      {formatEventTitle(event)}
                     </h4>
                     <div className="space-y-1 text-xs sm:text-sm text-muted-foreground">
                       <div className="flex items-center space-x-2">
-                        <span>{product.date.toLocaleDateString()}</span>
+                        <span>{event.date.toLocaleDateString()}</span>
                         <Clock className="w-3 h-3 flex-shrink-0" />
-                        <span>{product.time}</span>
+                        <span>{event.startTime} - {event.endTime}</span>
                       </div>
-                      {product.instructor && (
+                      {event.instructor && (
                         <div className="flex items-center space-x-2">
                           <User className="w-3 h-3 flex-shrink-0" />
-                          <span className="truncate">{product.instructor}</span>
+                          <span className="truncate">{event.instructor}</span>
                         </div>
                       )}
+                      <div className="text-xs text-accent-foreground">
+                        Duration: {event.duration}
+                      </div>
                     </div>
                   </div>
                   <div className="text-right flex-shrink-0 ml-3">
                     <div className="flex items-center space-x-1 text-primary font-semibold">
                       <DollarSign className="w-3 sm:w-4 h-3 sm:h-4" />
-                      <span className="text-sm sm:text-base">{product.price}</span>
+                      <span className="text-sm sm:text-base">{event.price}</span>
                     </div>
-                    {!product.available && (
+                    {!event.available && (
                       <div className="text-xs text-destructive mt-1">
                         Sold Out
                       </div>
