@@ -116,7 +116,7 @@ export const ListView = ({ products }: ListViewProps) => {
                   <DollarSign className="w-4 sm:w-5 h-4 sm:h-5" />
                   <span className="text-xl sm:text-2xl font-bold">{product.price} Kr.</span>
                 </div>
-                <div className="text-xs text-muted-foreground">per session</div>
+                <div className="text-xs text-muted-foreground">Per month</div>
               </div>
 
               {/* Action */}
