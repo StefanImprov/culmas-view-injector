@@ -59,8 +59,13 @@ export const ListView = ({ products }: ListViewProps) => {
                   </h3>
                   <div className="flex items-center space-x-2">
                     {!product.available && (
-                      <span className="bg-destructive text-destructive-foreground px-2 py-1 rounded-lg text-xs font-semibold">
-                        Sold Out
+                      <span className={cn(
+                        "px-2 py-1 rounded-lg text-xs font-semibold",
+                        product.waitlistStatus === "ACTIVE" 
+                          ? "bg-secondary text-secondary-foreground" 
+                          : "bg-destructive text-destructive-foreground"
+                      )}>
+                        {product.waitlistStatus === "ACTIVE" ? "Waitlist" : "Sold Out"}
                       </span>
                     )}
                     <span className="bg-accent/80 text-accent-foreground px-3 py-1 rounded-full text-xs font-medium">
