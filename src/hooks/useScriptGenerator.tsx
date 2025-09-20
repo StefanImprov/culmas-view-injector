@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useTheme } from "@/components/ThemeProvider";
+import { useTenant } from "@/contexts/TenantContext";
 
 export interface ScriptConfig {
   apiUrl: string;
@@ -11,8 +12,9 @@ export interface ScriptConfig {
 
 export const useScriptGenerator = () => {
   const { theme } = useTheme();
+  const { config: tenantConfig } = useTenant();
   const [config, setConfig] = useState<ScriptConfig>({
-    apiUrl: "https://api.dev.culmas.io/",
+    apiUrl: tenantConfig.apiUrl,
     containerSelector: "#culmas-products",
     templateIds: [],
     venueIds: [],
@@ -27,16 +29,24 @@ export const useScriptGenerator = () => {
     error: null as string | null,
   });
 
+  // Update config when tenant config changes
+  useEffect(() => {
+    setConfig(prev => ({
+      ...prev,
+      apiUrl: tenantConfig.apiUrl,
+    }));
+  }, [tenantConfig.apiUrl]);
+
   // Fetch available options from API
   useEffect(() => {
     const fetchOptions = async () => {
       try {
         setAvailableOptions(prev => ({ ...prev, loading: true, error: null }));
         
-        const graphqlEndpoint = "https://api.dev.culmas.io/";
+        const graphqlEndpoint = tenantConfig.apiUrl;
         const headers = {
           "Content-Type": "application/json",
-          domain: "globe-dance.dev.culmas.io",
+          domain: tenantConfig.domain,
         };
 
         const query = `query AllProducts($onlyAvailableForSale: Boolean) {
@@ -103,7 +113,7 @@ export const useScriptGenerator = () => {
     };
 
     fetchOptions();
-  }, []);
+  }, [tenantConfig.apiUrl, tenantConfig.domain]);
 
   const generateScript = (): string => {
     const scriptData: Record<string, string> = {

@@ -1,18 +1,21 @@
 import { Product } from "../ProductInjector";
 import { Clock, Calendar, User, MapPin, Banknote } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useTenant } from "@/contexts/TenantContext";
 interface CardViewProps {
   products: Product[];
 }
 
 export const CardView = ({ products }: CardViewProps) => {
+  const { config } = useTenant();
+  
   const handleCardClick = (product: Product) => {
-    window.open(`https://globe-dance.dev.culmas.io/class/${product.id}?from=component-api`, '_blank');
+    window.open(`${config.bookingUrl}/class/${product.id}?from=component-api`, '_blank');
   };
 
   const handleBookClick = (e: React.MouseEvent, product: Product) => {
     e.stopPropagation();
-    window.open(`https://globe-dance.dev.culmas.io/class/${product.id}?from=component-api`, '_blank');
+    window.open(`${config.bookingUrl}/class/${product.id}?from=component-api`, '_blank');
   };
 
   return (

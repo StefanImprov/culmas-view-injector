@@ -11,6 +11,7 @@ import { ProductDetailsModal } from "./ProductDetailsModal";
 import { ThemeProvider } from "./ThemeProvider";
 import { Theme } from "@/types/theme";
 import { Button } from "./ui/button";
+import { useTenant } from "@/contexts/TenantContext";
 
 export type ViewMode = "card" | "list" | "calendar" | "week";
 
@@ -166,6 +167,7 @@ export const ProductInjector = ({
   className = "",
   theme 
 }: ProductInjectorProps) => {
+  const { config } = useTenant();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -187,12 +189,12 @@ export const ProductInjector = ({
         setLoading(true);
         setError(null);
         
-        // Call Culmas DEV GraphQL API with the provided query
-        const graphqlEndpoint = "https://api.dev.culmas.io/";
+        // Call Culmas GraphQL API with the provided query
+        const graphqlEndpoint = config.apiUrl;
         const sharedHeaders: Record<string, string> = {
           "Content-Type": "application/json",
           // Tenant header
-          domain: "globe-dance.dev.culmas.io",
+          domain: config.domain,
         };
 
         const CULMAS_QUERY = `query AllProducts($category: String, $onlyAvailableForSale: Boolean) {

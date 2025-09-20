@@ -3,6 +3,7 @@ import { Calendar, Clock, User, Banknote, Tag, MapPin, Tickets } from "lucide-re
 import { cn } from "@/lib/utils";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { useTenant } from "@/contexts/TenantContext";
 
 interface ProductDetailsModalProps {
   product: Product | null;
@@ -11,11 +12,13 @@ interface ProductDetailsModalProps {
 }
 
 export const ProductDetailsModal = ({ product, open, onOpenChange }: ProductDetailsModalProps) => {
+  const { config } = useTenant();
+  
   if (!product) return null;
 
   const handleBookEvent = () => {
     if (product) {
-      const bookingUrl = `https://globe-dance.dev.culmas.io/class/${product.id}?from=component-api`;
+      const bookingUrl = `${config.bookingUrl}/class/${product.id}?from=component-api`;
       window.open(bookingUrl, '_blank');
     }
   };
