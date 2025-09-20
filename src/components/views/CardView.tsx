@@ -1,5 +1,5 @@
 import { Product } from "../ProductInjector";
-import { Clock, Calendar, User, DollarSign, MapPin } from "lucide-react";
+import { Clock, Calendar, User, MapPin, Banknote } from "lucide-react";
 import { cn } from "@/lib/utils";
 interface CardViewProps {
   products: Product[];
@@ -46,8 +46,13 @@ export const CardView = ({ products }: CardViewProps) => {
             )}
             <div className="absolute inset-0 bg-gradient-primary opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
             {!product.available && (
-              <div className="absolute top-3 right-3 bg-destructive text-destructive-foreground px-2 py-1 rounded-lg text-xs font-semibold">
-                Sold Out
+              <div className={cn(
+                "absolute top-3 right-3 px-2 py-1 rounded-lg text-xs font-semibold",
+                product.waitlistStatus === "ACTIVE" 
+                  ? "bg-secondary text-secondary-foreground" 
+                  : "bg-destructive text-destructive-foreground"
+              )}>
+                {product.waitlistStatus === "ACTIVE" ? "Waitlist" : "Sold Out"}
               </div>
             )}
           </div>
@@ -98,14 +103,17 @@ export const CardView = ({ products }: CardViewProps) => {
 
             {/* Footer */}
             <div className="space-y-3 pt-3 border-t border-border mt-auto">
-              <div className="flex items-center justify-between">
-                 <span className="text-xl sm:text-2xl font-bold text-primary">
-                   {product.price} Kr.
+               <div className="flex items-center justify-between">
+                 <div className="flex items-center space-x-2">
+                   <Banknote className="w-4 h-4 text-primary" />
+                   <span className="text-xl sm:text-2xl font-bold text-primary">
+                     {product.price} Kr.
+                   </span>
+                 </div>
+                 <span className="text-xs text-muted-foreground bg-accent/50 px-2 py-1 rounded-full">
+                   {product.category}
                  </span>
-                <span className="text-xs text-muted-foreground bg-accent/50 px-2 py-1 rounded-full">
-                  {product.category}
-                </span>
-              </div>
+               </div>
               
               {product.available ? (
                 <button 

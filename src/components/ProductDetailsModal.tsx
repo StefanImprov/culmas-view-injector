@@ -1,5 +1,5 @@
 import { Product } from "./ProductInjector";
-import { Calendar, Clock, User, DollarSign, Tag, MapPin } from "lucide-react";
+import { Calendar, Clock, User, Banknote, Tag, MapPin } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -116,7 +116,7 @@ export const ProductDetailsModal = ({ product, open, onOpenChange }: ProductDeta
 
             <div className="space-y-4">
               <div className="flex items-center space-x-3">
-                <DollarSign className="w-5 h-5 text-primary" />
+                <Banknote className="w-5 h-5 text-primary" />
                 <div>
                   <div className="font-semibold">Price</div>
                   <div className="text-2xl font-bold text-primary">{product.price} Kr.</div>

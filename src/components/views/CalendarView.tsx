@@ -1,5 +1,5 @@
 import { Product } from "../ProductInjector";
-import { ChevronLeft, ChevronRight, Clock, User, DollarSign, Calendar as CalendarIcon } from "lucide-react";
+import { ChevronLeft, ChevronRight, Clock, User, Banknote, Calendar as CalendarIcon } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { ProductDetailsModal } from "../ProductDetailsModal";
@@ -221,7 +221,7 @@ export const CalendarView = ({ products }: CalendarViewProps) => {
                   </div>
                   <div className="text-right flex-shrink-0 ml-3">
                     <div className="flex items-center space-x-1 text-primary font-semibold">
-                      <DollarSign className="w-3 sm:w-4 h-3 sm:h-4" />
+                      <Banknote className="w-3 sm:w-4 h-3 sm:h-4" />
                       <span className="text-sm sm:text-base">{event.price} Kr.</span>
                     </div>
                     {!event.available && (
