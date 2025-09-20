@@ -1,12 +1,35 @@
-import React from "react";
-import { Building2, Settings } from "lucide-react";
+import React, { useState } from "react";
+import { Building2, RefreshCw } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 import { useTenant } from "@/contexts/TenantContext";
+import { useToast } from "@/components/ui/use-toast";
 
 export const TenantConfig = () => {
   const { config, updateConfig } = useTenant();
+  const { toast } = useToast();
+  const [localConfig, setLocalConfig] = useState(config);
+  const [isUpdating, setIsUpdating] = useState(false);
+
+  const handleUpdate = async () => {
+    setIsUpdating(true);
+    
+    // Simulate a brief loading state for better UX
+    await new Promise(resolve => setTimeout(resolve, 300));
+    
+    updateConfig(localConfig);
+    
+    toast({
+      title: "Configuration Updated",
+      description: "The live preview has been updated with your new settings.",
+    });
+    
+    setIsUpdating(false);
+  };
+
+  const hasChanges = JSON.stringify(config) !== JSON.stringify(localConfig);
 
   return (
     <Card className="w-full">
@@ -31,8 +54,8 @@ export const TenantConfig = () => {
               </p>
               <Input
                 id="tenant-name"
-                value={config.name}
-                onChange={(e) => updateConfig({ name: e.target.value })}
+                value={localConfig.name}
+                onChange={(e) => setLocalConfig(prev => ({ ...prev, name: e.target.value }))}
                 placeholder="Globe Theatre"
               />
             </div>
@@ -46,8 +69,8 @@ export const TenantConfig = () => {
               </p>
               <Input
                 id="api-url"
-                value={config.apiUrl}
-                onChange={(e) => updateConfig({ apiUrl: e.target.value })}
+                value={localConfig.apiUrl}
+                onChange={(e) => setLocalConfig(prev => ({ ...prev, apiUrl: e.target.value }))}
                 placeholder="https://api.culmas.io/"
               />
             </div>
@@ -61,8 +84,8 @@ export const TenantConfig = () => {
               </p>
               <Input
                 id="domain"
-                value={config.domain}
-                onChange={(e) => updateConfig({ domain: e.target.value })}
+                value={localConfig.domain}
+                onChange={(e) => setLocalConfig(prev => ({ ...prev, domain: e.target.value }))}
                 placeholder="icc.culmas.io"
               />
             </div>
@@ -76,11 +99,22 @@ export const TenantConfig = () => {
               </p>
               <Input
                 id="booking-url"
-                value={config.bookingUrl}
-                onChange={(e) => updateConfig({ bookingUrl: e.target.value })}
+                value={localConfig.bookingUrl}
+                onChange={(e) => setLocalConfig(prev => ({ ...prev, bookingUrl: e.target.value }))}
                 placeholder="https://icc.culmas.io"
               />
             </div>
+          </div>
+
+          <div className="flex justify-end pt-4 border-t">
+            <Button 
+              onClick={handleUpdate} 
+              disabled={!hasChanges || isUpdating}
+              className="flex items-center gap-2"
+            >
+              <RefreshCw className={`h-4 w-4 ${isUpdating ? 'animate-spin' : ''}`} />
+              {isUpdating ? 'Updating...' : 'Update Live Preview'}
+            </Button>
           </div>
         </div>
       </CardContent>
