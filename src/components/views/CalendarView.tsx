@@ -225,8 +225,11 @@ export const CalendarView = ({ products }: CalendarViewProps) => {
                       <span className="text-sm sm:text-base">{event.price} Kr.</span>
                     </div>
                     {!event.available && (
-                      <div className="text-xs text-destructive mt-1">
-                        Sold Out
+                      <div className={cn(
+                        "text-xs mt-1",
+                        event.waitlistStatus === "ACTIVE" ? "text-secondary-foreground" : "text-destructive"
+                      )}>
+                        {event.waitlistStatus === "ACTIVE" ? "Waitlist" : "Sold Out"}
                       </div>
                     )}
                   </div>

@@ -250,8 +250,11 @@ export const WeekView = ({ products }: WeekViewProps) => {
                           </div>
                         </div>
                         {!event.available && (
-                          <div className="text-center mt-1 text-xs font-semibold">
-                            Sold Out
+                          <div className={cn(
+                            "text-center mt-1 text-xs font-semibold",
+                            event.waitlistStatus === "ACTIVE" ? "text-secondary-foreground" : "text-destructive"
+                          )}>
+                            {event.waitlistStatus === "ACTIVE" ? "Waitlist" : "Sold Out"}
                           </div>
                         )}
                       </div>
@@ -346,9 +349,16 @@ export const WeekView = ({ products }: WeekViewProps) => {
                           "px-3 py-1 rounded-full text-sm font-medium",
                           selectedProduct.available 
                             ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300" 
-                            : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300"
+                            : selectedProduct.waitlistStatus === "ACTIVE"
+                              ? "bg-secondary text-secondary-foreground"
+                              : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300"
                         )}>
-                          {selectedProduct.available ? "Available" : "Sold Out"}
+                          {selectedProduct.available 
+                            ? "Available" 
+                            : selectedProduct.waitlistStatus === "ACTIVE" 
+                              ? "Waitlist" 
+                              : "Sold Out"
+                          }
                         </span>
                       </div>
                     </div>
