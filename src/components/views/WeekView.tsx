@@ -1,5 +1,5 @@
 import { Product } from "../ProductInjector";
-import { ChevronLeft, ChevronRight, Clock, User, DollarSign, Calendar, MapPin, Tag } from "lucide-react";
+import { ChevronLeft, ChevronRight, Clock, User, Banknote, Calendar, MapPin, Tag } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -145,7 +145,7 @@ export const WeekView = ({ products }: WeekViewProps) => {
                             </div>
                           )}
                           <div className="flex items-center space-x-2 font-semibold">
-                            <DollarSign className="w-3 h-3" />
+                            <Banknote className="w-3 h-3" />
                             <span>{event.price} Kr.</span>
                           </div>
                         </div>
@@ -245,7 +245,7 @@ export const WeekView = ({ products }: WeekViewProps) => {
                             </div>
                           )}
                           <div className="flex items-center space-x-1 font-semibold">
-                            <DollarSign className="w-3 h-3" />
+                            <Banknote className="w-3 h-3" />
                             <span>{event.price}</span>
                           </div>
                         </div>
@@ -324,7 +324,7 @@ export const WeekView = ({ products }: WeekViewProps) => {
 
                   <div className="space-y-4">
                     <div className="flex items-center space-x-3">
-                      <DollarSign className="w-5 h-5 text-primary" />
+                      <Banknote className="w-5 h-5 text-primary" />
                       <div>
                         <div className="font-semibold">Price</div>
                         <div className="text-2xl font-bold text-primary">{selectedProduct.price} Kr.</div>
