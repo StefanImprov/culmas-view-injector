@@ -1,6 +1,7 @@
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { ProductInjector } from "@/components/ProductInjector";
 import { ThemeCustomizer } from "@/components/ThemeCustomizer";
+import { ScriptGenerator } from "@/components/ScriptGenerator";
 
 const Landing = () => {
   return (
@@ -19,6 +20,10 @@ const Landing = () => {
           </div>
 
           <ThemeCustomizer />
+          
+          <div className="mt-12">
+            <ScriptGenerator />
+          </div>
           
           <div className="mt-12">
             <ProductInjector />
