@@ -1,9 +1,9 @@
 import { Product } from "../ProductInjector";
-import { ChevronLeft, ChevronRight, Clock, User, Banknote, Calendar, MapPin, Tag } from "lucide-react";
+import { ChevronLeft, ChevronRight, Clock, User, Banknote } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { getEventsForDay, formatEventTitle, ProcessedEvent } from "@/utils/eventUtils";
+import { ProductDetailsModal } from "../ProductDetailsModal";
 
 interface WeekViewProps {
   products: Product[];
@@ -18,7 +18,6 @@ export const WeekView = ({ products }: WeekViewProps) => {
   });
 
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [selectedEvent, setSelectedEvent] = useState<ProcessedEvent | null>(null);
 
   const generateWeekDays = (startDate: Date) => {
     return Array.from({ length: 7 }, (_, i) => {
@@ -119,7 +118,6 @@ export const WeekView = ({ products }: WeekViewProps) => {
                           const originalProduct = products.find(p => p.id === event.productId);
                           if (originalProduct) {
                             setSelectedProduct(originalProduct);
-                            setSelectedEvent(event);
                           }
                         }}
                         className={cn(
@@ -217,7 +215,6 @@ export const WeekView = ({ products }: WeekViewProps) => {
                           const originalProduct = products.find(p => p.id === event.productId);
                           if (originalProduct) {
                             setSelectedProduct(originalProduct);
-                            setSelectedEvent(event);
                           }
                         }}
                         className={cn(
@@ -267,125 +264,12 @@ export const WeekView = ({ products }: WeekViewProps) => {
         </div>
       </div>
 
-      {/* Event Details Modal */}
-      <Dialog open={!!selectedProduct} onOpenChange={() => setSelectedProduct(null)}>
-        <DialogContent className="max-w-2xl">
-          {selectedProduct && (
-            <>
-              <DialogHeader>
-                <DialogTitle className="text-2xl font-bold">
-                  {selectedProduct.title}
-                </DialogTitle>
-              </DialogHeader>
-              
-              <div className="space-y-6">
-                {/* Event Image */}
-                {selectedProduct.image && (
-                  <div className="w-full h-64 rounded-lg overflow-hidden">
-                    <img 
-                      src={selectedProduct.image} 
-                      alt={selectedProduct.title}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                )}
-
-                {/* Event Details */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-4">
-                    <div className="flex items-center space-x-3">
-                      <Calendar className="w-5 h-5 text-primary" />
-                      <div>
-                        <div className="font-semibold">Date & Time</div>
-                        <div className="text-muted-foreground">
-                          {selectedProduct.date.toLocaleDateString()} at {selectedProduct.time}
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-center space-x-3">
-                      <Clock className="w-5 h-5 text-primary" />
-                      <div>
-                        <div className="font-semibold">Duration</div>
-                        <div className="text-muted-foreground">{selectedProduct.duration}</div>
-                      </div>
-                    </div>
-
-                    {selectedProduct.instructor && (
-                      <div className="flex items-center space-x-3">
-                        <User className="w-5 h-5 text-primary" />
-                        <div>
-                          <div className="font-semibold">Instructor</div>
-                          <div className="text-muted-foreground">{selectedProduct.instructor}</div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="space-y-4">
-                    <div className="flex items-center space-x-3">
-                      <Banknote className="w-5 h-5 text-primary" />
-                      <div>
-                        <div className="font-semibold">Price</div>
-                        <div className="text-2xl font-bold text-primary">{selectedProduct.price} Kr.</div>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center space-x-3">
-                      <Tag className="w-5 h-5 text-primary" />
-                      <div>
-                        <div className="font-semibold">Category</div>
-                        <span className="bg-accent text-accent-foreground px-3 py-1 rounded-full text-sm font-medium">
-                          {selectedProduct.category}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center space-x-3">
-                      <MapPin className="w-5 h-5 text-primary" />
-                      <div>
-                        <div className="font-semibold">Availability</div>
-                        <span className={cn(
-                          "px-3 py-1 rounded-full text-sm font-medium",
-                          selectedProduct.available 
-                            ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300" 
-                            : selectedProduct.waitlistStatus === "ACTIVE"
-                              ? "bg-secondary text-secondary-foreground"
-                              : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300"
-                        )}>
-                          {selectedProduct.available 
-                            ? "Available" 
-                            : selectedProduct.waitlistStatus === "ACTIVE" 
-                              ? "Waitlist" 
-                              : "Sold Out"
-                          }
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Description */}
-                <div>
-                  <h3 className="font-semibold text-lg mb-2">Description</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    {selectedProduct.description}
-                  </p>
-                </div>
-
-                {/* Action Button */}
-                {selectedProduct.available && (
-                  <div className="flex justify-end pt-4 border-t">
-                    <button className="bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:shadow-glow transition-all duration-300 transform hover:scale-105">
-                      Book This Event
-                    </button>
-                  </div>
-                )}
-              </div>
-            </>
-          )}
-        </DialogContent>
-      </Dialog>
+      {/* Product Details Modal */}
+      <ProductDetailsModal 
+        product={selectedProduct}
+        open={!!selectedProduct}
+        onOpenChange={(open) => !open && setSelectedProduct(null)}
+      />
     </div>
   );
 };
