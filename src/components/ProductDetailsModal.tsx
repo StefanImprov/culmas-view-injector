@@ -1,5 +1,5 @@
 import { Product } from "./ProductInjector";
-import { Calendar, Clock, User, Banknote, Tag, MapPin } from "lucide-react";
+import { Calendar, Clock, User, Banknote, Tag, MapPin, Tickets } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -134,6 +134,34 @@ export const ProductDetailsModal = ({ product, open, onOpenChange }: ProductDeta
               </div>
 
               <div className="flex items-center space-x-3">
+                <Tickets className="w-5 h-5 text-primary" />
+                <div>
+                  <div className="font-semibold">Tickets</div>
+                  <div className="space-y-1">
+                    {product.totalTickets && product.ticketsLeft !== undefined ? (
+                      <>
+                        <div className="text-sm text-muted-foreground">
+                          {product.ticketsLeft} out of {product.totalTickets} left
+                        </div>
+                        <div className="w-full bg-muted rounded-full h-2">
+                          <div 
+                            className="bg-primary h-2 rounded-full transition-all duration-300" 
+                            style={{ 
+                              width: `${Math.max(0, (product.ticketsLeft / product.totalTickets) * 100)}%` 
+                            }}
+                          />
+                        </div>
+                      </>
+                    ) : (
+                      <div className="text-sm text-muted-foreground">
+                        Ticket information not available
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center space-x-3">
                 <MapPin className="w-5 h-5 text-primary" />
                 <div>
                   <div className="font-semibold">Availability</div>
@@ -141,9 +169,16 @@ export const ProductDetailsModal = ({ product, open, onOpenChange }: ProductDeta
                     "px-3 py-1 rounded-full text-sm font-medium",
                     product.available 
                       ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300" 
-                      : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300"
+                      : product.waitlistStatus === "ACTIVE"
+                        ? "bg-secondary text-secondary-foreground"
+                        : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300"
                   )}>
-                    {product.available ? "Available" : "Sold Out"}
+                    {product.available 
+                      ? "Available" 
+                      : product.waitlistStatus === "ACTIVE" 
+                        ? "Waitlist" 
+                        : "Sold Out"
+                    }
                   </span>
                 </div>
               </div>

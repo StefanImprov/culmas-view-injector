@@ -42,6 +42,8 @@ export interface Product {
   waitlistStatus?: string;
   templateTitle?: string;
   events?: ProductEvent[]; // Array of event occurrences
+  totalTickets?: number;
+  ticketsLeft?: number;
   responsiblesShown?: {
     profileImg?: string;
     firstName?: string;
@@ -63,6 +65,8 @@ const mockProducts: Product[] = [
     instructor: "Sarah Johnson",
     available: true,
     venue: "Studio A",
+    totalTickets: 20,
+    ticketsLeft: 5,
   },
   {
     id: "2", 
@@ -76,6 +80,8 @@ const mockProducts: Product[] = [
     instructor: "Marie Claire",
     available: true,
     venue: "Main Hall",
+    totalTickets: 15,
+    ticketsLeft: 8,
   },
   {
     id: "3",
@@ -89,6 +95,9 @@ const mockProducts: Product[] = [
     instructor: "Marcus Davis",
     available: false,
     venue: "Studio B",
+    totalTickets: 12,
+    ticketsLeft: 0,
+    waitlistStatus: "ACTIVE",
   },
   {
     id: "4",
@@ -102,6 +111,8 @@ const mockProducts: Product[] = [
     instructor: "Lisa Thompson",
     available: true,
     venue: "Studio A",
+    totalTickets: 25,
+    ticketsLeft: 12,
   },
   {
     id: "5",
@@ -115,6 +126,8 @@ const mockProducts: Product[] = [
     instructor: "Alex Rivera",
     available: true,
     venue: "Main Hall",
+    totalTickets: 18,
+    ticketsLeft: 3,
   },
   {
     id: "6",
@@ -128,6 +141,8 @@ const mockProducts: Product[] = [
     instructor: "Emma Wilson",
     available: true,
     venue: "Studio C",
+    totalTickets: 30,
+    ticketsLeft: 15,
   },
 ];
 
@@ -351,6 +366,7 @@ export const ProductInjector = ({
               .filter((n: number) => !isNaN(n));
             const price = prices.length ? Math.min(...prices) : 0;
             const totalLeft = Number(p?.tickets?.totalTicketsLeft ?? 0);
+            const totalTickets = Number(p?.tickets?.totalTickets ?? 0);
             const available = totalLeft > 0;
 
             const productTitle = (p?.title ?? "").trim();
@@ -402,6 +418,8 @@ export const ProductInjector = ({
               waitlistStatus: p?.waitlistStatus,
               templateTitle: p?.template?.title,
               events,
+              totalTickets,
+              ticketsLeft: totalLeft,
               responsiblesShown: responsibleShown,
             } as Product;
           });
