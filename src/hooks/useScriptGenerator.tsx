@@ -54,9 +54,13 @@ export const useScriptGenerator = () => {
             id
             title
             category
-            venue
-            templateTitle
-            templateId
+            venue {
+              title
+            }
+            template {
+              id
+              title
+            }
           }
         }`;
 
@@ -83,12 +87,12 @@ export const useScriptGenerator = () => {
         
         // Extract unique options
         const templates = Array.from(new Set(
-          products.map((p: any) => ({ id: p.templateId, title: p.templateTitle }))
+          products.map((p: any) => ({ id: p.template?.id, title: p.template?.title }))
             .filter((t: any) => t.id && t.title)
         )).map((t: any) => ({ value: t.id, label: t.title }));
 
         const venues = Array.from(new Set(
-          products.map((p: any) => p.venue).filter(Boolean)
+          products.map((p: any) => p.venue?.title).filter(Boolean)
         )).map((v: string) => ({ value: v, label: v }));
 
         const categories = Array.from(new Set(
@@ -120,6 +124,7 @@ export const useScriptGenerator = () => {
       "data-culmas-widget": "true",
       "data-container": config.containerSelector,
       "data-api-url": config.apiUrl,
+      "data-domain": tenantConfig.domain,
     };
 
     if (config.templateIds.length > 0) {

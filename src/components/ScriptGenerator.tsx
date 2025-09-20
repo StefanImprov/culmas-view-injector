@@ -9,7 +9,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Separator } from "@/components/ui/separator";
 import { MultiSelect } from "./MultiSelect";
 import { useScriptGenerator } from "@/hooks/useScriptGenerator";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 
 export const ScriptGenerator = () => {
   const { config, availableOptions, updateConfig, generateScript } = useScriptGenerator();
