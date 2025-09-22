@@ -444,7 +444,7 @@ export const ProductInjector = ({
     };
 
     fetchProducts();
-  }, [templateIds, venueIds]);
+  }, [templateIds, venueIds, config.apiUrl, config.domain]);
 
   // Global product click handler
   const handleProductClick = (product: Product) => {
