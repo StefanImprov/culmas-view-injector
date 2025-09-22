@@ -13,6 +13,7 @@ type WidgetConfig = {
   templateIds?: string;
   venueIds?: string;
   themeJson?: string;                  // JSON string from data-theme
+  domain?: string;                     // Domain from data-domain
 };
 
 function parseTheme(themeJson?: string): Theme | undefined {
@@ -81,7 +82,8 @@ function mountOne(scriptEl: HTMLScriptElement) {
     apiUrl: scriptEl.getAttribute("data-api-url") || "",
     templateIds: scriptEl.getAttribute("data-template-ids") || "",
     venueIds: scriptEl.getAttribute("data-venue-ids") || "",
-    themeJson: scriptEl.getAttribute("data-theme") || ""
+    themeJson: scriptEl.getAttribute("data-theme") || "",
+    domain: scriptEl.getAttribute("data-domain") || ""
   };
 
   const host = document.querySelector<HTMLElement>(cfg.container);
@@ -118,19 +120,28 @@ function mountOne(scriptEl: HTMLScriptElement) {
 
   // Create tenant config from widget config
   const createTenantConfig = (cfg: WidgetConfig): TenantConfig => {
-    // Extract domain from apiUrl (e.g., "https://api.dev.culmas.io/" -> "dev.culmas.io")
+    // Use provided domain, or extract from apiUrl as fallback
     let domain = "";
     let bookingUrl = "";
     
-    try {
-      const url = new URL(cfg.apiUrl);
-      // Convert api.dev.culmas.io to dev.culmas.io
-      domain = url.hostname.replace(/^api\./, '');
+    if (cfg.domain) {
+      // Use the explicitly provided domain
+      domain = cfg.domain;
       bookingUrl = `https://${domain}`;
-    } catch (error) {
-      console.warn('🔧 Could not parse domain from apiUrl:', cfg.apiUrl);
-      domain = "dev.culmas.io";
-      bookingUrl = "https://dev.culmas.io";
+      console.log('🔧 Using provided domain:', domain);
+    } else {
+      // Fallback: extract domain from apiUrl (e.g., "https://api.dev.culmas.io/" -> "dev.culmas.io")
+      try {
+        const url = new URL(cfg.apiUrl);
+        // Convert api.dev.culmas.io to dev.culmas.io
+        domain = url.hostname.replace(/^api\./, '');
+        bookingUrl = `https://${domain}`;
+        console.log('🔧 Derived domain from apiUrl:', domain);
+      } catch (error) {
+        console.warn('🔧 Could not parse domain from apiUrl:', cfg.apiUrl);
+        domain = "dev.culmas.io";
+        bookingUrl = "https://dev.culmas.io";
+      }
     }
 
     return {
