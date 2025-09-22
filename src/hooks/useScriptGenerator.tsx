@@ -140,7 +140,7 @@ export const useScriptGenerator = () => {
     }
 
     // Add theme data
-    scriptData["data-theme"] = JSON.stringify(theme).replace(/"/g, '&quot;');
+    scriptData["data-theme"] = JSON.stringify(theme);
 
     const scriptAttributes = Object.entries(scriptData)
       .map(([key, value]) => `  ${key}="${value}"`)
