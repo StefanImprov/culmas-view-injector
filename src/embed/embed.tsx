@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { ProductInjector } from "@/components/ProductInjector";
 import { Theme, defaultThemes } from "@/types/theme";
 import { PortalProvider } from "@/embed/portal-provider";
+import { TenantProvider, TenantConfig, useTenant } from "@/contexts/TenantContext";
 
 type WidgetConfig = {
   container: string;                   // CSS selector
@@ -115,17 +116,67 @@ function mountOne(scriptEl: HTMLScriptElement) {
   const initialTheme = parseTheme(cfg.themeJson);
   console.log('🎨 Widget initializing with theme:', initialTheme?.id || 'default');
 
+  // Create tenant config from widget config
+  const createTenantConfig = (cfg: WidgetConfig): TenantConfig => {
+    // Extract domain from apiUrl (e.g., "https://api.dev.culmas.io/" -> "dev.culmas.io")
+    let domain = "";
+    let bookingUrl = "";
+    
+    try {
+      const url = new URL(cfg.apiUrl);
+      // Convert api.dev.culmas.io to dev.culmas.io
+      domain = url.hostname.replace(/^api\./, '');
+      bookingUrl = `https://${domain}`;
+    } catch (error) {
+      console.warn('🔧 Could not parse domain from apiUrl:', cfg.apiUrl);
+      domain = "dev.culmas.io";
+      bookingUrl = "https://dev.culmas.io";
+    }
+
+    return {
+      name: "Widget Client",
+      apiUrl: cfg.apiUrl,
+      domain,
+      bookingUrl
+    };
+  };
+
+  const tenantConfig = createTenantConfig(cfg);
+  console.log('🔧 Widget tenant config:', tenantConfig);
+
+  // Widget wrapper that initializes tenant config
+  const WidgetWrapper: React.FC = () => {
+    return (
+      <TenantProvider>
+        <TenantConfigInitializer config={tenantConfig}>
+          <ThemeProvider widgetMode={true} rootEl={themeContainer as HTMLElement} initialTheme={initialTheme}>
+            <ProductInjector
+              apiUrl={cfg.apiUrl}
+              templateIds={cfg.templateIds ? cfg.templateIds.split(',') : undefined}
+              venueIds={cfg.venueIds ? cfg.venueIds.split(',') : undefined}
+            />
+          </ThemeProvider>
+        </TenantConfigInitializer>
+      </TenantProvider>
+    );
+  };
+
+  // Component to initialize tenant config
+  const TenantConfigInitializer: React.FC<{ config: TenantConfig; children: React.ReactNode }> = ({ config, children }) => {
+    const { updateConfig } = useTenant();
+    
+    React.useEffect(() => {
+      updateConfig(config);
+    }, [config, updateConfig]);
+    
+    return <>{children}</>;
+  };
+
   // Render the widget (no routers/toasters/globals)
   const root = createRoot(mount);
   root.render(
     <PortalProvider container={shadow as unknown as HTMLElement}>
-      <ThemeProvider widgetMode={true} rootEl={themeContainer as HTMLElement} initialTheme={initialTheme}>
-        <ProductInjector
-          apiUrl={cfg.apiUrl}
-          templateIds={cfg.templateIds ? cfg.templateIds.split(',') : undefined}
-          venueIds={cfg.venueIds ? cfg.venueIds.split(',') : undefined}
-        />
-      </ThemeProvider>
+      <WidgetWrapper />
     </PortalProvider>
   );
 }
