@@ -143,7 +143,7 @@ export const useScriptGenerator = () => {
     scriptData["data-theme"] = JSON.stringify(theme);
 
     const scriptAttributes = Object.entries(scriptData)
-      .map(([key, value]) => `  ${key}="${value}"`)
+      .map(([key, value]) => `  ${key}='${value}'`)
       .join("\n");
 
     return `<!-- Container on your website -->
